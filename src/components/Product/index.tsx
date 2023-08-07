@@ -33,7 +33,7 @@ const Product = ({
       </div>
       <p className="text-medium text-blueGray-600">{description}</p>
       <Button className="w-full self-end md:h-7" variant="secondary">
-        Adicionar produto
+        Add to cart
       </Button>
     </div>
   );
