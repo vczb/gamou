@@ -24,3 +24,8 @@
     background-color: transparent;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
