@@ -1,4 +1,6 @@
+import { useCompany } from "@/hooks/use-company";
 import Button from "../Button";
+import { useCart } from "@/hooks/use-cart";
 
 export type ProductProps = {
   uid: string;
@@ -6,17 +8,16 @@ export type ProductProps = {
   image: string;
   description: string;
   price: number;
-  currency?: string;
 };
 
-const Product = ({
-  title,
-  image,
-  description,
-  price,
-  uid,
-  currency = "$",
-}: ProductProps) => {
+const Product = (product: ProductProps) => {
+  const { title, image, description, price, uid } = product;
+  const {
+    company: { currency },
+  } = useCompany();
+
+  const { addToCart } = useCart();
+
   return (
     <div id={uid} className="grid gap-2 p-2 max-w-4xl md:grid-cols-2">
       <div className="flex pb-2 border-b-2 md:border-b-0 md:pb-0 md:row-span-2">
@@ -32,7 +33,11 @@ const Product = ({
         </div>
       </div>
       <p className="text-medium text-blueGray-600">{description}</p>
-      <Button className="w-full self-end md:h-7" variant="secondary">
+      <Button
+        className="w-full self-end md:h-7"
+        variant="secondary"
+        onClick={() => addToCart(product)}
+      >
         Add to cart
       </Button>
     </div>

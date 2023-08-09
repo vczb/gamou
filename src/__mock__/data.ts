@@ -5,7 +5,9 @@ export default {
   },
   company: {
     uid: "a1b2b3d4e5f6g7h8i9",
+    image: "https://picsum.photos/200/300",
     name: "Urban Palate Restaurant",
+    currency: "R$",
     workhour: [
       {
         open_time: "11:00",

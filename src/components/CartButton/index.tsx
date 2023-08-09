@@ -1,23 +1,28 @@
 import { MouseEventHandler, useMemo } from "react";
 import Cart from "../../icons/Cart";
+import { useCompany } from "@/hooks/use-company";
+import { useCart } from "@/hooks/use-cart";
 
 export type CartButtonProps = {
-  message: string;
-  amount: number;
-  price: number;
-  currency?: string;
   variant?: "success" | "info" | "black";
-  onClick: MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-const CartButton = ({
-  amount,
-  message,
-  price,
-  currency = "R$",
-  variant = "black",
-  onClick,
-}: CartButtonProps) => {
+const CartButton = ({ variant = "black" }: CartButtonProps) => {
+  const {
+    company: { currency },
+  } = useCompany();
+
+  const { quantity, total } = useCart();
+
+  const quantityMessage: string = useMemo(() => {
+    if (quantity > 1) {
+      return "Items";
+    }
+    return "Item";
+  }, [quantity]);
+
+  const isHidden = useMemo(() => quantity === 0, [quantity]);
+
   const variantStyles = useMemo(() => {
     switch (variant) {
       case "success":
@@ -32,12 +37,12 @@ const CartButton = ({
 
   return (
     <button
-      onClick={onClick}
-      className={`flex justify-between items-center fixed bottom-0 left-0 right-0 w-full h-14 cursor-pointer px-3 duration-200 ${variantStyles}`}
+      className={`flex justify-between items-center fixed bottom-0 left-0 right-0 w-full h-14 cursor-pointer px-3 duration-200 ${variantStyles} 
+        ${isHidden ? "hidden" : ""}`}
     >
       <Cart className="w-6 lg:w-8 fill-current" />
-      <p className="text-medium lg:text-large font-bold">{`${amount} ${message}`}</p>
-      <p className="text-medium lg:text-large font-bold">{`${currency} ${price}`}</p>
+      <p className="text-medium lg:text-large font-bold">{`${quantity} ${quantityMessage}`}</p>
+      <p className="text-medium lg:text-large font-bold">{`${currency} ${total}`}</p>
     </button>
   );
 };

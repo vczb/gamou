@@ -1,3 +1,5 @@
+"use client";
+
 import Avatar, { AvatarProps } from "@/components/Avatar";
 
 import data from "@/__mock__/data";
@@ -9,6 +11,7 @@ import CategoryProductList, {
   CategoryProductListProps,
 } from "@/components/CategoryProductList";
 import CartButton from "@/components/CartButton";
+import { useCompany } from "@/hooks/use-company";
 
 type Home = {
   avatar: AvatarProps;
@@ -18,16 +21,15 @@ type Home = {
 };
 
 export default function Home() {
-  const {
-    avatar,
-    company,
-    categories,
-    category_product_list: categoryProductList,
-  } = data as unknown as Home;
+  const { categories, category_product_list: categoryProductList } =
+    data as unknown as Home;
+
+  const { company } = useCompany();
+
   return (
     <main className="container mx-auto px-4 pb-14">
       <section className="mt-32 mb-6 flex items-center justify-center">
-        <Avatar {...avatar} />
+        <Avatar src={company.image} alt={company.name} />
       </section>
       <section className="text-center mb-6">
         <Heading text={company.name} />
@@ -52,12 +54,7 @@ export default function Home() {
           ))}
         </ul>
       </section>
-      <CartButton
-        message={"Itens"}
-        amount={3}
-        price={125.2}
-        onClick={undefined}
-      />
+      <CartButton />
     </main>
   );
 }
