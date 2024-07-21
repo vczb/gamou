@@ -1,6 +1,5 @@
-import { useCompany } from "@/hooks/use-company";
-import Button from "../Button";
-import { useCart } from "@/hooks/use-cart";
+import AddToCartButton from "@/components/AddToCartButton";
+import { CURRENCY } from "@/utils/constants";
 
 export type ProductProps = {
   uid: string;
@@ -10,14 +9,9 @@ export type ProductProps = {
   price: number;
 };
 
+
 const Product = (product: ProductProps) => {
   const { title, image, description, price, uid } = product;
-  const {
-    company: { currency },
-  } = useCompany();
-
-  const { addToCart } = useCart();
-
   return (
     <div id={uid} className="grid gap-2 p-2 max-w-4xl md:grid-cols-2">
       <div className="flex pb-2 border-b-2 md:border-b-0 md:pb-0 md:row-span-2">
@@ -29,17 +23,11 @@ const Product = (product: ProductProps) => {
         />
         <div className="ml-4">
           <p className="text-medium md:text-large font-bold">{title}</p>
-          <p className="text-large text-primary-600 font-bold ">{`${currency} ${price}`}</p>
+          <p className="text-large text-primary-600 font-bold ">{`${CURRENCY} ${price}`}</p>
         </div>
       </div>
       <p className="text-medium text-blueGray-600">{description}</p>
-      <Button
-        className="w-full self-end md:h-7"
-        variant="secondary"
-        onClick={() => addToCart(product)}
-      >
-        Add to cart
-      </Button>
+      <AddToCartButton product={product} />
     </div>
   );
 };

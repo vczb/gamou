@@ -1,16 +1,15 @@
-import { MouseEventHandler, useMemo } from "react";
+'use client'
+
+import { useMemo } from "react";
 import Cart from "../../icons/Cart";
-import { useCompany } from "@/hooks/use-company";
 import { useCart } from "@/hooks/use-cart";
+import { CURRENCY } from "@/utils/constants";
 
 export type CartButtonProps = {
   variant?: "success" | "info" | "black";
 };
 
 const CartButton = ({ variant = "black" }: CartButtonProps) => {
-  const {
-    company: { currency },
-  } = useCompany();
 
   const { quantity, total } = useCart();
 
@@ -42,7 +41,7 @@ const CartButton = ({ variant = "black" }: CartButtonProps) => {
     >
       <Cart className="w-6 lg:w-8 fill-current" />
       <p className="text-medium lg:text-large font-bold">{`${quantity} ${quantityMessage}`}</p>
-      <p className="text-medium lg:text-large font-bold">{`${currency} ${total}`}</p>
+      <p className="text-medium lg:text-large font-bold">{`${CURRENCY} ${total}`}</p>
     </button>
   );
 };

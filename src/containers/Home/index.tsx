@@ -1,30 +1,19 @@
-"use client";
+import Avatar from "@/components/Avatar";
 
-import Avatar, { AvatarProps } from "@/components/Avatar";
-
-import data from "@/__mock__/data";
 import Heading from "@/components/Heading";
 import SearchField from "@/components/SearchField";
 import CategoryMenu from "@/components/CategoryMenu";
 import { CategoryLinkProps } from "@/components/CategoryLink";
-import CategoryProductList, {
-  CategoryProductListProps,
-} from "@/components/CategoryProductList";
 import CartButton from "@/components/CartButton";
-import { useCompany } from "@/hooks/use-company";
+import CategoryProductList from "@/components/CategoryProductList";
 
-type Home = {
-  avatar: AvatarProps;
+export type HomeProps = {
   company: any;
   categories: CategoryLinkProps[];
-  category_product_list: CategoryProductListProps[];
+  categoryProductList: any[];
 };
 
-export default function Home() {
-  const { categories, category_product_list: categoryProductList } =
-    data as unknown as Home;
-
-  const { company } = useCompany();
+export default function Home({company, categories, categoryProductList }: HomeProps) {
 
   return (
     <main className="container mx-auto px-4 pb-14">

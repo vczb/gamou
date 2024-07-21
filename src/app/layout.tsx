@@ -20,9 +20,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         {
-          <CompanyProvider>
-            <CartProvider>{children}</CartProvider>
-          </CompanyProvider>
+          <>
+          {/* <CompanyProvider> */}
+            <CartProvider> 
+              {children}
+             </CartProvider>
+          {/*</CompanyProvider> */}
+          </>
         }
       </body>
     </html>
