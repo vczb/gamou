@@ -1,24 +1,26 @@
-'use client'
+"use client";
 
 import { useCart } from "@/hooks/use-cart";
-import Button from "@/components/Button"
+import Button from "@/components/Button";
 import { ProductProps } from "@/components/Product";
 
 type AddToCartButton = {
-  product: ProductProps
-}
+  product: ProductProps;
+};
 
-const AddToCartButton = ({product}: AddToCartButton) => {
-
+const AddToCartButton = ({ product }: AddToCartButton) => {
   const { addToCart } = useCart();
 
-  return <Button
-  className="w-full self-end md:h-7"
-  variant="secondary"
-  onClick={() => addToCart(product)}
->
-  Add to cart
-</Button>
-}
+  return (
+    <Button
+      className="w-full self-end md:h-7"
+      variant="secondary"
+      onClick={() => addToCart(product)}
+    >
+      Adicionar ao carrinho
+    </Button>
+  );
+};
 
-export default AddToCartButton
+export default AddToCartButton;
+

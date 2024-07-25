@@ -5,7 +5,9 @@ import SearchField from "@/components/SearchField";
 import CategoryMenu from "@/components/CategoryMenu";
 import { CategoryLinkProps } from "@/components/CategoryLink";
 import CartButton from "@/components/CartButton";
-import CategoryProductList, { CategoryProductListProps } from "@/components/CategoryProductList";
+import CategoryProductList, {
+  CategoryProductListProps,
+} from "@/components/CategoryProductList";
 
 export type StoreProps = {
   image: string;
@@ -14,8 +16,12 @@ export type StoreProps = {
   categoryProductList: CategoryProductListProps[];
 };
 
-export default function Store({image, name, categories, categoryProductList }: StoreProps) {
-
+export default function Store({
+  image,
+  name,
+  categories,
+  categoryProductList,
+}: StoreProps) {
   return (
     <main className="container mx-auto px-4 pb-14">
       <section className="mt-32 mb-6 flex items-center justify-center">
@@ -25,12 +31,12 @@ export default function Store({image, name, categories, categoryProductList }: S
         <Heading text={name} />
         <div className="flex justify-between mt-3">
           <p className="text-small">
-            <span className="text-primary-500 font-bold">Open</span> until 11 PM
+            <span className="text-primary-500 font-bold">Aberto</span> até 23:00
           </p>
         </div>
       </section>
       <section className="mb-6">
-        <SearchField placeholder="Seach by name..." />
+        <SearchField placeholder="Buscar por nome..." />
       </section>
       <section className="mb-6 flex items-center justify-center">
         <CategoryMenu categories={categories} />
