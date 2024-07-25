@@ -2,7 +2,6 @@ import { CartProvider } from "@/hooks/use-cart";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { CompanyProvider } from "@/hooks/use-company";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +20,9 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         {
           <>
-          {/* <CompanyProvider> */}
             <CartProvider> 
               {children}
              </CartProvider>
-          {/*</CompanyProvider> */}
           </>
         }
       </body>

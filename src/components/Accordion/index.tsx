@@ -13,7 +13,7 @@ const Accordion = ({
   detailsClassName = "",
   summaryClassName = "",
 }: AccordionProps) => (
-  <details className={`shadow-lg p-4 group w-fit ${detailsClassName}`}>
+  <details className={`shadow-lg p-4 group w-fit ${detailsClassName}`} open >
     <summary
       className={`block font-bold text-large cursor-pointer text-black group-hover:text-primary-500 duration-200 ${summaryClassName}`}
     >

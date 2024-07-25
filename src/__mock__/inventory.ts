@@ -1,82 +1,5 @@
-export default {
-  company: {
-    uid: "a1b2b3d4e5f6g7h8i9",
-    image: "http://localhost:3000/uploads/company_image.webp",
-    name: "Super Gostoso Restaurante",
-    currency: "R$",
-    workhour: [
-      {
-        open_time: "11:00",
-        close_time: "15:00",
-        week_day_id: 1,
-      },
-      {
-        open_time: "11:00",
-        close_time: "15:00",
-        week_day_id: 2,
-      },
-      {
-        open_time: "11:00",
-        close_time: "15:00",
-        week_day_id: 3,
-      },
-      {
-        open_time: "11:00",
-        close_time: "15:00",
-        week_day_id: 4,
-      },
-      {
-        open_time: "11:00",
-        close_time: "15:00",
-        week_day_id: 5,
-      },
-      {
-        open_time: "11:00",
-        close_time: "15:00",
-        week_day_id: 6,
-      },
-      {
-        open_time: "11:00",
-        close_time: "15:00",
-        week_day_id: 7,
-      },
-      {
-        open_time: "18:00",
-        close_time: "22:00",
-        week_day_id: 1,
-      },
-      {
-        open_time: "18:00",
-        close_time: "22:00",
-        week_day_id: 2,
-      },
-      {
-        open_time: "18:00",
-        close_time: "22:00",
-        week_day_id: 3,
-      },
-      {
-        open_time: "18:00",
-        close_time: "22:00",
-        week_day_id: 4,
-      },
-      {
-        open_time: "18:00",
-        close_time: "22:00",
-        week_day_id: 5,
-      },
-      {
-        open_time: "18:00",
-        close_time: "22:00",
-        week_day_id: 6,
-      },
-      {
-        open_time: "18:00",
-        close_time: "22:00",
-        week_day_id: 7,
-      },
-    ],
-  },
+export default [{
+  company_slug: "super-gostoso-restaurante",
   categories: [
     {
       uid: "vegetarian",
@@ -178,4 +101,4 @@ export default {
       ],
     },
   ],
-} as const;
+}] as const;
