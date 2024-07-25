@@ -1,17 +1,24 @@
-'use client'
+"use client";
 
 import { useMemo } from "react";
 import Cart from "../../icons/Cart";
 import { useCart } from "@/hooks/use-cart";
 import { CURRENCY } from "@/utils/constants";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 export type CartButtonProps = {
   variant?: "success" | "info" | "black";
 };
 
 const CartButton = ({ variant = "black" }: CartButtonProps) => {
+  const { slug } = useParams();
 
   const { quantity, total } = useCart();
+
+  console.log("test", quantity, total);
+
+  const path = useMemo(() => `/loja/${slug}/ok`, [slug]);
 
   const quantityMessage: string = useMemo(() => {
     if (quantity > 1) {
@@ -35,14 +42,16 @@ const CartButton = ({ variant = "black" }: CartButtonProps) => {
   }, [variant]);
 
   return (
-    <button
+    <Link
       className={`flex justify-between items-center fixed bottom-0 left-0 right-0 w-full h-14 cursor-pointer px-3 duration-200 ${variantStyles} 
         ${isHidden ? "hidden" : ""}`}
+      href={path}
+      passHref
     >
       <Cart className="w-6 lg:w-8 fill-current" />
       <p className="text-medium lg:text-large font-bold">{`${quantity} ${quantityMessage}`}</p>
       <p className="text-medium lg:text-large font-bold">{`${CURRENCY} ${total}`}</p>
-    </button>
+    </Link>
   );
 };
 

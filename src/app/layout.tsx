@@ -17,14 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>Gamou Pedidos</title>
+      </head>
       <body className={`${inter.className}`}>
-        {
-          <>
-            <CartProvider> 
-              {children}
-             </CartProvider>
-          </>
-        }
+        {<CartProvider>{children}</CartProvider>}
       </body>
     </html>
   );
