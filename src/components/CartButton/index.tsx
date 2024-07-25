@@ -5,7 +5,7 @@ import Cart from "../../icons/Cart";
 import { useCart } from "@/hooks/use-cart";
 import { CURRENCY } from "@/utils/constants";
 import { useParams } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/Link";
 
 export type CartButtonProps = {
   variant?: "success" | "info" | "black";
@@ -46,7 +46,6 @@ const CartButton = ({ variant = "black" }: CartButtonProps) => {
       className={`flex justify-between items-center fixed bottom-0 left-0 right-0 w-full h-14 cursor-pointer px-3 duration-200 ${variantStyles} 
         ${isHidden ? "hidden" : ""}`}
       href={path}
-      passHref
     >
       <Cart className="w-6 lg:w-8 fill-current" />
       <p className="text-medium lg:text-large font-bold">{`${quantity} ${quantityMessage}`}</p>
