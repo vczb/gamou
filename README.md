@@ -1,4 +1,4 @@
-# Pedido (Delivery) platform
+# Gamou
 
 ## Stack
 
