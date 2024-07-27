@@ -23,7 +23,7 @@ export default function Store({
   categoryProductList,
 }: StoreProps) {
   return (
-    <main className="container mx-auto px-4 pb-14">
+    <main className="container mx-auto px-4 pb-28">
       <section className="mt-32 mb-6 flex items-center justify-center">
         <Avatar src={image} alt={name} />
       </section>

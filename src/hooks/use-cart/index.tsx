@@ -14,6 +14,7 @@ export type CartContextData = {
   total: string | number;
   addToCart: (product: ProductProps) => void;
   remFromCart: (product: ProductProps) => void;
+  removeAllFromCart: (product: ProductProps) => void;
   loading: boolean;
 };
 
@@ -23,6 +24,7 @@ export const CartContextDefaultValues = {
   total: "$0.00",
   addToCart: () => null,
   remFromCart: () => null,
+  removeAllFromCart: () => null,
   loading: false,
 };
 
@@ -31,23 +33,48 @@ export const CartContext = createContext<CartContextData>(
 );
 
 const CartProvider = ({ children }: CartProviderProps) => {
-  const [cartItems, setCartItems] = useState<ProductProps[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemProps[]>([]);
 
   const addToCart = (product: ProductProps) => {
-    setCartItems((prev) => [...prev, product]);
+    setCartItems((prev) => {
+      const existingItem = prev.find((item) => item.uid === product.uid);
+      if (existingItem) {
+        return prev.map((item) =>
+          item.uid === product.uid ? { ...item, amount: item.amount + 1 } : item
+        );
+      } else {
+        return [...prev, { ...product, amount: 1 }];
+      }
+    });
   };
 
   const remFromCart = (product: ProductProps) => {
-    setCartItems((prev) => prev.filter((prod) => prod.uid !== product.uid));
+    setCartItems((prev) => {
+      const existingItem = prev.find((item) => item.uid === product.uid);
+      if (existingItem && existingItem.amount > 1) {
+        return prev.map((item) =>
+          item.uid === product.uid ? { ...item, amount: item.amount - 1 } : item
+        );
+      } else {
+        return prev.filter((item) => item.uid !== product.uid);
+      }
+    });
+  };
+
+  const removeAllFromCart = (product: ProductProps) => {
+    setCartItems((prev) => prev.filter((item) => item.uid !== product.uid));
   };
 
   const total = useMemo(
     () =>
       cartItems
-        .reduce((val, acc) => {
-          return (val += acc.price);
-        }, 0)
+        .reduce((acc, item) => acc + item.price * item.amount, 0)
         .toFixed(2),
+    [cartItems]
+  );
+
+  const quantity = useMemo(
+    () => cartItems.reduce((acc, item) => acc + item.amount, 0),
     [cartItems]
   );
 
@@ -55,9 +82,10 @@ const CartProvider = ({ children }: CartProviderProps) => {
     <CartContext.Provider
       value={{
         items: cartItems,
-        addToCart: addToCart,
+        addToCart,
         remFromCart,
-        quantity: cartItems.length,
+        removeAllFromCart,
+        quantity,
         total,
         loading: false,
       }}

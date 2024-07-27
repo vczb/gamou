@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 type LinkProps = {
   href: string;
-  className: string;
+  className?: string;
   children: ReactNode;
 };
 
