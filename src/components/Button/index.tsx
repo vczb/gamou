@@ -9,6 +9,7 @@ const Button = ({
   children,
   className = "",
   variant = "primary",
+  disabled = false,
   ...props
 }: ButtonProps) => {
   const variantStyle = useMemo(() => {
@@ -21,7 +22,9 @@ const Button = ({
   return (
     <button
       {...props}
-      className={`cursor-pointer font-bold uppercase rounded shadow hover:shadow-md ease-linear transition-all text-sm base py-1 px-2 duration-15 ${variantStyle} ${className}`}
+      className={`cursor-pointer font-bold uppercase rounded shadow hover:shadow-md ease-linear transition-all text-sm base py-1 px-2 duration-15 ${variantStyle} ${
+        disabled ? "opacity-50 cursor-default" : ""
+      } ${className}`}
     >
       {children}
     </button>

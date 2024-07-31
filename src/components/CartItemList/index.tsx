@@ -1,11 +1,10 @@
-"use client";
+import CartItem, { CartItemProps } from "../CartItem";
 
-import { useCart } from "@/hooks/use-cart";
-import CartItem from "../CartItem";
+export type CartItemListProps = {
+  items: CartItemProps[];
+};
 
-const CartItemList = () => {
-  const { items } = useCart();
-
+const CartItemList = ({ items }: CartItemListProps) => {
   return (
     <div className="grid gap-0 lg:gap-4">
       {items.map((item) => (

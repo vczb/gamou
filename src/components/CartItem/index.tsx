@@ -60,6 +60,14 @@ const CartItem = ({
     }
   }, [image, price, title, description, uid, amount, removeAllFromCart]);
 
+  const totalPrice = useMemo(() => {
+    return (amount * price).toFixed(2);
+  }, [amount, price]);
+
+  const hiddenValue = useMemo(() => {
+    return `${title} - ${amount}x ${CURRENCY} ${price} - ${CURRENCY} ${totalPrice}`;
+  }, [amount, price, title, totalPrice]);
+
   return (
     <div className="grid grid-cols-[1fr_auto] gap-2 md:grid-cols-[1fr_1fr_1fr_3fr] md:gap-4 max-w-sm md:max-w-none">
       <img
@@ -69,7 +77,7 @@ const CartItem = ({
       />
       <p className="font-bold text-medium md:text-large text-black">{title}</p>
       <p className="font-bold text-medium md:text-large text-primary-500 justify-self-end">
-        {`${CURRENCY} ${price}`}
+        {`${CURRENCY} ${totalPrice}`}
       </p>
       <div className="flex items-center">
         <NumberField
@@ -88,6 +96,7 @@ const CartItem = ({
       <div className="hidden md:block md:row-start-1 md:row-end-3 md:col-start-4 ml-4 pl-4 border-solid border-l-2">
         <p>{description}</p>
       </div>
+      <input type="hidden" name="product" value={hiddenValue} />
     </div>
   );
 };

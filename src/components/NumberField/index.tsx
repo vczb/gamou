@@ -45,6 +45,7 @@ const NumberField = ({
         }`}
         onClick={() => handleClick("decrement")}
         disabled={minusDisabled}
+        type="button"
       >
         <Minus className="w-full h-full text-blueGray-800" />
       </button>
@@ -61,6 +62,7 @@ const NumberField = ({
         }`}
         onClick={() => handleClick("increment")}
         disabled={plusDisabled}
+        type="button"
       >
         <Plus className="w-full h-full text-blueGray-800" />
       </button>

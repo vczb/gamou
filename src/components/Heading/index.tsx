@@ -3,6 +3,7 @@ import { useMemo } from "react";
 export type HeadingProps = {
   text: string;
   tag?: "h1" | "h2" | "h3";
+  className?: string;
 };
 
 const SIZES = {
@@ -11,7 +12,7 @@ const SIZES = {
   h3: "text-lg",
 };
 
-const Heading = ({ text, tag = "h1" }: HeadingProps) => {
+const Heading = ({ text, tag = "h1", className = "" }: HeadingProps) => {
   const Component = useMemo(() => {
     return tag;
   }, [tag]);
@@ -21,7 +22,9 @@ const Heading = ({ text, tag = "h1" }: HeadingProps) => {
   }, [tag]);
 
   return (
-    <Component className={`${fontSize} text-black font-bold`}>{text}</Component>
+    <Component className={`${fontSize} text-black font-bold ${className}`}>
+      {text}
+    </Component>
   );
 };
 
