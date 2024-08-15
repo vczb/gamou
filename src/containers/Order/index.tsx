@@ -9,50 +9,17 @@ import TextField from "@/components/TextField";
 import { useCart } from "@/hooks/use-cart";
 import { useOrder } from "@/hooks/use-order";
 import WhatsApp from "@/icons/WhatsApp";
+import { GAMOU_PHONE_NUMBER } from "@/utils/constants";
 import { NoFormDataError } from "@/utils/errors";
-import isMobile from "@/utils/isMobile";
+import sendWhatsApp from "@/utils/sendWhatsApp";
 
 type OrderProps = {
   slug: string;
 };
 
-const PHONE_NUMBER = "5551991901783";
-
 const Order = ({ slug }: OrderProps) => {
   const { products } = useOrder();
   const { total } = useCart();
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   const data = new FormData(e.currentTarget);
-
-  //   if (!data) {
-  //     return new NoFormDataError();
-  //   }
-
-  //   let text = "";
-
-  //   // products.forEach((product) => {
-  //   // });
-  //   console.log(products);
-
-  //   const customer = data.get("name") || "";
-  //   const phone = data.get("phone") || "";
-  //   const deliveryMethod = data.get("delivery_method") || "";
-  //   const paymentMethod = data.get("payment_method") || "";
-
-  //   const isMobileDevice = isMobile(navigator.userAgent);
-
-  //   // if (isMobileDevice) {
-  //   //   return (window.location.href = `whatsapp://send?phone=${PHONE_NUMBER}&text=${text}`);
-  //   // }
-
-  //   // return window.open(
-  //   //   `https://web.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${text}`,
-  //   //   "_blank"
-  //   // );
-  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -92,17 +59,7 @@ const Order = ({ slug }: OrderProps) => {
 
     message += `\nPedido realizado em ${new Date().toLocaleString()} pelo WhatsApp Web.\n`;
 
-    // Redirecting to WhatsApp
-    const isMobileDevice = isMobile(navigator.userAgent);
-    const encodedMessage = encodeURIComponent(message);
-    if (isMobileDevice) {
-      window.location.href = `whatsapp://send?phone=${PHONE_NUMBER}&text=${encodedMessage}`;
-    } else {
-      window.open(
-        `https://web.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encodedMessage}`,
-        "_blank"
-      );
-    }
+    sendWhatsApp(GAMOU_PHONE_NUMBER, message);
   };
 
   return (
