@@ -11,6 +11,8 @@ const Navbar = () => {
       const navaction = document.getElementById("navAction");
       const toToggle = document.querySelectorAll(".toggleColour");
 
+      if (!header || !navcontent || !navaction || !toToggle) return;
+
       if (window.scrollY > 10) {
         header.classList.add("bg-white", "shadow");
         navaction.classList.remove("bg-white", "text-gray-800");
@@ -91,7 +93,7 @@ const Navbar = () => {
             <li className="mr-3">
               <a
                 className="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-                href="#"
+                href="#como-funciona"
               >
                 Como funciona
               </a>
@@ -99,17 +101,17 @@ const Navbar = () => {
             <li className="mr-3">
               <a
                 className="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-                href="#"
+                href="#vantagens"
               >
-                Preços
+                Vantagens
               </a>
             </li>
             <li className="mr-3">
               <a
                 className="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-                href="#"
+                href="#precos-e-planos"
               >
-                Vantagens
+                Preços
               </a>
             </li>
           </ul>

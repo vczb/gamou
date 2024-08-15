@@ -1,6 +1,6 @@
 const Advantages = () => {
   return (
-    <section className="bg-[#fff] border-b py-8">
+    <section className="bg-[#fff] border-b py-8" id="vantagens">
       <div className="container mx-auto flex flex-wrap pt-4 pb-12">
         <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
           Vantagens para Seu Negócio
