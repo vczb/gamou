@@ -1,5 +1,7 @@
 "use client";
 
+import { GAMOU_PHONE_NUMBER } from "@/utils/constants";
+import sendWhatsApp from "@/utils/sendWhatsApp";
 import React from "react";
 
 type ButtonProps = {
@@ -16,7 +18,6 @@ const LeadButton = ({
   children,
   variant = "white",
   gradient = false,
-  ...props
 }: ButtonProps) => {
   const baseClasses =
     "mx-auto lg:mx-0 hover:underline font-bold rounded-full py-4 px-8 shadow transition-all";
@@ -26,13 +27,19 @@ const LeadButton = ({
   gradient || variant !== "white" ? "shadow-lg" : "";
   const zIndexClass = gradient ? "z-10" : "";
 
+  const handleClick = () => {
+    const message = "Olá! Eu quero saber mais sobre o Gamou, vamos conversar?";
+
+    sendWhatsApp(GAMOU_PHONE_NUMBER, message);
+  };
+
   return (
     <button
       id={id}
       className={`${baseClasses} ${variantClasses} ${additionalClasses} ${zIndexClass} ${
         className ?? ""
       }`}
-      {...props}
+      onClick={() => handleClick()}
     >
       {children}
     </button>
