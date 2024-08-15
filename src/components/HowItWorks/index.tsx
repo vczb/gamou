@@ -46,7 +46,7 @@ const HowItWorks = () => {
                 fill="none"
                 stroke="#3f3d56"
                 stroke-miterlimit="10"
-                stroke-width="4"
+                strokeWidth="4"
               ></path>
               <path
                 transform="translate(-11.5 -150.75)"
@@ -124,7 +124,7 @@ const HowItWorks = () => {
                 fill="none"
                 stroke="#f2f2f2"
                 stroke-miterlimit="10"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <path
                 transform="translate(-11.5 -150.75)"
@@ -133,7 +133,7 @@ const HowItWorks = () => {
                 stroke="#f2f2f2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <path
                 transform="translate(-11.5 -150.75)"
@@ -141,7 +141,7 @@ const HowItWorks = () => {
                 fill="none"
                 stroke="#f2f2f2"
                 stroke-miterlimit="10"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <path
                 transform="translate(-11.5 -150.75)"
@@ -149,7 +149,7 @@ const HowItWorks = () => {
                 fill="none"
                 stroke="#f2f2f2"
                 stroke-miterlimit="10"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <path
                 transform="translate(-11.5 -150.75)"
@@ -157,7 +157,7 @@ const HowItWorks = () => {
                 fill="none"
                 stroke="#f2f2f2"
                 stroke-miterlimit="10"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <path
                 transform="translate(-11.5 -150.75)"
@@ -165,7 +165,7 @@ const HowItWorks = () => {
                 fill="none"
                 stroke="#f2f2f2"
                 stroke-miterlimit="10"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <path
                 transform="translate(-11.5 -150.75)"
@@ -436,7 +436,7 @@ const HowItWorks = () => {
                 opacity=".8"
                 stroke="#ff6347"
                 stroke-miterlimit="10"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <path
                 transform="translate(-11.697 -13.011)"
@@ -445,7 +445,7 @@ const HowItWorks = () => {
                 opacity=".8"
                 stroke="#ff6347"
                 stroke-miterlimit="10"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
               <circle
                 cx="214.07"
