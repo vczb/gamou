@@ -7,7 +7,7 @@ import { OrderProvider } from "@/hooks/use-order";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Gamou Pedidos via WhatsApp",
+  title: "GAMOU - Faça Seus Pedidos via WhatsApp em Segundos!",
   description: "Faça seu negócio crescer com Gamou",
 };
 
