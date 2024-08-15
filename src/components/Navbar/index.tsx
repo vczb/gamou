@@ -1,12 +1,57 @@
+"use client";
+
 import Diamond from "@/icons/Diamond";
+import { useEffect } from "react";
 
 const Navbar = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      const header = document.getElementById("header");
+      const navcontent = document.getElementById("nav-content");
+      const navaction = document.getElementById("navAction");
+      const toToggle = document.querySelectorAll(".toggleColour");
+
+      if (window.scrollY > 10) {
+        header.classList.add("bg-white", "shadow");
+        navaction.classList.remove("bg-white", "text-gray-800");
+        navaction.classList.add("gradient", "text-white");
+        navcontent.classList.remove("bg-gray-100");
+        navcontent.classList.add("bg-white");
+
+        toToggle.forEach((element) => {
+          element.classList.add("text-gray-800");
+          element.classList.remove("text-white");
+        });
+      } else {
+        header.classList.remove("bg-white", "shadow");
+        navaction.classList.remove("gradient", "text-white");
+        navaction.classList.add("bg-white", "text-gray-800");
+        navcontent.classList.remove("bg-white");
+        navcontent.classList.add("bg-gray-100");
+
+        toToggle.forEach((element) => {
+          element.classList.add("text-white");
+          element.classList.remove("text-gray-800");
+        });
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <nav id="header" className="fixed w-full z-30 top-0 text-white">
+    <nav
+      id="header"
+      className="fixed w-full z-30 top-0 text-white transition-all"
+    >
       <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
         <div className="pl-4 flex items-center">
           <a
-            className="toggleColour no-underline hover:no-underline font-bold text-2xl lg:text-4xl text-white"
+            className="toggleColour no-underline hover:no-underline font-bold text-2xl lg:text-4xl text-white transition-all"
             href="#"
           >
             <Diamond className="h-8 fill-white inline  " />
@@ -62,7 +107,7 @@ const Navbar = () => {
           </ul>
           <button
             id="navAction"
-            className="mx-auto lg:mx-0 hover:underline font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 bg-white text-gray-800"
+            className="mx-auto lg:mx-0 hover:underline font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 bg-white text-gray-800 transition-all"
           >
             Action
           </button>
