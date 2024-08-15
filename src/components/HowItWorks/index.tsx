@@ -3,7 +3,7 @@ const HowItWorks = () => {
     <section className="bg-[#fff] border-b py-8">
       <div className="container max-w-5xl mx-auto m-8">
         <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
-          Title
+          Como Funciona
         </h1>
         <div className="w-full mb-4">
           <div className="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
@@ -12,20 +12,13 @@ const HowItWorks = () => {
         <div className="flex flex-wrap">
           <div className="w-5/6 sm:w-1/2 p-6">
             <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
-              Lorem ipsum dolor sit amet
+              Transforme seu cardápio em vendas
             </h3>
             <p className="text-gray-600 mb-8">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-              at ipsum eu nunc commodo posuere et sit amet ligula.
-              <br />
-              <br />
-              Images from:{" "}
-              <a
-                className="text-orange-500 underline"
-                href="https://undraw.co/"
-              >
-                undraw.co
-              </a>
+              No Gamou, seu negócio tem uma vitrine digital onde pode expor seus
+              pratos, bebidas e promoções especiais. Seus clientes visualizam o
+              cardápio e fazem os pedidos diretamente pelo WhatsApp. Fácil,
+              rápido e sem complicações!
             </p>
           </div>
           <div className="w-full sm:w-1/2 p-6">
@@ -479,20 +472,15 @@ const HowItWorks = () => {
           <div className="w-full sm:w-1/2 p-6 mt-6">
             <div className="align-middle">
               <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
-                Lorem ipsum dolor sit amet
+                Simplifique o Atendimento ao Cliente
               </h3>
               <p className="text-gray-600 mb-8">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                at ipsum eu nunc commodo posuere et sit amet ligula.
-                <br />
-                <br />
-                Images from:{" "}
-                <a
-                  className="text-orange-500 underline"
-                  href="https://undraw.co/"
-                >
-                  undraw.co
-                </a>
+                Com o Gamou, você pode centralizar seus pedidos e atendimento em
+                um só lugar. Receba os pedidos diretamente pelo WhatsApp e tenha
+                uma comunicação rápida e eficiente com seus clientes. Assim,
+                você pode oferecer um atendimento personalizado e aumentar a
+                fidelização dos seus clientes, tudo de maneira prática e
+                descomplicada.
               </p>
             </div>
           </div>

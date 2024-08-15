@@ -3,7 +3,7 @@ const Advantages = () => {
     <section className="bg-[#fff] border-b py-8">
       <div className="container mx-auto flex flex-wrap pt-4 pb-12">
         <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
-          Title
+          Vantagens para Seu Negócio
         </h1>
         <div className="w-full mb-4">
           <div className="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
@@ -16,21 +16,23 @@ const Advantages = () => {
               className="flex flex-wrap no-underline hover:no-underline"
             >
               <p className="w-full text-gray-600 text-xs md:text-sm px-6">
-                GETTING STARTED
+                Comece Já!
               </p>
               <div className="w-full font-bold text-xl text-gray-800 px-6">
-                Lorem ipsum dolor sit amet.
+                Comece a Vender Pelo WhatsApp Hoje Mesmo
               </div>
               <p className="text-gray-800 text-base px-6 mb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                at ipsum eu nunc commodo posuere et sit amet ligula.
+                Transforme o seu cardápio em um canal de vendas eficiente. Com o
+                Gamou, você pode criar uma vitrine digital onde seus clientes
+                podem visualizar seus pratos, bebidas e promoções, fazendo
+                pedidos diretamente pelo WhatsApp. Simples e eficaz!
               </p>
             </a>
           </div>
           <div className="flex-none mt-auto bg-[#fff] rounded-b rounded-t-none overflow-hidden shadow p-6">
             <div className="flex items-center justify-start">
               <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
-                Action
+                Começar
               </button>
             </div>
           </div>
@@ -43,21 +45,23 @@ const Advantages = () => {
               className="flex flex-wrap no-underline hover:no-underline"
             >
               <p className="w-full text-gray-600 text-xs md:text-sm px-6">
-                GETTING STARTED
+                Comece Já!
               </p>
               <div className="w-full font-bold text-xl text-gray-800 px-6">
-                Lorem ipsum dolor sit amet.
+                Gestão Simplificada de Pedidos
               </div>
               <p className="text-gray-800 text-base px-6 mb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                at ipsum eu nunc commodo posuere et sit amet ligula.
+                Com o Gamou, você gerencia todos os pedidos em um só lugar, com
+                a comodidade e agilidade do WhatsApp. Otimize o seu tempo e
+                garanta que seus clientes sejam atendidos de forma rápida e
+                organizada.
               </p>
             </a>
           </div>
           <div className="flex-none mt-auto bg-[#fff] rounded-b rounded-t-none overflow-hidden shadow p-6">
             <div className="flex items-center justify-center">
               <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
-                Action
+                Começar
               </button>
             </div>
           </div>
@@ -70,21 +74,23 @@ const Advantages = () => {
               className="flex flex-wrap no-underline hover:no-underline"
             >
               <p className="w-full text-gray-600 text-xs md:text-sm px-6">
-                GETTING STARTED
+                Comece Já!
               </p>
               <div className="w-full font-bold text-xl text-gray-800 px-6">
-                Lorem ipsum dolor sit amet.
+                Aumente Suas Vendas e Fidelize Clientes
               </div>
               <p className="text-gray-800 text-base px-6 mb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                at ipsum eu nunc commodo posuere et sit amet ligula.
+                O Gamou não apenas facilita a comunicação com seus clientes, mas
+                também oferece ferramentas para você criar promoções e ofertas
+                especiais. Assim, você pode atrair mais clientes e aumentar a
+                fidelidade, tudo com poucos cliques.
               </p>
             </a>
           </div>
           <div className="flex-none mt-auto bg-[#fff] rounded-b rounded-t-none overflow-hidden shadow p-6">
             <div className="flex items-center justify-end">
               <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
-                Action
+                Começar
               </button>
             </div>
           </div>
