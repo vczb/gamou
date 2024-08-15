@@ -1,3 +1,5 @@
+import LeadButton from "../LeadButton";
+
 const GetStarted = () => {
   return (
     <section className="container mx-auto text-center py-6 mb-12">
@@ -12,9 +14,7 @@ const GetStarted = () => {
         Comece a receber pedidos pelo WhatsApp agora!
       </h3>
 
-      <button className="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg">
-        Experimente Grátis
-      </button>
+      <LeadButton className="my-6">Experimente Grátis</LeadButton>
     </section>
   );
 };

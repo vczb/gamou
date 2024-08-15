@@ -1,3 +1,5 @@
+import LeadButton from "../LeadButton";
+
 const Advantages = () => {
   return (
     <section className="bg-[#fff] border-b py-8" id="vantagens">
@@ -31,9 +33,9 @@ const Advantages = () => {
           </div>
           <div className="flex-none mt-auto bg-[#fff] rounded-b rounded-t-none overflow-hidden shadow p-6">
             <div className="flex items-center justify-start">
-              <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
+              <LeadButton variant="gradient" className="my-6">
                 Começar
-              </button>
+              </LeadButton>
             </div>
           </div>
         </div>
@@ -60,9 +62,9 @@ const Advantages = () => {
           </div>
           <div className="flex-none mt-auto bg-[#fff] rounded-b rounded-t-none overflow-hidden shadow p-6">
             <div className="flex items-center justify-center">
-              <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
+              <LeadButton variant="gradient" className="my-6">
                 Começar
-              </button>
+              </LeadButton>
             </div>
           </div>
         </div>
@@ -89,9 +91,9 @@ const Advantages = () => {
           </div>
           <div className="flex-none mt-auto bg-[#fff] rounded-b rounded-t-none overflow-hidden shadow p-6">
             <div className="flex items-center justify-end">
-              <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
+              <LeadButton variant="gradient" className="my-6">
                 Começar
-              </button>
+              </LeadButton>
             </div>
           </div>
         </div>

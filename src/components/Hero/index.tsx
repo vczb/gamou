@@ -1,3 +1,5 @@
+import LeadButton from "../LeadButton";
+
 const Hero = () => {
   return (
     <div className="pt-24">
@@ -15,9 +17,9 @@ const Hero = () => {
             forma simples e eficaz.
           </p>
 
-          <button className="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg z-10">
+          <LeadButton variant="white" className="z-10">
             Cadastre-se Agora
-          </button>
+          </LeadButton>
         </div>
 
         <div className="w-full md:w-3/5 py-6 text-center">

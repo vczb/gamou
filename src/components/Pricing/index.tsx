@@ -1,3 +1,5 @@
+import LeadButton from "../LeadButton";
+
 const Pricing = () => {
   return (
     <section className="bg-gray-100 py-8" id="precos-e-planos">
@@ -27,9 +29,9 @@ const Pricing = () => {
                 R$ 0 <span className="text-base">por mês</span>
               </div>
               <div className="flex items-center justify-center">
-                <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
+                <LeadButton variant="gradient" className="my-6">
                   Comece Agora
-                </button>
+                </LeadButton>
               </div>
             </div>
           </div>
@@ -53,9 +55,9 @@ const Pricing = () => {
                 R$ 50 <span className="text-base">por mês</span>
               </div>
               <div className="flex items-center justify-center">
-                <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
-                  Assine Agora
-                </button>
+                <LeadButton variant="gradient" className="my-6">
+                  Comece Agora
+                </LeadButton>
               </div>
             </div>
           </div>
@@ -78,9 +80,9 @@ const Pricing = () => {
                 R$ 100 <span className="text-base">por mês</span>
               </div>
               <div className="flex items-center justify-center">
-                <button className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">
-                  Assine Agora
-                </button>
+                <LeadButton variant="gradient" className="my-6">
+                  Comece Agora
+                </LeadButton>
               </div>
             </div>
           </div>

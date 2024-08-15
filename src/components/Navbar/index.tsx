@@ -2,6 +2,7 @@
 
 import Diamond from "@/icons/Diamond";
 import { useEffect } from "react";
+import LeadButton from "../LeadButton";
 
 const Navbar = () => {
   useEffect(() => {
@@ -115,12 +116,7 @@ const Navbar = () => {
               </a>
             </li>
           </ul>
-          <button
-            id="navAction"
-            className="mx-auto lg:mx-0 hover:underline font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 bg-white text-gray-800 transition-all"
-          >
-            Comece Agora
-          </button>
+          <LeadButton id="navAction">Comece Agora</LeadButton>
         </div>
       </div>
 
