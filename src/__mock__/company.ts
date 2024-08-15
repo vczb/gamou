@@ -1,6 +1,6 @@
 export default [{
   slug: "super-gostoso-restaurante",
-  image: "http://localhost:3000/uploads/company_image.webp",
+  image: "/uploads/company_image.webp",
   name: "Super Gostoso Restaurante",
   workhour: [
     {

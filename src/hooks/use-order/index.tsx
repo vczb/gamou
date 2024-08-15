@@ -7,6 +7,7 @@ export type OrderProviderProps = {
 };
 
 export type OrderContextData = {
+  customer: string;
   products: string[];
   saveProducts: (product: string[]) => void;
   cartNotes?: string;
@@ -15,9 +16,11 @@ export type OrderContextData = {
   saveCartNotes: (notes: string) => void;
   saveOrderNotes: (notes: string) => void;
   savePaymentNotes: (notes: string) => void;
+  saveCustomerName: (notes: string) => void;
 };
 
 export const OrderContextDefaultValues = {
+  customer: "",
   products: [],
   saveProducts: () => {},
   cartNotes: undefined,
@@ -26,6 +29,7 @@ export const OrderContextDefaultValues = {
   saveCartNotes: () => {},
   saveOrderNotes: () => {},
   savePaymentNotes: () => {},
+  saveCustomerName: () => {},
 };
 
 export const OrderContext = createContext<OrderContextData>(
@@ -33,6 +37,7 @@ export const OrderContext = createContext<OrderContextData>(
 );
 
 const OrderProvider = ({ children }: OrderProviderProps) => {
+  const [customer, setCustomer] = useState("");
   const [products, setProducts] = useState<string[]>([]);
   const [cartNotes, setCartNotes] = useState<string>();
   const [orderNotes, setOrderNotes] = useState<string>();
@@ -45,10 +50,12 @@ const OrderProvider = ({ children }: OrderProviderProps) => {
   const saveCartNotes = (notes: string) => setCartNotes(notes);
   const saveOrderNotes = (notes: string) => setOrderNotes(notes);
   const savePaymentNotes = (notes: string) => setPaymentNotes(notes);
+  const saveCustomerName = (name: string) => setCustomer(name);
 
   return (
     <OrderContext.Provider
       value={{
+        customer,
         products,
         saveProducts,
         cartNotes,
@@ -57,6 +64,7 @@ const OrderProvider = ({ children }: OrderProviderProps) => {
         saveCartNotes,
         saveOrderNotes,
         savePaymentNotes,
+        saveCustomerName,
       }}
     >
       {children}

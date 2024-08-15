@@ -4,20 +4,20 @@ import { useCallback } from "react";
 import Button from "@/components/Button";
 import CartItemList from "@/components/CartItemList";
 import Heading from "@/components/Heading";
-import Link from "@/components/Link";
 import TextArea from "@/components/TextArea";
 import { useCart } from "@/hooks/use-cart";
 import { useOrder } from "@/hooks/use-order";
-import Arrow from "@/icons/Arrow";
 
 import { useRouter } from "next/navigation";
+import GoBackLink from "@/components/GoBackLink";
+import { NoFormDataError, NoProductsOnTheCartError } from "@/utils/errors";
 
 type CartProps = {
   slug: string;
 };
 export default function Cart({ slug }: CartProps) {
   const { items, total } = useCart();
-  const { saveProducts, saveCartNotes } = useOrder();
+  const { saveProducts, saveCartNotes, cartNotes } = useOrder();
   const router = useRouter();
 
   const handleSubmit = useCallback(
@@ -26,18 +26,19 @@ export default function Cart({ slug }: CartProps) {
       const data = new FormData(e.currentTarget);
 
       if (!data) {
-        return;
+        return new NoFormDataError();
       }
 
-      const products = data.getAll("product");
-      const notes = data.get("notes");
+      const products = data.getAll("product") || [];
+      const notes = data.get("notes") || "";
 
-      if (products.length) {
-        saveProducts(products as string[]);
+      if (!products.length) {
+        throw new NoProductsOnTheCartError();
       }
-      if (notes) {
-        saveCartNotes(notes as string);
-      }
+
+      saveProducts(products as string[]);
+
+      saveCartNotes(notes as string);
 
       router.push(`/loja/${slug}/pedido`);
     },
@@ -48,10 +49,7 @@ export default function Cart({ slug }: CartProps) {
     <main className="container mx-auto px-4 pb-28">
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className="my-6">
-          <Link href={`/loja/${slug}`} className="flex items-center">
-            <Arrow className="h-6 rotate-180 mr-3" />
-            <b className="text-primary-600 ">Retornar para a loja</b>
-          </Link>
+          <GoBackLink path={`/loja/${slug}`} text="Retornar para a loja" />
         </div>
         <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">
           <Heading text="Revise seu pedido" tag="h1" />
@@ -78,6 +76,7 @@ export default function Cart({ slug }: CartProps) {
             className="w-full"
             placeholder="Digite aqui..."
             name="notes"
+            defaultValue={cartNotes}
           />
         </div>
         <div className="mt-8">
