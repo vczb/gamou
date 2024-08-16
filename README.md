@@ -15,11 +15,11 @@ NEXT_PUBLIC_LS_KEY=my-ls-key
 ## Install & run
 
 ```bash
-$ yarn install
+$ npm ci
 ```
 
 ```bash
-$ yarn dev
+$ npm run dev
 ```
 
 ## License
