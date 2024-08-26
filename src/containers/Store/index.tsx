@@ -97,7 +97,11 @@ export default function Store({
               </li>
             ))
           ) : (
-            <></>
+            <div className="flex justify-center items-center m-auto w-full text-center">
+              <p className="text-blueGray-600">
+                Não encontramos produtos para esta busca =/
+              </p>
+            </div>
           )}
         </ul>
       </section>
