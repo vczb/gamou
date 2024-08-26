@@ -1,10 +1,12 @@
 "use client";
 
 import Diamond from "@/icons/Diamond";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LeadButton from "../LeadButton";
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       const header = document.getElementById("header");
@@ -64,6 +66,7 @@ const Navbar = () => {
 
         <div className="block lg:hidden pr-4">
           <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
             id="nav-toggle"
             className="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-teal-500 appearance-none focus:outline-none"
           >
@@ -79,7 +82,9 @@ const Navbar = () => {
         </div>
 
         <div
-          className="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 lg:bg-transparent text-black p-4 lg:p-0 z-20 bg-gray-100"
+          className={`w-full flex-grow lg:flex lg:items-center lg:w-auto ${
+            isMenuOpen ? "" : "hidden"
+          }  mt-2 lg:mt-0 lg:bg-transparent text-black p-4 lg:p-0 z-20 bg-gray-100 rounded-md lg:rounded-none shadow-lg lg:shadow-none`}
           id="nav-content"
         >
           <ul className="list-reset lg:flex justify-end flex-1 items-center">
