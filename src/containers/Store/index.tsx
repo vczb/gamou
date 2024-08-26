@@ -29,11 +29,11 @@ export default function Store({
       </section>
       <section className="text-center mb-6">
         <Heading text={name} />
-        <div className="flex justify-between mt-3">
+        {/* <div className="flex justify-between mt-3">
           <p className="text-small">
             <span className="text-primary-500 font-bold">Aberto</span> até 23:00
           </p>
-        </div>
+        </div> */}
       </section>
       <section className="mb-6">
         <SearchField placeholder="Buscar por nome..." />
