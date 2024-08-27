@@ -12,55 +12,70 @@ import WhatsApp from "@/icons/WhatsApp";
 import { GAMOU_PHONE_NUMBER } from "@/utils/constants";
 import { NoFormDataError } from "@/utils/errors";
 import sendWhatsApp from "@/utils/sendWhatsApp";
+import { useCallback } from "react";
 
 type OrderProps = {
   slug: string;
 };
 
 const Order = ({ slug }: OrderProps) => {
-  const { products } = useOrder();
+  const { products, cartNotes } = useOrder();
   const { total } = useCart();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    const data = new FormData(e.currentTarget);
+      const data = new FormData(e.currentTarget);
 
-    if (!data) {
-      throw new NoFormDataError();
-    }
+      if (!data) {
+        throw new NoFormDataError();
+      }
 
-    // Collecting user input from the form
-    const customer = data.get("name") || "";
-    const phone = data.get("phone") || "";
-    const deliveryMethod = data.get("delivery_method") || "";
-    const paymentMethod = data.get("payment_method") || "";
-    const orderNotes = data.get("order_notes") || "";
-    const paymentNotes = data.get("payment_notes") || "";
+      // Collecting user input from the form
+      const customer = data.get("name") || "";
+      const phone = data.get("phone") || "";
+      const address = data.get("address") || "";
+      const deliveryMethod = data.get("delivery_method") || "";
+      const paymentMethod = data.get("payment_method") || "";
+      const orderNotes = data.get("order_notes") || "";
+      const paymentNotes = data.get("payment_notes") || "";
 
-    // Message header
-    let message = `*Pedido:* #${Math.floor(Math.random() * 10000)}\n`;
-    message += `Olá, gostaria de realizar um pedido com os seguintes itens:\n\n`;
+      // Message header
+      let message = `*Pedido:* #${Math.floor(Math.random() * 10000)}\n`;
+      message += `Olá, gostaria de realizar um pedido com os seguintes itens:\n\n`;
 
-    // Adding products from the array
-    products.forEach((product) => {
-      message += `-- ${product}\n`;
-    });
+      // Adding products from the array
+      products.forEach((product) => {
+        message += `-- ${product}\n`;
+      });
 
-    // Delivery and payment details
-    message += `\n*Taxa de entrega:* A calcular\n`; // Placeholder if you need to calculate delivery dynamically
-    message += `*Valor total:* R$${total}\n\n`;
-    message += `*Entrega:* ${deliveryMethod}\n`;
-    message += `*Entregar para:* ${customer} - ${phone}\n`;
-    message += `*Forma de pagamento:* ${paymentMethod}\n`;
-    if (orderNotes) message += `*Observações da entrega:* ${orderNotes}\n`;
-    if (paymentNotes)
-      message += `*Observações do pagamento:* ${paymentNotes}\n`;
+      // Delivery and payment details
+      message += `\n*Taxa de entrega:* A calcular\n`; // Placeholder if you need to calculate delivery dynamically
+      message += `*Valor total:* R$${total}\n\n`;
+      message += `*Entrega:* ${deliveryMethod}\n`;
+      message += `*Entregar para:* ${customer}\n`;
+      message += `*Telefone:* ${phone}\n`;
+      message += `*Endereço:* ${address}\n`;
+      message += `*Forma de pagamento:* ${paymentMethod}\n`;
 
-    message += `\nPedido realizado em ${new Date().toLocaleString()} pelo WhatsApp Web.\n`;
+      if (cartNotes) {
+        message += `*Observações do carrinho:* ${cartNotes}\n`;
+      }
 
-    sendWhatsApp(GAMOU_PHONE_NUMBER, message);
-  };
+      if (orderNotes) {
+        message += `*Observações da entrega:* ${orderNotes}\n`;
+      }
+      if (paymentNotes) {
+        message += `*Observações do pagamento:* ${paymentNotes}\n`;
+      }
+
+      message += `\nPedido realizado em ${new Date().toLocaleString()} pelo Gamou Pedidos.\n`;
+
+      sendWhatsApp(GAMOU_PHONE_NUMBER, message);
+    },
+    [cartNotes, products, total]
+  );
 
   return (
     <main className="container mx-auto px-4 pb-28">
@@ -79,14 +94,20 @@ const Order = ({ slug }: OrderProps) => {
             placeholder="Nome*"
             name="name"
             className="w-full"
-            required
+            // required
           />
           <TextField placeholder="Telefone" name="phone" className="w-full" />
+          <TextField
+            placeholder="Endereço*"
+            name="address"
+            className="w-full"
+            // required
+          />
         </div>
-        <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">
+        {/* <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">
           <Heading text="Forma de entrega" tag="h3" />
-        </div>
-        <div className="flex flex-col gap-2 mb-2">
+        </div> */}
+        {/* <div className="flex flex-col gap-2 mb-2">
           <Radio
             name="delivery_method"
             value="Para levar"
@@ -105,11 +126,11 @@ const Order = ({ slug }: OrderProps) => {
             label="Estou no estabelecimento"
             required
           />
-        </div>
+        </div> */}
         <div className="mb-2">
           <TextArea
             className="w-full"
-            placeholder="Observações da entrega..."
+            placeholder="Observações..."
             name="order_notes"
           />
         </div>
@@ -117,14 +138,9 @@ const Order = ({ slug }: OrderProps) => {
           <Heading text="Forma de pagamento" tag="h3" />
         </div>
         <div className="flex flex-col gap-2 mb-2">
-          <Radio name="payment_method" value="Cartão" label="Cartão" required />
-          <Radio
-            name="payment_method"
-            value="Dinheiro"
-            label="Dinheiro"
-            required
-          />
-          <Radio name="payment_method" value="Outro" label="Outro" required />
+          <Radio name="payment_method" value="Cartão" label="Cartão" checked />
+          <Radio name="payment_method" value="Dinheiro" label="Dinheiro" />
+          <Radio name="payment_method" value="Outro" label="Outro" />
         </div>
         <div className="mb-2">
           <TextArea
@@ -147,7 +163,10 @@ const Order = ({ slug }: OrderProps) => {
           </i>
         </div>
         <div className="mt-8">
-          <Button className="w-full text-xlarge flex items-center justify-center">
+          <Button
+            className="w-full text-xlarge flex items-center justify-center"
+            variant="emeraldMint"
+          >
             <span className="mr-2 text-black">Enviar pedido</span>
             <WhatsApp height={24} />
           </Button>
