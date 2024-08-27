@@ -2,6 +2,16 @@ export default [{
   company_slug: "super-gostoso-restaurante",
   categories: [
     {
+      uid: "especialidades",
+      name: "Especialidades",
+      image: "/uploads/a_la_minuta_entrecot.jpg",
+    },
+    {
+      uid: "fit",
+      name: "Comida Fit",
+      image: "/uploads/fit_carne.jpg",
+    },
+    {
       uid: "vegetarian",
       name: "Vegetariana",
       image: "/uploads/veg_category.webp",
@@ -18,6 +28,66 @@ export default [{
     },
   ],
   category_product_list: [
+    {
+      uid: "especialidades",
+      name: "Especialidades",
+      products: [
+        {
+          uid: "esp123",
+          title: "A La Minuta de Entrecot",
+          image: "/uploads/a_la_minuta_entrecot.jpg",
+          description:
+            "Entrecot grelhado (bife de ancho), ovo frito, batata frita, arroz, feijão e salada mista.",
+          price: 34.90,
+        },
+        {
+          uid: "esp789",
+          title: "Parmegiana de Frango",
+          image: "/uploads/parmegiana_frango.jpg",
+          description:
+            "Filé de peito de frango à milanesa gratinado com queijo, presunto, molho de tomate e manjericão fresco. Acompanha purê de batata e arroz.",
+          price: 33.90,
+        },
+        {
+          uid: "esp789",
+          title: "Espaghetti Alfredo",
+          image: "/uploads/spaghetti_alfredo.jpg",
+          description:
+            "Spaghetti grano duro ao molho Alfredo (à base de nata, queijo mussarela e parmesão). Acompanha queijo ralado.",
+          price: 29.90,
+        },
+      ],
+    },
+    {
+      uid: "fit",
+      name: "Comida Fit",
+      products: [
+        {
+          uid: "fit123",
+          title: "Prato Fit de Carne",
+          image: "/uploads/fit_carne.jpg",
+          description:
+            "Bife de alcatra grelhado (180g), legumes, arroz integral e salada mista.",
+          price: 34.90,
+        },
+        {
+          uid: "fit456",
+          title: "Prato Fit de Peixe",
+          image: "/uploads/fit_peixe.jpg",
+          description:
+            "Peixe grelhado (180g), legumes, arroz integral e salada mista.",
+          price: 34.90,
+        },
+        {
+          uid: "fit789",
+          title: "Prato Fit de Frango",
+          image: "/uploads/fit_frango.jpg",
+          description:
+            "Frango grelhado (180g), legumes, arroz integral e salada mista.",
+          price: 34.90,
+        },
+      ],
+    },
     {
       uid: "vegetarian",
       name: "Comida Vegetariana",
