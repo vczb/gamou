@@ -14,6 +14,11 @@ const secondary = {
   600: "#F4A07E",
 };
 
+const emeraldMint = {
+  500: "#4FCE5D",
+  600: "#3ebd4e",
+};
+
 const blueGray = {
   200: "#e2e8f0",
   400: "#94a3b8",
@@ -42,6 +47,7 @@ module.exports = {
         primary,
         secondary,
         blueGray,
+        emeraldMint,
         info: base.info,
         success: base.success,
         white: base.white,
