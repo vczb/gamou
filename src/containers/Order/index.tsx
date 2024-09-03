@@ -32,30 +32,22 @@ const Order = ({ slug }: OrderProps) => {
         throw new NoFormDataError();
       }
 
-      // Collecting user input from the form
       const customer = data.get("name") || "";
-      const phone = data.get("phone") || "";
       const address = data.get("address") || "";
-      const deliveryMethod = data.get("delivery_method") || "";
       const paymentMethod = data.get("payment_method") || "";
       const orderNotes = data.get("order_notes") || "";
-      const paymentNotes = data.get("payment_notes") || "";
 
-      // Message header
-      let message = `*Pedido:* #${Math.floor(Math.random() * 10000)}\n`;
+      let message = `*Pedido:* #${Date.now()}\n\n`;
       message += `Olá, gostaria de realizar um pedido com os seguintes itens:\n\n`;
 
-      // Adding products from the array
       products.forEach((product) => {
         message += `-- ${product}\n`;
       });
 
-      // Delivery and payment details
-      message += `\n*Taxa de entrega:* A calcular\n`; // Placeholder if you need to calculate delivery dynamically
-      message += `*Valor total:* R$${total}\n\n`;
-      message += `*Entrega:* ${deliveryMethod}\n`;
+      message += `\n*Valor dos produtos:* R$${total}\n`;
+      message += `*Taxa de entrega:* A calcular\n\n`;
+
       message += `*Entregar para:* ${customer}\n`;
-      message += `*Telefone:* ${phone}\n`;
       message += `*Endereço:* ${address}\n`;
       message += `*Forma de pagamento:* ${paymentMethod}\n`;
 
@@ -64,10 +56,7 @@ const Order = ({ slug }: OrderProps) => {
       }
 
       if (orderNotes) {
-        message += `*Observações da entrega:* ${orderNotes}\n`;
-      }
-      if (paymentNotes) {
-        message += `*Observações do pagamento:* ${paymentNotes}\n`;
+        message += `*Observações do pedido:* ${orderNotes}\n`;
       }
 
       message += `\nPedido realizado em ${new Date().toLocaleString()} pelo Gamou Pedidos.\n`;
@@ -91,62 +80,37 @@ const Order = ({ slug }: OrderProps) => {
         </div>
         <div className="flex flex-col gap-2 mb-2">
           <TextField
-            placeholder="Nome*"
+            placeholder="Nome"
             name="name"
             className="w-full"
             // required
           />
-          <TextField placeholder="Telefone" name="phone" className="w-full" />
           <TextField
-            placeholder="Endereço*"
+            placeholder="Endereço"
             name="address"
             className="w-full"
             // required
           />
         </div>
-        {/* <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">
-          <Heading text="Forma de entrega" tag="h3" />
-        </div> */}
-        {/* <div className="flex flex-col gap-2 mb-2">
-          <Radio
-            name="delivery_method"
-            value="Para levar"
-            label="Retirar no local"
-            required
-          />
-          <Radio
-            name="delivery_method"
-            value="Entregar em casa"
-            label="No meu endereço"
-            required
-          />
-          <Radio
-            name="delivery_method"
-            value="Comer no local"
-            label="Estou no estabelecimento"
-            required
-          />
-        </div> */}
-        <div className="mb-2">
-          <TextArea
-            className="w-full"
-            placeholder="Observações..."
-            name="order_notes"
-          />
-        </div>
+
         <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">
           <Heading text="Forma de pagamento" tag="h3" />
         </div>
         <div className="flex flex-col gap-2 mb-2">
           <Radio name="payment_method" value="Cartão" label="Cartão" checked />
           <Radio name="payment_method" value="Dinheiro" label="Dinheiro" />
+          <Radio name="payment_method" value="Pix" label="Pix" />
           <Radio name="payment_method" value="Outro" label="Outro" />
+        </div>
+
+        <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">
+          <Heading text="Observações" tag="h3" />
         </div>
         <div className="mb-2">
           <TextArea
             className="w-full"
-            placeholder="Observações do pagamento..."
-            name="payment_notes"
+            placeholder="Escreva aqui se houver..."
+            name="order_notes"
           />
         </div>
         <div className="mt-8 text-end">
