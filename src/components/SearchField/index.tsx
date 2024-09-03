@@ -1,15 +1,18 @@
-import { FormEvent, InputHTMLAttributes, useCallback, useState } from "react";
+"use client";
+
+import { FormEvent, InputHTMLAttributes, useCallback } from "react";
 import TextField from "../TextField";
 import Search from "../../icons/Search";
 import Button from "../Button";
 import Trash from "@/icons/Trash";
+import { useRouter } from "next/navigation";
 
 export type SearchFieldProps = {
-  handleSearch: (searchTerm: string) => void;
+  searchPath: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-const SearchField = ({ handleSearch, ...props }: SearchFieldProps) => {
-  const [searchIcon, setSearchIcon] = useState(true);
+const SearchField = ({ searchPath, ...props }: SearchFieldProps) => {
+  const router = useRouter();
 
   const onSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
@@ -18,13 +21,15 @@ const SearchField = ({ handleSearch, ...props }: SearchFieldProps) => {
 
       const searchTerm = data.get("search-term") || "";
 
-      setSearchIcon(!searchTerm);
+      // if (!searchTerm) return;
 
-      e.currentTarget.reset();
+      console.log("ok");
 
-      return handleSearch(searchTerm as string);
+      const path = searchPath + `?q=${searchTerm}`;
+
+      router.push(path);
     },
-    [handleSearch]
+    [searchPath, router]
   );
 
   return (
@@ -34,13 +39,10 @@ const SearchField = ({ handleSearch, ...props }: SearchFieldProps) => {
         {...props}
         type="search"
         name="search-term"
+        required
       />
       <Button className="rounded-none rounded-e-lg" type="submit">
-        {searchIcon ? (
-          <Search className="w-6 h-6" />
-        ) : (
-          <Trash className="w-6 h-6" />
-        )}
+        <Search className="w-6 h-6" />
       </Button>
     </form>
   );

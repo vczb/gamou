@@ -10,3 +10,8 @@ export const getStoreBySlug = async ({slug}:{slug: string}) => {
     ...inventory
   }
 }
+
+export const getInventoryByQuery = async ({slug, query}:{slug: string, query: string}) => {
+  const inventory = getInventoryByCompanySlug(slug) 
+
+}
