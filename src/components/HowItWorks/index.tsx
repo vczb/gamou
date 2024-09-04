@@ -45,7 +45,7 @@ const HowItWorks = () => {
                 d="M119.9,721.42c-3-5.51.4-12.27,4.29-17.18s8.61-10,8.51-16.29c-.15-9-9.7-14.31-17.33-19.09a84,84,0,0,1-15.56-12.51A22.8,22.8,0,0,1,95,650c-1.58-3.52-1.54-7.52-1.44-11.37q.51-19.26,1.91-38.49"
                 fill="none"
                 stroke="#3f3d56"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="4"
               ></path>
               <path
@@ -123,7 +123,7 @@ const HowItWorks = () => {
                 d="M387.5,490A66.5,66.5,0,1,1,321,423.5,66.47,66.47,0,0,1,387.5,490Z"
                 fill="none"
                 stroke="#f2f2f2"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="2"
               ></path>
               <path
@@ -139,7 +139,7 @@ const HowItWorks = () => {
                 d="M385.31,507a66.46,66.46,0,0,1-16.1,28.82l-35.53-55.59,15.69-24.78a.66.66,0,0,1,1.1,0C353.76,460.32,371,486,385.31,507Z"
                 fill="none"
                 stroke="#f2f2f2"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="2"
               ></path>
               <path
@@ -147,7 +147,7 @@ const HowItWorks = () => {
                 d="M337.5,452.5a15,15,0,0,1-12.12,14.73l-15-23.51a15,15,0,0,1,27.16,8.78Z"
                 fill="none"
                 stroke="#f2f2f2"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="2"
               ></path>
               <path
@@ -155,7 +155,7 @@ const HowItWorks = () => {
                 d="m347.5 481.5"
                 fill="none"
                 stroke="#f2f2f2"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="2"
               ></path>
               <path
@@ -163,7 +163,7 @@ const HowItWorks = () => {
                 d="m333.5 480.5"
                 fill="none"
                 stroke="#f2f2f2"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="2"
               ></path>
               <path
@@ -434,7 +434,7 @@ const HowItWorks = () => {
                 fill="none"
                 opacity=".8"
                 stroke="#ff6347"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="2"
               ></path>
               <path
@@ -443,7 +443,7 @@ const HowItWorks = () => {
                 fill="none"
                 opacity=".8"
                 stroke="#ff6347"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
                 strokeWidth="2"
               ></path>
               <circle
