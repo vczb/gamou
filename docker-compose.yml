@@ -4,7 +4,7 @@ services:
   gamou:
     image: node:16.14.0
     container_name: gamou_app
-    # restart: always
+    restart: always
     working_dir: /usr/src/app
     volumes:
       - ./:/usr/src/app
@@ -13,6 +13,12 @@ services:
     command: npm run dev
     environment:
       - NODE_ENV=development
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=gamou_user
+      - POSTGRES_PASSWORD=secret_password
+      - POSTGRES_DB=gamou_db
+    depends_on:
+      - db
     mem_limit: 2g
     memswap_limit: 2g
     cpus: "2"
@@ -24,5 +30,19 @@ services:
         reservations:
           memory: 2g
 
+  db:
+    image: postgres:13
+    container_name: gamou_db
+    restart: always
+    environment:
+      POSTGRES_USER: gamou_user
+      POSTGRES_PASSWORD: secret_password
+      POSTGRES_DB: gamou_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
 volumes:
   app_data:
+  postgres_data:
