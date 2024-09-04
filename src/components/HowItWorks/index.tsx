@@ -131,8 +131,7 @@ const HowItWorks = () => {
                 d="M325.38,467.23l8.3,13,35.53,55.59a66.5,66.5,0,0,1-103.32-8.57l43.54-84.94.91,1.43"
                 fill="none"
                 stroke="#f2f2f2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinejoin="round"
                 strokeWidth="2"
               ></path>
               <path
