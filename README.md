@@ -9,6 +9,7 @@
 ## Envirovment variables
 
 ```
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_LS_KEY=my-ls-key
 TOKEN_SECRET=
 ```

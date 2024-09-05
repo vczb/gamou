@@ -39,6 +39,7 @@ export const signUp = async (email: string, password: string) => {
     return response;
   } catch (error) {
     console.log(error);
+    // TODO: Improve logging and error handling
     return serverError("Something went wrong when creating a new user");
   }
 };

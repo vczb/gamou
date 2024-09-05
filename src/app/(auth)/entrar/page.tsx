@@ -1,5 +1,4 @@
 import SignIn from "@/containers/SignIn";
-import { tetsConnection } from "@/models/users";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,8 +7,6 @@ export const metadata: Metadata = {
 };
 
 const Index = async () => {
-  await tetsConnection();
-
   return <SignIn />;
 };
 
