@@ -1,17 +1,10 @@
 "use client";
 
+import { createContext, useCallback, useContext, useState } from "react";
 import { User } from "@/types/user";
 import { BASE_URL } from "@/utils/constants";
 import { NotNullOrUndefinedValueError } from "@/utils/errors";
-import {
-  createContext,
-  use,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
-
+import { useRouter } from "next/navigation";
 export type AuthProviderProps = {
   children: React.ReactNode;
 };
@@ -45,43 +38,53 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const [error, setError] = useState<Error | undefined>(undefined);
+  const router = useRouter();
 
-  const signUp = useCallback(async (email: string, password: string) => {
-    try {
-      setLoading(true);
+  const signUp = useCallback(
+    async (email: string, password: string) => {
+      try {
+        setLoading(true);
 
-      const url = BASE_URL + "/api/signup";
+        const url = BASE_URL + "/api/signup";
 
-      if (!BASE_URL) {
-        throw new NotNullOrUndefinedValueError("BASE_URL");
+        if (!BASE_URL) {
+          throw new NotNullOrUndefinedValueError("BASE_URL");
+        }
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+
+        const dataJson = await response.json();
+
+        const data = dataJson?.data;
+
+        const { token, user } = data;
+
+        if (!token || !user) {
+          throw new NotNullOrUndefinedValueError("token or user");
+        }
+
+        setToken(token);
+        setUser(user);
+
+        router.push("/painel");
+      } catch (error) {
+        // TODO: handle error
+        // setError(error as Error);
+      } finally {
+        setLoading(false);
       }
-
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      const dataJson = await response.json();
-
-      const data = dataJson?.data;
-
-      const { token, user } = data;
-
-      setToken(token);
-      setUser(user);
-    } catch (error) {
-      // TODO: handle error
-      // setError(error as Error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [router]
+  );
 
   const signIn = async (email: string, password: string) => {};
 
