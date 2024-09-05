@@ -11,3 +11,10 @@ export class NoProductsOnTheCartError extends Error {
     this.name = "NoProductsOnTheCartError";
   }
 }
+
+export class NotNullOrUndefinedValueError extends Error {
+  constructor(value: string) {
+    super(`Unexpected error: ${value} cannot be null or undefined`);
+    this.name = "NotNullOrUndefinedValueError";
+  }
+}
