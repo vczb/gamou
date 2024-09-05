@@ -86,7 +86,56 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     [router]
   );
 
-  const signIn = async (email: string, password: string) => {};
+  const signIn = useCallback(
+    async (email: string, password: string) => {
+      try {
+        setLoading(true);
+
+        const url = BASE_URL + "/api/signin";
+
+        if (!BASE_URL) {
+          throw new NotNullOrUndefinedValueError("BASE_URL");
+        }
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+
+        const dataJson = await response.json();
+
+        if (!response.ok) {
+          throw new Error(dataJson?.message || "Failed to sign in");
+        }
+
+        const data = dataJson?.data;
+
+        const { token, user } = data;
+
+        if (!token || !user) {
+          throw new NotNullOrUndefinedValueError("token or user");
+        }
+
+        setToken(token);
+        setUser(user);
+
+        router.push("/painel");
+      } catch (error) {
+        // TODO: Handle error
+        console.error(error);
+        setError(error as Error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [router]
+  );
 
   const signOut = async () => {};
 

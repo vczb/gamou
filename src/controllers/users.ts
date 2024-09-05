@@ -1,13 +1,52 @@
-import { createUser } from "@/models/users";
-import { createSessionToken } from "@/utils/criptography";
+import { createUser, queryUser } from "@/models/users";
+import { createSessionToken, decrypt } from "@/utils/criptography";
 import {
   badRequest,
   ok,
   serverError,
+  unauthorized,
   unprocessableEntity,
 } from "@/utils/http-helpers";
 
-export const signIn = async () => {};
+export const signIn = async (email: string, password: string) => {
+  try {
+    if (!email || !password) {
+      return badRequest("Email and Password are required!");
+    }
+
+    const user = await queryUser(email);
+
+    if (!user?.password) {
+      return unauthorized("Invalid email or password.");
+    }
+
+    const isPasswordValid = await decrypt(password, user.password);
+
+    if (!isPasswordValid) {
+      return unauthorized("Invalid email or password.");
+    }
+
+    if (!user?.id) {
+      return unprocessableEntity(
+        "User could not be created due to validation or business logic failure"
+      );
+    }
+
+    const jwt = createSessionToken(user.id);
+
+    delete user.password;
+
+    const data = {
+      token: jwt,
+      user,
+    };
+
+    return ok("Login successful", data);
+  } catch (error) {
+    console.log(error);
+    return serverError("Something went wrong during sign-in");
+  }
+};
 
 export const signUp = async (email: string, password: string) => {
   try {
@@ -34,9 +73,7 @@ export const signUp = async (email: string, password: string) => {
       },
     };
 
-    const response = ok("User Created Sucessfully!", data);
-
-    return response;
+    return ok("User Created Sucessfully!", data);
   } catch (error) {
     console.log(error);
     // TODO: Improve logging and error handling

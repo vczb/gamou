@@ -23,3 +23,9 @@ export const unprocessableEntity = (message: string): HttpResponse => ({
   message,
   data: null,
 });
+
+export const unauthorized = (message: string): HttpResponse => ({
+  status: 401,
+  message,
+  data: null,
+});

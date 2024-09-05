@@ -11,10 +11,10 @@ export const encrypt = async (value: string): Promise<string> => {
 };
 
 export const decrypt = async (
-  userPassword: string,
-  incomingPassword: string
+  value1: string,
+  value2: string
 ) => {
-  return bcrypt.compareSync(userPassword, incomingPassword);
+  return bcrypt.compareSync(value1, value2);
 };
 
 export const createSessionToken = (userId: string) => {
