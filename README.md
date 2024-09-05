@@ -10,6 +10,7 @@
 
 ```
 NEXT_PUBLIC_LS_KEY=my-ls-key
+TOKEN_SECRET=
 ```
 
 ## Install & run

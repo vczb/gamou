@@ -1,29 +1,29 @@
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 import { NotNullOrUndefinedValueError } from "../errors";
+import { TOKEN_SECRET } from "../constants";
 
-const SALT = 12
+const SALT = 12;
 
 export const encrypt = async (value: string): Promise<string> => {
   const hash = await bcrypt.hash(value, SALT);
   return hash;
-}
+};
 
-export const decrypt = async(userPassword: string, incomingPassword: string)=>{
-  return bcrypt.compareSync(
-    userPassword,
-    incomingPassword
-  );
-} 
+export const decrypt = async (
+  userPassword: string,
+  incomingPassword: string
+) => {
+  return bcrypt.compareSync(userPassword, incomingPassword);
+};
 
 export const createSessionToken = (userId: string) => {
-  const secret = process.env.JWT_SECRET
+  if (!TOKEN_SECRET) {
+    throw new NotNullOrUndefinedValueError("TOKEN_SECRET");
+  }
 
-  if(!secret) {
-    throw new NotNullOrUndefinedValueError('JWT_SECRET')
-  };
-
-  return jwt.sign({ id:  userId}, secret, {
+  return jwt.sign({ id: userId }, TOKEN_SECRET, {
     expiresIn: 86400, // 24 hours
   });
-}
+};
+
