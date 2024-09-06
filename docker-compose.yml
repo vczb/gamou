@@ -2,15 +2,10 @@ version: "3.8"
 
 services:
   gamou:
-    image: node:16.14.0
+    build: .
     container_name: gamou_app
     restart: always
     working_dir: /usr/src/app
-    volumes:
-      - ./:/usr/src/app
-    ports:
-      - "3000:3000"
-    command: npm run dev
     environment:
       - NODE_ENV=development
       - POSTGRES_HOST=db
@@ -19,16 +14,16 @@ services:
       - POSTGRES_DB=gamou_db
     depends_on:
       - db
-    mem_limit: 2g
+    mem_limit: 1g
     memswap_limit: 2g
     cpus: "2"
     deploy:
       resources:
         limits:
-          cpus: "2"
-          memory: 2g
+          cpus: "1"
+          memory: 1g
         reservations:
-          memory: 2g
+          memory: 1g
 
   db:
     image: postgres:13
@@ -42,6 +37,20 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  nginx:
+    image: nginx:latest
+    container_name: production_nginx
+    volumes:
+      - .docker/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - ENV=production
+      - APPLICATION_URL=http://gamou:3000
+    restart: always
 
 volumes:
   app_data:
