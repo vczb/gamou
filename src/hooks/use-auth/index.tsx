@@ -15,7 +15,6 @@ export type AuthContextData = {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   signUp: (email: string, password: string) => Promise<void>;
-  token: string;
   error?: Error;
 };
 
@@ -26,7 +25,6 @@ export const AuthContextDefaultValues = {
   signOut: () => {},
   signUp: async () => {},
   error: undefined,
-  token: "",
 };
 
 export const AuthContext = createContext<AuthContextData>(
@@ -36,7 +34,6 @@ export const AuthContext = createContext<AuthContextData>(
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [token, setToken] = useState<string>("");
   const [error, setError] = useState<Error | undefined>(undefined);
   const router = useRouter();
 
@@ -72,7 +69,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           throw new NotNullOrUndefinedValueError("token or user");
         }
 
-        setToken(token);
         setUser(user);
 
         router.push("/painel");
@@ -116,13 +112,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
         const data = dataJson?.data;
 
-        const { token, user } = data;
+        const { user } = data;
 
-        if (!token || !user) {
-          throw new NotNullOrUndefinedValueError("token or user");
+        if (!user) {
+          throw new NotNullOrUndefinedValueError("user");
         }
 
-        setToken(token);
         setUser(user);
 
         router.push("/painel");
@@ -144,7 +139,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         user,
         loading,
-        token,
         error,
         signUp,
         signIn,

@@ -1,4 +1,5 @@
 import { createUser, queryUser } from "@/models/users";
+import { setCookies } from "@/utils/browserStorage";
 import { createSessionToken, decrypt } from "@/utils/criptography";
 import {
   badRequest,
@@ -34,10 +35,11 @@ export const signIn = async (email: string, password: string) => {
 
     const jwt = createSessionToken(user.id);
 
+    setCookies('token', jwt);
+
     delete user.password;
 
     const data = {
-      token: jwt,
       user,
     };
 
@@ -66,8 +68,9 @@ export const signUp = async (email: string, password: string) => {
 
     const jwt = createSessionToken(userId);
 
+    setCookies('token', jwt);
+
     const data = {
-      token: jwt,
       user: {
         id: userId,
       },

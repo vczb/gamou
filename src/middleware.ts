@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { STORAGE_KEY } from "./utils/constants";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the route is under /painel/
   if (pathname.startsWith("/painel")) {
-    // Get the auth cookie
-    const authCookie = request.cookies.get("authToken");
+    const authCookie = request.cookies.get(`${STORAGE_KEY}_token`);
 
-    // If no cookie, redirect to /entrar
     if (!authCookie) {
       return NextResponse.redirect(new URL("/entrar", request.url));
     }
@@ -18,10 +16,8 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Helper function to set the cookie (use this in your sign-in/sign-up handler)
 export function setAuthCookie(response: NextResponse, token: string) {
-  // Set the cookie with HttpOnly, Secure, and SameSite attributes for security
-  response.cookies.set("authToken", token, {
+  response.cookies.set(`${STORAGE_KEY}_token`, token, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
@@ -31,5 +27,5 @@ export function setAuthCookie(response: NextResponse, token: string) {
 }
 
 export const config = {
-  matcher: ["/painel/:path*", "/signin", "/signup"], // Apply middleware to /painel/* and potentially other sign-in routes
+  matcher: ["/painel/:path*"],
 };
