@@ -8,11 +8,13 @@ services:
     container_name: gamou_app
     restart: always
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - POSTGRES_HOST=db
       - POSTGRES_USER=gamou_user
       - POSTGRES_PASSWORD=secret_password
       - POSTGRES_DB=gamou_db
+      - NEXT_PUBLIC_BASE_URL=https://gamou.app
+      - TOKEN_SECRET=gamou_secret_token
     depends_on:
       - db
   db:
@@ -32,7 +34,7 @@ services:
     image: nginx:latest
     container_name: production_nginx
     volumes:
-      - .docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt/:/etc/letsencrypt/
     ports:
       - 80:80

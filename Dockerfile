@@ -1,5 +1,5 @@
 # Use a imagem base oficial do Node.js
-FROM node:20-alpine
+FROM node:16-alpine
 
 # Defina o diretório de trabalho dentro do container
 WORKDIR /app
@@ -8,7 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instale as dependências do projeto
-RUN npm install --frozen-lockfile
+#RUN npm install --frozen-lockfile
+RUN npm ci
 
 # Copie o restante dos arquivos da aplicação para o diretório de trabalho
 COPY . .
