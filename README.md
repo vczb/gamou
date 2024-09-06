@@ -26,11 +26,15 @@ $ docker compose build
 ```
 
 ```bash
-$ docker compose up db
+$ docker compose up db -d
 ```
 
 ```bash
 $ npm ci
+```
+
+```bash
+$ npx knex migrate:latest
 ```
 
 ```bash
