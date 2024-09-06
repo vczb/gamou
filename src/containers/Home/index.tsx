@@ -16,9 +16,9 @@ const Home = () => {
     <main className="leading-normal tracking-normal text-white gradient">
       <Navbar />
       <Hero />
-      <div className="relative -mt-12 lg:-mt-24">
+      {/* <div className="relative -mt-12 lg:-mt-24">
         <Wave1 />
-      </div>
+      </div> */}
       <HowItWorks />
       <Advantages />
       {/* <Pricing /> */}

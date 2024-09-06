@@ -1,7 +1,7 @@
 module.exports = {
   client: "pg",
   connection: {
-    host: "gamou_db",
+    host: process.env.NODE_ENV === "production" ? "gamou_db" : "localhost",
     port: 5432,
     user: "gamou_user",
     password: "secret_password",

@@ -1,8 +1,9 @@
+import Button from "../Button";
 import LeadButton from "../LeadButton";
 
 const Hero = () => {
   return (
-    <div className="pt-24">
+    <div className="py-24">
       <div className="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
         <div className="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
           <p className="uppercase tracking-loose w-full">
@@ -17,9 +18,9 @@ const Hero = () => {
             forma simples e eficaz.
           </p>
 
-          <LeadButton variant="white" className="z-10">
-            Cadastre-se Agora
-          </LeadButton>
+          <Button variant="emeraldMint" size="large" className="z-10">
+            Conversar no WhatsApp
+          </Button>
         </div>
 
         <div className="w-full md:w-3/5 py-6 text-center">

@@ -3,6 +3,7 @@
 import Diamond from "@/icons/Diamond";
 import { useEffect, useState } from "react";
 import LeadButton from "../LeadButton";
+import Button from "../Button";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -121,7 +122,8 @@ const Navbar = () => {
               </a>
             </li> */}
           </ul>
-          <LeadButton id="navAction">Comece Agora</LeadButton>
+          {/* <LeadButton id="navAction">Comece Agora</LeadButton> */}
+          <Button variant="light">Comece Agora</Button>
         </div>
       </div>
 

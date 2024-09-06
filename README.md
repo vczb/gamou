@@ -1,20 +1,33 @@
 # Gamou
 
+## Requirements
+
+- docker
+- nodejs 16.x
+
 ## Stack
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [NextJS](https://nextjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [KnexJS](https://knexjs.org/)
 
 ## Envirovment variables
 
 ```
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
-NEXT_PUBLIC_LS_KEY=my-ls-key
-TOKEN_SECRET=
+TOKEN_SECRET=GAMOU
 ```
 
-## Install & run
+## (localhost) Install & run
+
+```bash
+$ docker compose build
+```
+
+```bash
+$ docker compose up db
+```
 
 ```bash
 $ npm ci
@@ -22,6 +35,10 @@ $ npm ci
 
 ```bash
 $ npm run dev
+```
+
+```
+http://localhost:3000/
 ```
 
 ## License
