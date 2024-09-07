@@ -23,3 +23,12 @@ export const createSessionToken = (userId: string) => {
     expiresIn: TOKEN_EXPIRATION_TIME,
   });
 };
+
+export const verifySeesionToken = (token: string) => {
+  if (!TOKEN_SECRET) {
+    throw new NotNullOrUndefinedValueError("TOKEN_SECRET");
+  }
+
+  jwt.verify(token, TOKEN_SECRET);
+
+}

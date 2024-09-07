@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { STORAGE_KEY } from "./utils/constants";
+import { BASE_URL, STORAGE_KEY } from "./utils/constants";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/painel")) {
@@ -11,6 +11,21 @@ export function middleware(request: NextRequest) {
     if (!authCookie) {
       return NextResponse.redirect(new URL("/entrar", request.url));
     }
+
+    const url = `${BASE_URL}/api/verify-token`
+
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ token: authCookie.value }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if(response.status !== 200) {
+      return NextResponse.redirect(new URL("/entrar", request.url));
+    }
+
   }
 
   return NextResponse.next();

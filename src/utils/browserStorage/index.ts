@@ -18,9 +18,7 @@ export function setStorageItem(key: string, value: string[]) {
 
 export const setCookies = (key: string, value: string) => {
 
-  const data = JSON.stringify(value);
-
-  cookies().set(`${STORAGE_KEY}_${key}`, data, {
+  cookies().set(`${STORAGE_KEY}_${key}`, value, {
     maxAge: TOKEN_EXPIRATION_TIME, 
     secure: process.env.NODE_ENV === 'production',
     path: "/", 
