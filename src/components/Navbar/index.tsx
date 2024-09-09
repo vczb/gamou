@@ -94,6 +94,14 @@ const Navbar = () => {
                 Vantagens
               </a>
             </li>
+            <li className="mr-3">
+              <a
+                className={`inline-block py-2 px-4 no-underline hover:text-gray-800 text-gray-800`}
+                href="#perguntas-respostas"
+              >
+                Perguntas e respostas
+              </a>
+            </li>
           </ul>
           <Button
             variant={isScrolled || isMenuOpen ? "primary" : "light"}

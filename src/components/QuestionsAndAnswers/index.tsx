@@ -36,7 +36,7 @@ const DATA = [
 
 const QuestionsAndAnswers = () => {
   return (
-    <div className=" bg-white py-8 p-6 pb-24">
+    <div className=" bg-white py-8 p-6 pb-24" id="perguntas-respostas">
       <div className="container mx-auto grid grid-cols-1 gap-8 w-full">
         <Heading text="Perguntas e Respostas" />
         {DATA.map((item) => (
