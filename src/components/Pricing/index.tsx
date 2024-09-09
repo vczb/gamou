@@ -1,4 +1,4 @@
-import LeadButton from "../LeadButton";
+import Button from "../Button";
 
 const Pricing = () => {
   return (
@@ -29,9 +29,9 @@ const Pricing = () => {
                 R$ 0 <span className="text-base">por mês</span>
               </div>
               <div className="flex items-center justify-center">
-                <LeadButton variant="gradient" className="my-6">
+                {/* <Button variant="gradient" className="my-6">
                   Comece Agora
-                </LeadButton>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -55,9 +55,9 @@ const Pricing = () => {
                 R$ 50 <span className="text-base">por mês</span>
               </div>
               <div className="flex items-center justify-center">
-                <LeadButton variant="gradient" className="my-6">
+                {/* <Button variant="gradient" className="my-6">
                   Comece Agora
-                </LeadButton>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -80,9 +80,9 @@ const Pricing = () => {
                 R$ 100 <span className="text-base">por mês</span>
               </div>
               <div className="flex items-center justify-center">
-                <LeadButton variant="gradient" className="my-6">
+                {/* <Button variant="gradient" className="my-6">
                   Comece Agora
-                </LeadButton>
+                </Button> */}
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, useMemo } from "react";
 
 export type ButtonProps = {
   children: React.ReactNode;
-  variant?: "primary" | "secondary" | "emeraldMint" | "light";
+  variant?: "primary" | "secondary" | "emerald" | "light";
   size?: "medium" | "large";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -21,8 +21,8 @@ const Button = ({
     if (variant === "secondary") {
       return "text-black bg-secondary-500 hover:bg-secondary-600";
     }
-    if (variant === "emeraldMint") {
-      return "text-white bg-emeraldMint-500 hover:bg-emeraldMint-600";
+    if (variant === "emerald") {
+      return "text-black bg-emerald-500 hover:bg-emerald-600";
     }
 
     return "bg-white text-gray-800";

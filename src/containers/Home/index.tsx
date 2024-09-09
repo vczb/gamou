@@ -10,6 +10,7 @@ import Pricing from "@/components/Pricing";
 import Wave2 from "@/icons/Wave2";
 import GetStarted from "@/components/GetStarted";
 import Footer from "@/components/Footer";
+import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 
 const Home = () => {
   return (
@@ -22,7 +23,8 @@ const Home = () => {
       <HowItWorks />
       <Advantages />
       {/* <Pricing /> */}
-      <Wave2 />
+      {/* <Wave2 /> */}
+      <QuestionsAndAnswers />
       <GetStarted />
       <Footer />
     </main>

@@ -1,5 +1,4 @@
 import Button from "../Button";
-import LeadButton from "../LeadButton";
 
 const Hero = () => {
   return (
@@ -18,7 +17,7 @@ const Hero = () => {
             forma simples e eficaz.
           </p>
 
-          <Button variant="emeraldMint" size="large" className="z-10">
+          <Button variant="emerald" size="large" className="z-10 m-auto md:m-0">
             Conversar no WhatsApp
           </Button>
         </div>

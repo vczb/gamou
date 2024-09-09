@@ -129,9 +129,9 @@ const Order = ({ slug }: OrderProps) => {
         <div className="mt-8">
           <Button
             className="w-full text-xlarge flex items-center justify-center"
-            variant="emeraldMint"
+            variant="emerald"
           >
-            <span className="mr-2 text-black">Enviar pedido</span>
+            <span className="mr-2 ">Enviar pedido</span>
             <WhatsApp height={24} />
           </Button>
         </div>

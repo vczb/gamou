@@ -1,4 +1,4 @@
-import LeadButton from "../LeadButton";
+import Button from "../Button";
 
 const GetStarted = () => {
   return (
@@ -14,7 +14,9 @@ const GetStarted = () => {
         Comece a receber pedidos pelo WhatsApp agora!
       </h3>
 
-      <LeadButton className="my-6">Experimente Grátis</LeadButton>
+      <Button className="mt-6 px-8 py-4 text-xl" variant="secondary">
+        <a href="/cadastro">Experimente Grátis</a>
+      </Button>
     </section>
   );
 };
