@@ -3,11 +3,11 @@ import Navbar from "@/components/Navbar";
 import React from "react";
 
 import "./styles.css";
-import Wave1 from "@/icons/Wave1";
+// import Wave1 from "@/icons/Wave1";
 import HowItWorks from "@/components/HowItWorks";
 import Advantages from "@/components/Advantages";
-import Pricing from "@/components/Pricing";
-import Wave2 from "@/icons/Wave2";
+// import Pricing from "@/components/Pricing";
+// import Wave2 from "@/icons/Wave2";
 import GetStarted from "@/components/GetStarted";
 import Footer from "@/components/Footer";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
@@ -24,8 +24,17 @@ const Home = () => {
       <Advantages />
       {/* <Pricing /> */}
       {/* <Wave2 /> */}
+      <GetStarted
+        title="Comece já"
+        subtitle="Não perca tempo, crie seu catálogo online e comece a vender"
+        cta="Cadastre-se"
+      />
       <QuestionsAndAnswers />
-      <GetStarted />
+      <GetStarted
+        title="Transforme Suas Vendas"
+        subtitle="Comece a receber pedidos pelo WhatsApp agora!"
+        cta="Experimente Grátis"
+      />
       <Footer />
     </main>
   );
