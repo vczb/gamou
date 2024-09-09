@@ -14,7 +14,7 @@ const secondary = {
   600: "#F4A07E",
 };
 
-const emeraldMint = {
+const emerald = {
   500: "#4FCE5D",
   600: "#3ebd4e",
 };
@@ -47,7 +47,7 @@ module.exports = {
         primary,
         secondary,
         blueGray,
-        emeraldMint,
+        emerald,
         info: base.info,
         success: base.success,
         white: base.white,
