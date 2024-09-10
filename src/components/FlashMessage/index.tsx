@@ -1,14 +1,14 @@
 import { useId, useMemo } from "react";
 
-type FlashMessage = {
-  type: "alert" | "success";
-  msg: string;
+export type FlashMessageProps = {
+  variant: "alert" | "success";
+  message: string;
 };
 
-const FlashMessage = ({ type, msg }: FlashMessage) => {
+const FlashMessage = ({ variant, message }: FlashMessageProps) => {
   const bgColor = useMemo(
-    () => (type === "alert" ? "bg-red-500" : "bg-emerald-400"),
-    [type]
+    () => (variant === "alert" ? "bg-red-500" : "bg-emerald-400"),
+    [variant]
   );
 
   const id = useId();
@@ -21,7 +21,7 @@ const FlashMessage = ({ type, msg }: FlashMessage) => {
         title="Close"
         htmlFor={id}
       >
-        {msg}
+        {message}
         <svg
           className="fill-current text-white"
           xmlns="http://www.w3.org/2000/svg"

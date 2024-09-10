@@ -1,8 +1,7 @@
-import { CartProvider } from "@/hooks/use-cart";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { OrderProvider } from "@/hooks/use-order";
+import { NotificationProvider } from "@/hooks/use-notification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +19,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head></head>
       <body className={`${inter.className}`}>
-        {
-          <CartProvider>
-            <OrderProvider>{children}</OrderProvider>
-          </CartProvider>
-        }
+        <NotificationProvider>{children}</NotificationProvider>
       </body>
     </html>
   );
