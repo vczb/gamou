@@ -21,9 +21,7 @@ const SearchField = ({ searchPath, ...props }: SearchFieldProps) => {
 
       const searchTerm = data.get("search-term") || "";
 
-      // if (!searchTerm) return;
-
-      console.log("ok");
+      if (!searchTerm) return;
 
       const path = searchPath + `?q=${searchTerm}`;
 

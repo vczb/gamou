@@ -1,6 +1,5 @@
 "use client";
 
-import FlashMessage, { FlashMessageProps } from "@/components/FlashMessage";
 import React, {
   createContext,
   useCallback,
@@ -10,18 +9,14 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom";
 
+import FlashMessage, { FlashMessageProps } from "@/components/FlashMessage";
+
 export type NotificationProviderProps = {
   children: React.ReactNode;
 };
 
 type NotificationContextData = {
-  renderNotification: ({
-    message,
-    variant,
-  }: {
-    message: string;
-    variant: string;
-  }) => void;
+  renderNotification: ({ message, variant }: FlashMessageProps) => void;
 };
 
 export const NotificationContextDefaultValues: NotificationContextData = {
@@ -41,7 +36,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
   const [notifications, setNotifications] = useState<NotificationsProps[]>([]);
 
   const renderNotification = useCallback(
-    ({ message, variant }: { message: string; variant: string }) => {
+    ({ message, variant }: FlashMessageProps) => {
       const id = new Date().getTime();
       const newNotification = { id, message, variant } as NotificationsProps;
 
@@ -49,7 +44,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
 
       setTimeout(() => {
         setNotifications((prev) => prev.filter((n) => n.id !== id));
-      }, 7000);
+      }, 10000);
     },
     []
   );

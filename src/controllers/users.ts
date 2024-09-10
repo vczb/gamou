@@ -79,7 +79,6 @@ export const signUp = async (email: string, password: string) => {
     return ok("User Created Sucessfully!", data);
   } catch (error) {
     console.log(error);
-    // TODO: Improve logging and error handling
     return serverError("Something went wrong when creating a new user");
   }
 };

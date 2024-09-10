@@ -5,6 +5,7 @@ import { User } from "@/types/user";
 import { BASE_URL } from "@/utils/constants";
 import { NotNullOrUndefinedValueError } from "@/utils/errors";
 import { useRouter } from "next/navigation";
+import { useNotification } from "../use-notification";
 export type AuthProviderProps = {
   children: React.ReactNode;
 };
@@ -36,6 +37,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | undefined>(undefined);
   const router = useRouter();
+  const { renderNotification } = useNotification();
 
   const signUp = useCallback(
     async (email: string, password: string) => {
@@ -61,7 +63,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
         const dataJson = await response.json();
 
-        const data = dataJson?.data;
+        const { message, data } = dataJson;
+
+        if (response.status !== 200) {
+          throw new Error(message);
+        }
+
+        if (!data) {
+          throw new NotNullOrUndefinedValueError("response data");
+        }
 
         const { token, user } = data;
 
@@ -72,14 +82,18 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(user);
 
         router.push("/painel");
-      } catch (error) {
-        // TODO: handle error
-        // setError(error as Error);
+      } catch (error: any) {
+        renderNotification({
+          message: error?.message || "Something went wrong during Sign Up",
+          variant: "alert",
+        });
+
+        setError(error);
       } finally {
         setLoading(false);
       }
     },
-    [router]
+    [router, renderNotification]
   );
 
   const signIn = useCallback(
@@ -106,11 +120,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
         const dataJson = await response.json();
 
-        if (!response.ok) {
-          throw new Error(dataJson?.message || "Failed to sign in");
+        if (response.status !== 200) {
+          throw new Error(dataJson?.message);
         }
 
         const data = dataJson?.data;
+
+        if (!data) {
+          throw new NotNullOrUndefinedValueError("response data");
+        }
 
         const { user } = data;
 
@@ -121,15 +139,18 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(user);
 
         router.push("/painel");
-      } catch (error) {
-        // TODO: Handle error
-        console.error(error);
-        setError(error as Error);
+      } catch (error: any) {
+        renderNotification({
+          message: error?.message || "Failed to sign in",
+          variant: "alert",
+        });
+
+        setError(error);
       } finally {
         setLoading(false);
       }
     },
-    [router]
+    [router, renderNotification]
   );
 
   const signOut = async () => {};
