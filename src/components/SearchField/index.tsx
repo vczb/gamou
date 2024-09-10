@@ -4,7 +4,6 @@ import { FormEvent, InputHTMLAttributes, useCallback } from "react";
 import TextField from "../TextField";
 import Search from "../../icons/Search";
 import Button from "../Button";
-import Trash from "@/icons/Trash";
 import { useRouter } from "next/navigation";
 
 export type SearchFieldProps = {
