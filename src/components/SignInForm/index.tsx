@@ -6,9 +6,12 @@ import Heading from "@/components/Heading";
 import Link from "@/components/Link";
 import TextField from "@/components/TextField";
 import { useAuth } from "@/hooks/use-auth";
+import { useNotification } from "@/hooks/use-notification";
+import Form from "../Form";
 
 const SignInForm = () => {
   const { signIn, loading } = useAuth();
+  const { renderNotification } = useNotification();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,20 +21,20 @@ const SignInForm = () => {
       const email = (formData.get("email") || "") as string;
       const password = (formData.get("password") || "") as string;
 
-      if (email === "" || password === "") {
-        // TODO: show error message
-        return;
-      }
+      try {
+        if (email === "" || password === "") {
+          throw new Error("All fields are required!");
+        }
 
-      signIn(email, password);
+        signIn(email, password);
+      } catch (error: any) {
+        renderNotification({ message: error.message, variant: "alert" });
+      }
     },
-    [signIn]
+    [signIn, renderNotification]
   );
   return (
-    <form
-      className="shadow-lg border-sold border-2  bg-white border-b-blueGray-200 p-6 flex flex-col mx-auto  gap-2 w-full max-w-lg"
-      onSubmit={handleSubmit}
-    >
+    <Form id="sign-in" onSubmit={handleSubmit}>
       <Heading text="Entrar" />
       <label className="flex flex-col">
         <b className="text-black">Email:</b>
@@ -49,7 +52,7 @@ const SignInForm = () => {
       <Link href="/cadastro" className="ml-auto text-blueGray-600">
         Cadastrar-se
       </Link>
-    </form>
+    </Form>
   );
 };
 

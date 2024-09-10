@@ -5,10 +5,13 @@ import Heading from "@/components/Heading";
 import Link from "@/components/Link";
 import TextField from "@/components/TextField";
 import { useAuth } from "@/hooks/use-auth";
+import { useNotification } from "@/hooks/use-notification";
 import { useCallback } from "react";
+import Form from "../Form";
 
 const SignUpForm = () => {
   const { signUp, loading } = useAuth();
+  const { renderNotification } = useNotification();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,26 +22,25 @@ const SignUpForm = () => {
       const password = (formData.get("password") || "") as string;
       const passwordConfirmation = formData.get("password_confirmation") || "";
 
-      if (email === "" || password === "" || passwordConfirmation === "") {
-        // TODO: show error message
-        return;
-      }
+      try {
+        if (email === "" || password === "" || passwordConfirmation === "") {
+          throw new Error("All fields are required!");
+        }
 
-      if (password !== passwordConfirmation) {
-        // TODO: show error message
-        return;
-      }
+        if (password !== passwordConfirmation) {
+          throw new Error("Email and Confirmation Email are not equal");
+        }
 
-      signUp(email, password);
+        signUp(email, password);
+      } catch (error: any) {
+        renderNotification({ message: error.message, variant: "alert" });
+      }
     },
-    [signUp]
+    [signUp, renderNotification]
   );
 
   return (
-    <form
-      className="shadow-lg border-sold border-2 bg-white border-b-blueGray-200 p-6 flex flex-col mx-auto  gap-2 w-full max-w-lg rounded"
-      onSubmit={handleSubmit}
-    >
+    <Form id="sign-up" onSubmit={handleSubmit}>
       <Heading text="Cadastre-se" />
       <label className="flex flex-col">
         <b className="text-black">Email:</b>
@@ -64,7 +66,7 @@ const SignUpForm = () => {
       <Link href="/entrar" className="ml-auto text-blueGray-600">
         Já tenho uma conta
       </Link>
-    </form>
+    </Form>
   );
 };
 
