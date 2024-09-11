@@ -44,7 +44,7 @@ const Navbar = () => {
   return (
     <nav
       ref={headerRef}
-      className={`fixed w-full z-30 top-0 transition-all ${
+      className={`${isHome ? "fixed" : ""} w-full z-30 top-0 transition-all ${
         solidStyle ? "bg-white shadow" : "text-white"
       }`}
     >
