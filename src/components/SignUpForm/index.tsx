@@ -5,13 +5,12 @@ import Heading from "@/components/Heading";
 import Link from "@/components/Link";
 import TextField from "@/components/TextField";
 import { useAuth } from "@/hooks/use-auth";
-import { useNotification } from "@/hooks/use-notification";
 import { useCallback } from "react";
 import Form from "../Form";
+import renderFlashMessage from "@/utils/renderFlashMessage";
 
 const SignUpForm = () => {
   const { signUp, loading } = useAuth();
-  const { renderNotification } = useNotification();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,21 +23,23 @@ const SignUpForm = () => {
 
       try {
         if (email === "" || password === "" || passwordConfirmation === "") {
-          throw new Error("All fields are required!");
+          throw new Error("Você deve preencher todos os campos!");
         }
 
         if (password !== passwordConfirmation) {
-          throw new Error("Email and Confirmation Email are not equal");
+          throw new Error("Senha e confirmação de senha devem ser iguais!");
         }
 
-        signUp(email, password);
+        await signUp(email, password);
       } catch (error: any) {
-        renderNotification({ message: error.message, variant: "alert" });
+        const message =
+          error.message ||
+          "Não foi possivel realizar o cadastro. Tente novamente mais tarde.";
+        renderFlashMessage({ message: message, variant: "alert" });
       }
     },
-    [signUp, renderNotification]
+    [signUp]
   );
-
   return (
     <Form id="sign-up" onSubmit={handleSubmit}>
       <Heading text="Cadastre-se" />

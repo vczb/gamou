@@ -7,10 +7,8 @@ import Heading from "@/components/Heading";
 import TextArea from "@/components/TextArea";
 import { useCart } from "@/hooks/use-cart";
 import { useOrder } from "@/hooks/use-order";
-
 import { useRouter } from "next/navigation";
 import GoBackLink from "@/components/GoBackLink";
-import { NoFormDataError, NoProductsOnTheCartError } from "@/utils/errors";
 
 type CartProps = {
   slug: string;
@@ -26,14 +24,14 @@ export default function Cart({ slug }: CartProps) {
       const data = new FormData(e.currentTarget);
 
       if (!data) {
-        return new NoFormDataError();
+        return new Error("Não foi possível processar o formulário");
       }
 
       const products = data.getAll("product") || [];
       const notes = data.get("notes") || "";
 
       if (!products.length) {
-        throw new NoProductsOnTheCartError();
+        throw new Error("Não há produtos no carrinho");
       }
 
       saveProducts(products as string[]);

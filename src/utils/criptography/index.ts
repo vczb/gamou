@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { NotNullOrUndefinedValueError } from "../errors";
 import { TOKEN_EXPIRATION_TIME, TOKEN_SECRET } from "../constants";
 
 const SALT = 12;
@@ -16,7 +15,7 @@ export const decrypt = async (value1: string, value2: string) => {
 
 export const createSessionToken = (userId: string) => {
   if (!TOKEN_SECRET) {
-    throw new NotNullOrUndefinedValueError("TOKEN_SECRET");
+    throw new Error("variável TOKEN_SECRET é obrigatória");
   }
 
   return jwt.sign({ id: userId }, TOKEN_SECRET, {
@@ -26,9 +25,9 @@ export const createSessionToken = (userId: string) => {
 
 export const verifySeesionToken = (token: string) => {
   if (!TOKEN_SECRET) {
-    throw new NotNullOrUndefinedValueError("TOKEN_SECRET");
+    throw new Error("variável TOKEN_SECRET é obrigatória");
   }
 
   jwt.verify(token, TOKEN_SECRET);
+};
 
-}

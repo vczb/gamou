@@ -8,14 +8,13 @@ export async function POST(req: Request) {
 
     const { token } = body;
 
-    if(!TOKEN_SECRET) {
-      throw new Error()
+    if (!TOKEN_SECRET) {
+      throw new Error("variável TOKEN_SECRET não pode ser nula");
     }
 
-    verifySeesionToken(token)
+    verifySeesionToken(token);
 
-    return NextResponse.json({valid: true}, {status: 200});
-
+    return NextResponse.json({ valid: true }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

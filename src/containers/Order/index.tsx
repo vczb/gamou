@@ -10,7 +10,6 @@ import { useCart } from "@/hooks/use-cart";
 import { useOrder } from "@/hooks/use-order";
 import WhatsApp from "@/icons/WhatsApp";
 import { GAMOU_PHONE_NUMBER } from "@/utils/constants";
-import { NoFormDataError } from "@/utils/errors";
 import sendWhatsApp from "@/utils/sendWhatsApp";
 import { useCallback } from "react";
 
@@ -29,7 +28,7 @@ const Order = ({ slug }: OrderProps) => {
       const data = new FormData(e.currentTarget);
 
       if (!data) {
-        throw new NoFormDataError();
+        throw new Error("Não foi possível processar o formulário");
       }
 
       const customer = data.get("name") || "";

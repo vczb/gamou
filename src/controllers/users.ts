@@ -12,30 +12,30 @@ import {
 export const signIn = async (email: string, password: string) => {
   try {
     if (!email || !password) {
-      return badRequest("Email and Password are required!");
+      return badRequest("Email e Senha são obrigatórios!");
     }
 
     const user = await queryUser(email);
 
     if (!user?.password) {
-      return unauthorized("Invalid email or password.");
+      return unauthorized("Email ou Senha incorretos");
     }
 
     const isPasswordValid = await decrypt(password, user.password);
 
     if (!isPasswordValid) {
-      return unauthorized("Invalid email or password.");
+      return unauthorized("Email ou Senha incorretos");
     }
 
     if (!user?.id) {
       return unprocessableEntity(
-        "User could not be created due to validation or business logic failure"
+        "Não foi possível realizar esta operação. Tente novamente mais tarde"
       );
     }
 
     const jwt = createSessionToken(user.id);
 
-    setCookies('token', jwt);
+    setCookies("token", jwt);
 
     delete user.password;
 
@@ -43,24 +43,24 @@ export const signIn = async (email: string, password: string) => {
       user,
     };
 
-    return ok("Login successful", data);
+    return ok("Autenticação realizada com sucesso!", data);
   } catch (error) {
-    console.log(error);
-    return serverError("Something went wrong during sign-in");
+    console.error(error);
+    return serverError("Algo deu errado durante a autenticação do usuário");
   }
 };
 
 export const signUp = async (email: string, password: string) => {
   try {
     if (!email || !password) {
-      return badRequest("Email and Password are required!");
+      return badRequest("Email e Password são obrigatórios!");
     }
 
     const [user] = await createUser({ email, password });
 
     if (!user?.id) {
       return unprocessableEntity(
-        "User could not be created due to validation or business logic failure"
+        "Não foi possível realizar esta operação. Tente novamente mais tarde"
       );
     }
 
@@ -68,7 +68,7 @@ export const signUp = async (email: string, password: string) => {
 
     const jwt = createSessionToken(userId);
 
-    setCookies('token', jwt);
+    setCookies("token", jwt);
 
     const data = {
       user: {
@@ -76,9 +76,12 @@ export const signUp = async (email: string, password: string) => {
       },
     };
 
-    return ok("User Created Sucessfully!", data);
-  } catch (error) {
-    console.log(error);
-    return serverError("Something went wrong when creating a new user");
+    return ok("Usuário cadastrado com sucesso!", data);
+  } catch (error: any) {
+    console.error(error);
+    if (error.constraint === "users_email_unique") {
+      return serverError("Este email já está cadastrado");
+    }
+    return serverError("Algo deu errado durante o cadastro do usuário.");
   }
 };
