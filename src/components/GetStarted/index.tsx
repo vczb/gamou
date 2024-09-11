@@ -18,9 +18,11 @@ const GetStarted = ({ cta, subtitle, title }: GetStartedProps) => {
 
       <h3 className="my-4 text-3xl leading-tight">{subtitle}</h3>
 
-      <Button className="mt-6 px-8 py-4 text-xl" variant="secondary">
-        <a href="/cadastro">{cta}</a>
-      </Button>
+      <a href="/cadastro">
+        <Button className="mt-6 px-8 py-4 text-xl" variant="secondary">
+          {cta}
+        </Button>
+      </a>
     </section>
   );
 };
