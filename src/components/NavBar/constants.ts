@@ -21,3 +21,10 @@ export const menuHome = [
   },
 ];
 
+export const controlMenu = [
+  {
+    target: "/sair",
+    text: "Sair",
+    type: "button",
+  },
+];

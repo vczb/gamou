@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import Diamond from "@/icons/Diamond";
 import { usePathname } from "next/navigation";
-import { menuHome } from "./constants";
+import { controlMenu, menuHome } from "./constants";
 import MenuBar, { MenuBarProps } from "../MenuBar";
 
 const Navbar = () => {
@@ -16,11 +16,13 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const isHome = useMemo(() => pathname === "/", [pathname]);
+  const isAuth = useMemo(() => pathname.includes("/painel"), [pathname]);
 
   const menuItems = useMemo(() => {
-    if (!isHome) return [];
+    if (isHome) return menuHome as MenuBarProps["items"];
+    if (isAuth) return controlMenu as MenuBarProps["items"];
 
-    return menuHome as MenuBarProps["items"];
+    return [];
   }, [isHome]);
 
   const solidStyle = useMemo(() => !isHome || isScrolled, [isHome, isScrolled]);
@@ -92,7 +94,7 @@ const Navbar = () => {
                 : "hidden"
             } mt-2 lg:mt-0 text-black p-4 lg:p-0 z-20 rounded-md lg:rounded-none shadow-lg lg:shadow-none`}
           >
-            {isHome && <MenuBar items={menuItems} />}
+            {<MenuBar items={menuItems} />}
           </div>
         ) : (
           <></>
