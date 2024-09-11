@@ -2,7 +2,7 @@ import SignUpForm from "@/components/SignUpForm";
 
 const SignUp = () => {
   return (
-    <main className="container px-4 pb-28 min-h-screen flex items-center justify-center">
+    <main className="container mx-auto px-4 py-28 pt-40 min-h-screen ">
       <SignUpForm />
     </main>
   );

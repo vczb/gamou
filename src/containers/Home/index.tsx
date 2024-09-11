@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import Navbar from "@/components/Navbar";
+import NavBar from "@/components/NavBar";
 import React from "react";
 
 import "./styles.css";
@@ -15,7 +15,7 @@ import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 const Home = () => {
   return (
     <main className="leading-normal tracking-normal text-white gradient">
-      <Navbar />
+      <NavBar />
       <Hero />
       {/* <div className="relative -mt-12 lg:-mt-24">
         <Wave1 />
