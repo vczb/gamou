@@ -23,7 +23,7 @@ export const createSessionToken = (userId: string) => {
   });
 };
 
-export const verifySeesionToken = (token: string) => {
+export const verifySessionToken = (token: string) => {
   if (!TOKEN_SECRET) {
     throw new Error("variável TOKEN_SECRET é obrigatória");
   }

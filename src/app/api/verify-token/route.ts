@@ -1,5 +1,5 @@
 import { TOKEN_SECRET } from "@/utils/constants";
-import { verifySeesionToken } from "@/utils/criptography";
+import { verifySessionToken } from "@/utils/criptography";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
       throw new Error("variável TOKEN_SECRET não pode ser nula");
     }
 
-    verifySeesionToken(token);
+    verifySessionToken(token);
 
     return NextResponse.json({ valid: true }, { status: 200 });
   } catch (error) {
