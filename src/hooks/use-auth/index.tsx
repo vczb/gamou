@@ -145,7 +145,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     [router]
   );
 
-  const signOut = async () => {};
+  const signOut = useCallback(() => {
+    router.push("/sair");
+  }, [router]);
 
   return (
     <AuthContext.Provider
