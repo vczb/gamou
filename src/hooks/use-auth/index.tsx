@@ -43,7 +43,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(true);
         setError(undefined);
 
-        const url = BASE_URL + "/api/signup";
+        const url = BASE_URL + "/api/auth/signup";
 
         if (!BASE_URL) {
           throw new Error("variável BASE_URL não pode ser nula");
@@ -72,9 +72,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           throw new Error("Não há dados disponíveis");
         }
 
-        const { token, user } = data;
+        const { user } = data;
 
-        if (!token || !user) {
+        if (!user) {
           throw new Error("Usuário inválido");
         }
 
@@ -97,7 +97,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(true);
         setError(undefined);
 
-        const url = BASE_URL + "/api/signin";
+        const url = BASE_URL + "/api/auth/signin";
 
         if (!BASE_URL) {
           throw new Error("variável BASE_URL não pode ser nula");

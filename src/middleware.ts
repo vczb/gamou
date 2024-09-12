@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/entrar", request.url));
     }
 
-    const urlVerify = `${BASE_URL}/api/verify-token`;
+    const urlVerify = `${BASE_URL}/api/auth/verify-token`;
 
     const response = await fetch(urlVerify, {
       method: "POST",
