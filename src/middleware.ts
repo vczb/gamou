@@ -5,42 +5,38 @@ import { BASE_URL, STORAGE_KEY } from "./utils/constants";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/painel")) {
-    const authCookie = request.cookies.get(`${STORAGE_KEY}_token`);
+  const tokenName = `${STORAGE_KEY}_token`;
 
+  const authCookie = request.cookies.get(tokenName);
+  if (pathname.startsWith("/painel")) {
     if (!authCookie) {
       return NextResponse.redirect(new URL("/entrar", request.url));
     }
 
-    const url = `${BASE_URL}/api/verify-token`
+    const urlVerify = `${BASE_URL}/api/verify-token`;
 
-    const response = await fetch(url, {
-      method: 'POST',
+    const response = await fetch(urlVerify, {
+      method: "POST",
       body: JSON.stringify({ token: authCookie.value }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
-    if(response.status !== 200) {
+    if (response.status !== 200) {
       return NextResponse.redirect(new URL("/entrar", request.url));
     }
+  }
 
+  if (pathname.startsWith("/sair")) {
+    const response = NextResponse.redirect(new URL("/", request.url));
+    response.cookies.delete(tokenName);
+    return response;
   }
 
   return NextResponse.next();
 }
 
-export function setAuthCookie(response: NextResponse, token: string) {
-  response.cookies.set(`${STORAGE_KEY}_token`, token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/",
-  });
-  return response;
-}
-
 export const config = {
-  matcher: ["/painel/:path*"],
+  matcher: ["/painel/:path*", "/sair"],
 };
