@@ -1,3 +1,4 @@
+import Profile from "@/containers/Profile";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Index = async () => {
-  return <></>;
+  return <Profile />;
 };
 
 export default Index;
