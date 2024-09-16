@@ -28,6 +28,7 @@ export const verifySessionToken = (token: string) => {
     throw new Error("variável TOKEN_SECRET é obrigatória");
   }
 
-  jwt.verify(token, TOKEN_SECRET);
+  const session = jwt.verify(token, TOKEN_SECRET);
+  return session;
 };
 

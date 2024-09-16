@@ -1,10 +1,17 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { User } from "@/types/user";
 import { BASE_URL } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import renderFlashMessage from "@/utils/renderFlashMessage";
+import { getStorageItem, setStorageItem } from "@/utils/storage/browser";
 export type AuthProviderProps = {
   children: React.ReactNode;
 };
@@ -30,6 +37,8 @@ export const AuthContextDefaultValues = {
 export const AuthContext = createContext<AuthContextData>(
   AuthContextDefaultValues
 );
+
+const BROWSER_STORAGE_KEY = "user";
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<any>(null);
@@ -148,6 +157,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = useCallback(() => {
     router.push("/sair");
   }, [router]);
+
+  useEffect(() => {
+    if (user) {
+      setStorageItem(BROWSER_STORAGE_KEY, user);
+    } else {
+      const restored = getStorageItem(BROWSER_STORAGE_KEY);
+      if (restored) {
+        setUser(restored);
+      }
+    }
+  }, [user]);
 
   return (
     <AuthContext.Provider

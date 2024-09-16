@@ -1,5 +1,5 @@
 import { createUser, queryUser } from "@/models/users";
-import { setCookies } from "@/utils/browserStorage";
+import { setCookies } from "@/utils/storage/server";
 import { createSessionToken, decrypt } from "@/utils/criptography";
 import {
   badRequest,

@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { STORAGE_KEY, TOKEN_EXPIRATION_TIME } from "../constants";
+import { STORAGE_KEY } from "../constants";
 
 export function getStorageItem(key: string) {
   if (typeof window === "undefined") return;
@@ -16,11 +15,3 @@ export function setStorageItem(key: string, value: string[]) {
   return window.localStorage.setItem(`${STORAGE_KEY}_${key}`, data);
 }
 
-export const setCookies = (key: string, value: string) => {
-
-  cookies().set(`${STORAGE_KEY}_${key}`, value, {
-    maxAge: TOKEN_EXPIRATION_TIME, 
-    secure: process.env.NODE_ENV === 'production',
-    path: "/", 
-  });
-};
