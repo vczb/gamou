@@ -42,9 +42,12 @@ export default {
     formId: "crud",
     headingText: "Meus dados",
     schema,
-    buttonText: "Salvar",
+    btnProps: {
+      text: "Cadastrar-se",
+      target: "/cadastro",
+    },
     handleSubmit: () => console.log("ok"),
-    actionLink: {
+    linkProps: {
       target: "#delete",
       text: "Deletar conta",
     },

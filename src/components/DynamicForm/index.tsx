@@ -5,27 +5,33 @@ import Link from "../Link";
 import TextArea from "../TextArea";
 import TextField from "../TextField";
 
+type FormSubmit = {
+  text: string;
+  disabled?: boolean;
+};
+
 type FormLink = {
   text: string;
   target: string;
 };
 
-type FieldFormSchema = {
+export type FieldFormSchema = {
   name: string;
-  label: string;
+  label?: string;
   type: "email" | "password" | "text" | "description";
   defaultValue?: string;
-  editable: boolean;
-  required: boolean;
+  placeholder?: string;
+  editable?: boolean;
+  required?: boolean;
 };
 
 export type DynamicFormProps = {
   formId: string;
   schema: FieldFormSchema[];
-  onSubmit: () => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   headingText?: string;
-  actionLink?: FormLink;
-  buttonText?: string;
+  linkProps?: FormLink;
+  btnProps: FormSubmit;
 };
 
 const DynamicForm = ({
@@ -33,11 +39,19 @@ const DynamicForm = ({
   onSubmit,
   schema,
   headingText,
-  actionLink,
-  buttonText = "Confirmar",
+  linkProps,
+  btnProps,
 }: DynamicFormProps) => {
   const renderField = (field: FieldFormSchema) => {
-    const { name, label, type, editable, required, defaultValue } = field;
+    const {
+      name,
+      label,
+      type,
+      editable = true,
+      required = false,
+      defaultValue,
+      placeholder,
+    } = field;
 
     switch (type) {
       case "email":
@@ -45,10 +59,11 @@ const DynamicForm = ({
       case "password":
         return (
           <label className="flex flex-col" key={name}>
-            <b className="text-black">{label}</b>
+            {label && <b className="text-black">{label}</b>}
             <TextField
               type={type}
               name={name}
+              placeholder={placeholder}
               required={required}
               {...(editable
                 ? { defaultValue }
@@ -60,10 +75,11 @@ const DynamicForm = ({
       case "description":
         return (
           <label className="flex flex-col" key={name}>
-            <b className="text-black">{label}</b>
+            {label && <b className="text-black">{label}</b>}
             <TextArea
               name={name}
               required={required}
+              placeholder={placeholder}
               {...(editable
                 ? { defaultValue }
                 : { value: defaultValue, disabled: true })}
@@ -81,10 +97,12 @@ const DynamicForm = ({
     <Form id={formId} onSubmit={onSubmit}>
       {headingText && <Heading text={headingText} />}
       {schema.map((field) => renderField(field))}
-      <Button type="submit">{buttonText}</Button>
-      {actionLink && (
-        <Link href={actionLink.target} className="ml-auto text-blueGray-600">
-          {actionLink.text}
+      <Button type="submit" disabled={btnProps?.disabled}>
+        {btnProps?.text}
+      </Button>
+      {linkProps && (
+        <Link href={linkProps.target} className="ml-auto text-blueGray-600">
+          {linkProps.text}
         </Link>
       )}
     </Form>
