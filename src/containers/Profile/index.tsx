@@ -1,9 +1,12 @@
 "use client";
 
 import Breadcrumb from "@/components/Breadcrumb";
+import Button from "@/components/Button";
 import DynamicForm, { FieldFormSchema } from "@/components/DynamicForm";
+import { useUser } from "@/hooks/use-user";
 import { User } from "@/types/user";
-import { useMemo } from "react";
+import renderFlashMessage from "@/utils/renderFlashMessage";
+import { useCallback, useMemo } from "react";
 
 const BREADCUMB = [
   { link: "/painel", label: "Painel" },
@@ -15,12 +18,14 @@ type ProfileProps = {
 };
 
 const Profile = ({ user }: ProfileProps) => {
+  const { editUser, loading } = useUser();
+
   const formData = useMemo(() => {
     return [
       {
         name: "email",
         label: "Email:",
-        type: "email",
+        type: "paragraph",
         defaultValue: user.email,
         editable: false,
         required: true,
@@ -33,14 +38,36 @@ const Profile = ({ user }: ProfileProps) => {
         defaultValue: user.name,
         editable: true,
         required: true,
+        disabled: loading,
       },
     ] as unknown as FieldFormSchema[];
-  }, [user]);
+  }, [user, loading]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {};
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.currentTarget);
+
+      const name = (formData.get("name") || "") as string;
+      const password = (formData.get("password") || "") as string;
+
+      try {
+        await editUser({ name, password });
+
+        renderFlashMessage({
+          message: "Usuário atualizado com sucesso!",
+          variant: "success",
+        });
+      } catch (error: any) {
+        renderFlashMessage({ message: error.message, variant: "alert" });
+      }
+    },
+    [editUser]
+  );
 
   return (
-    <div className="container mx-auto px-4 pb-28 pt-8">
+    <div className="container mx-auto px-4 pb-28 pt-8 max-w-lg">
       <Breadcrumb items={BREADCUMB} />
       <div className="mt-4">
         <DynamicForm
@@ -48,11 +75,9 @@ const Profile = ({ user }: ProfileProps) => {
           schema={formData}
           onSubmit={handleSubmit}
           btnProps={{
-            text: "Atualizar dados",
-          }}
-          linkProps={{
-            text: "Deletar",
-            target: "#deletar",
+            text: loading ? "Salvando..." : "Atualizar dados",
+            variant: "secondary",
+            disabled: loading,
           }}
         />
       </div>

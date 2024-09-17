@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback } from "react";
-import { useAuth } from "@/hooks/use-auth";
 import renderFlashMessage from "@/utils/renderFlashMessage";
 import DynamicForm, { FieldFormSchema } from "../DynamicForm";
+import { useAuth } from "@/hooks/use-auth";
 
 const FORM_SCHEMA = [
   {

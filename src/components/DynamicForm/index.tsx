@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button, { ButtonProps } from "../Button";
 import Form from "../Form";
 import Heading from "../Heading";
 import Link from "../Link";
@@ -8,6 +8,7 @@ import TextField from "../TextField";
 type FormSubmit = {
   text: string;
   disabled?: boolean;
+  variant?: ButtonProps["variant"];
 };
 
 type FormLink = {
@@ -18,7 +19,7 @@ type FormLink = {
 export type FieldFormSchema = {
   name: string;
   label?: string;
-  type: "email" | "password" | "text" | "description";
+  type: "email" | "password" | "text" | "description" | "paragraph";
   defaultValue?: string;
   placeholder?: string;
   editable?: boolean;
@@ -71,7 +72,13 @@ const DynamicForm = ({
             />
           </label>
         );
-
+      case "paragraph":
+        return (
+          <label className="flex flex-col" key={name}>
+            {label && <b className="text-black">{label}</b>}
+            <p>{field.defaultValue}</p>
+          </label>
+        );
       case "description":
         return (
           <label className="flex flex-col" key={name}>
@@ -97,7 +104,12 @@ const DynamicForm = ({
     <Form id={formId} onSubmit={onSubmit}>
       {headingText && <Heading text={headingText} />}
       {schema.map((field) => renderField(field))}
-      <Button type="submit" className="mt-2" disabled={btnProps?.disabled}>
+      <Button
+        type="submit"
+        className="mt-2"
+        variant={btnProps.variant}
+        disabled={btnProps.disabled}
+      >
         {btnProps?.text || "Confirmar"}
       </Button>
       {linkProps && (

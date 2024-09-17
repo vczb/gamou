@@ -1,5 +1,5 @@
-import { createUser, queryUser } from "@/models/users";
-import { setCookies } from "@/utils/storage/server";
+import { createUser, destroyUser, editUser, queryUser } from "@/models/users";
+import { getCookie, setCookies } from "@/utils/storage/server";
 import { createSessionToken, decrypt, verifySessionToken } from "@/utils/criptography";
 import {
   badRequest,
@@ -110,3 +110,51 @@ export const getUser = async (token: string) => {
   return ok("Dados do usuários carregados com sucesso!", data);
 
 }
+
+
+
+export const updateUser = async ({name, password}: {name?: string; password?: string}) => {
+  const token = getCookie("token");
+
+  if(!token?.value) {
+    return serverError("Não foi possível checar a autenticidade da requisição");
+  }
+
+  const { id: userId } = verifySessionToken(token.value) as { id?: number };
+
+  if(!userId) {
+    return serverError("Não foi possível identificar o usuário");
+  }
+
+  const user = await editUser({id: userId, name, password})
+
+  const data = {
+    user,
+  };
+
+  return ok("Usuário editado com sucesso!", data);
+
+};
+
+export const deleteUser = async (token: string) => {
+  const { id: userId } = verifySessionToken(token) as { id?: number };
+
+  if (!userId) {
+    return unauthorized("Não foi possível verificar a autenticidade do usuário");
+  }
+
+  try {
+    const result = await destroyUser({ id: userId });
+
+    if (result === 0) {
+      return unprocessableEntity("Não foi possível deletar o usuário");
+    }
+
+    setCookies("token", "");
+
+    return ok("Usuário deletado com sucesso!");
+  } catch (error) {
+    console.error(error);
+    return serverError("Algo deu errado durante a exclusão do usuário.");
+  }
+};

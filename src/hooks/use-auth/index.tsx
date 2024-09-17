@@ -1,23 +1,10 @@
-"use client";
-
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { User } from "@/types/user";
-import { BASE_URL } from "@/utils/constants";
-import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { useUser } from "../use-user";
 import renderFlashMessage from "@/utils/renderFlashMessage";
-import { getStorageItem, setStorageItem } from "@/utils/storage/browser";
-export type AuthProviderProps = {
-  children: React.ReactNode;
-};
+import { useRouter } from "next/navigation";
+import { BASE_URL } from "@/utils/constants";
 
-export type AuthContextData = {
-  user?: User;
+type useAuthProps = {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
@@ -25,23 +12,8 @@ export type AuthContextData = {
   error?: string;
 };
 
-export const AuthContextDefaultValues = {
-  user: undefined,
-  loading: false,
-  signIn: async () => {},
-  signOut: () => {},
-  signUp: async () => {},
-  error: undefined,
-};
-
-export const AuthContext = createContext<AuthContextData>(
-  AuthContextDefaultValues
-);
-
-const BROWSER_STORAGE_KEY = "user";
-
-const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<any>(null);
+const useAuth = (): useAuthProps => {
+  const { setUser } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const router = useRouter();
@@ -97,7 +69,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(false);
       }
     },
-    [router]
+    [router, setUser]
   );
 
   const signIn = useCallback(
@@ -151,40 +123,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(false);
       }
     },
-    [router]
+    [router, setUser]
   );
 
   const signOut = useCallback(() => {
     router.push("/sair");
   }, [router]);
 
-  useEffect(() => {
-    if (user) {
-      setStorageItem(BROWSER_STORAGE_KEY, user);
-    } else {
-      const restored = getStorageItem(BROWSER_STORAGE_KEY);
-      if (restored) {
-        setUser(restored);
-      }
-    }
-  }, [user]);
-
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        error,
-        signUp,
-        signIn,
-        signOut,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return {
+    signOut,
+    signIn,
+    signUp,
+    loading,
+    error,
+  };
 };
 
-const useAuth = () => useContext(AuthContext);
-
-export { AuthProvider, useAuth };
+export { useAuth };

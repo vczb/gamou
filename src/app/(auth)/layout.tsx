@@ -1,6 +1,6 @@
 import FlashNotification from "@/components/FlashNotification";
 import NavBar from "@/components/NavBar";
-import { AuthProvider } from "@/hooks/use-auth";
+import { UserProvider } from "@/hooks/use-user";
 
 export default function AuthLayout({
   children,
@@ -8,10 +8,10 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
+    <UserProvider>
       <NavBar />
       <FlashNotification />
       {children}
-    </AuthProvider>
+    </UserProvider>
   );
 }

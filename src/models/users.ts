@@ -33,7 +33,30 @@ export const createUser = async (params: {email: string, password: string}) => {
 
   return user;
 };
-export const deleteUser = async () => {};
-export const updateUser = async () => {};
 
+export const destroyUser = async (params: { id: number }) => {
+  const { id } = params;
+  const result = await connection("users")
+    .where({ id })
+    .del();
 
+  return result; // Returns the number of rows deleted
+};
+
+export const editUser = async ({id, name, password} :{ id: number; name?: string; password?: string; }) => {
+  const updateData: Partial<User> = {};
+
+  if (name) updateData.name = name;
+  if (password) updateData.password = await encrypt(password);
+
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No fields to update");
+  }
+
+  const updatedUser = await connection("users")
+    .where({ id })
+    .update(updateData)
+    .returning(["id", "name", "email"]);
+
+  return updatedUser;
+};
