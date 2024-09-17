@@ -16,6 +16,7 @@ const Breadcrumb = ({ items }: BreadcrumbProps) => {
           className={`flex gap-1 font-bold ${
             item.active ? "text-primary-400" : "text-black"
           }`}
+          key={index}
         >
           <Link
             href={item.link}

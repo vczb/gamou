@@ -9,3 +9,7 @@ export const setCookies = (key: string, value: string) => {
     path: "/", 
   });
 };
+
+export const getCookie = (key: string) => {
+  return cookies().get(`${STORAGE_KEY}_${key}`)
+}

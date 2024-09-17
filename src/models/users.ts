@@ -3,11 +3,20 @@ import { User } from "@/types/user";
 import { encrypt } from "@/utils/criptography";
 
 
-export const queryUser = async (email: string): Promise<User | undefined> => {
-  const user = await connection("users")
-    .select("*")
-    .where({ email })
-    .first()
+type QueryUserParams = { id: number } | { email: string };
+
+export const queryUser = async (
+  params: QueryUserParams
+): Promise<User | undefined> => {
+  const query = connection("users").select("*");
+
+  if ("id" in params) {
+    query.where({ id: params.id });
+  } else {
+    query.where({ email: params.email });
+  }
+
+  const user = await query.first();
 
   return user;
 };

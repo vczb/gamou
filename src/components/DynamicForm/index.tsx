@@ -97,8 +97,8 @@ const DynamicForm = ({
     <Form id={formId} onSubmit={onSubmit}>
       {headingText && <Heading text={headingText} />}
       {schema.map((field) => renderField(field))}
-      <Button type="submit" disabled={btnProps?.disabled}>
-        {btnProps?.text}
+      <Button type="submit" className="mt-2" disabled={btnProps?.disabled}>
+        {btnProps?.text || "Confirmar"}
       </Button>
       {linkProps && (
         <Link href={linkProps.target} className="ml-auto text-blueGray-600">

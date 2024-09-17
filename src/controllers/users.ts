@@ -1,6 +1,6 @@
 import { createUser, queryUser } from "@/models/users";
 import { setCookies } from "@/utils/storage/server";
-import { createSessionToken, decrypt } from "@/utils/criptography";
+import { createSessionToken, decrypt, verifySessionToken } from "@/utils/criptography";
 import {
   badRequest,
   ok,
@@ -15,7 +15,7 @@ export const signIn = async (email: string, password: string) => {
       return badRequest("Email e Senha são obrigatórios!");
     }
 
-    const user = await queryUser(email);
+    const user = await queryUser({email});
 
     if (!user?.password) {
       return unauthorized("Email ou Senha incorretos");
@@ -85,3 +85,28 @@ export const signUp = async (email: string, password: string) => {
     return serverError("Algo deu errado durante o cadastro do usuário.");
   }
 };
+
+export const getUser = async (token: string) => {
+  const {id: userId} = verifySessionToken(token) as {id?: number}
+
+  if(!userId){
+    return unauthorized("Não foi possível verificar a autenticidade do usuário")
+  }
+
+  const user = await queryUser({id: userId})
+
+  if(!user?.id){
+    return unprocessableEntity(
+      "Não foi possível realizar esta operação. Tente novamente mais tarde"
+    );
+  }
+
+  delete user.password;
+
+  const data = {
+    user,
+  };
+
+  return ok("Dados do usuários carregados com sucesso!", data);
+
+}
