@@ -1,6 +1,5 @@
 import Profile from "@/containers/Profile";
 import { getUser } from "@/controllers/users";
-import { User } from "@/types/user";
 import { getCookie } from "@/utils/storage/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";

@@ -1,7 +1,5 @@
 import ControlCardList from "@/components/ControlCardList";
 import Astronaut from "@/icons/Astronaut";
-import Cart from "@/icons/Cart";
-import Diamond from "@/icons/Diamond";
 import Layer from "@/icons/Layer";
 import Shop from "@/icons/Shop";
 
@@ -17,19 +15,9 @@ const CONTROL_ACTIONS = [
     icon: Shop,
   },
   {
-    link: "/painel/categorias",
-    label: "Categorias",
+    link: "/painel/estoque",
+    label: "Estoque",
     icon: Layer,
-  },
-  {
-    link: "/painel/produtos",
-    label: "Produtos",
-    icon: Diamond,
-  },
-  {
-    link: "/painel/pedidos",
-    label: "Pedidos",
-    icon: Cart,
   },
 ];
 

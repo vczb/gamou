@@ -16,8 +16,8 @@ type ProfileProps = {
   user: User;
 };
 
-const Profile = ({ user: ssrUser }: ProfileProps) => {
-  const { editUser, deleteUser, loading, user } = useUser();
+const Profile = ({ user }: ProfileProps) => {
+  const { editUser, deleteUser, loading } = useUser();
 
   const formData = useMemo(() => {
     return [
@@ -25,7 +25,7 @@ const Profile = ({ user: ssrUser }: ProfileProps) => {
         name: "email",
         label: "Email:",
         type: "paragraph",
-        defaultValue: ssrUser.email,
+        defaultValue: user.email,
         editable: false,
         required: true,
       },
@@ -34,13 +34,13 @@ const Profile = ({ user: ssrUser }: ProfileProps) => {
         label: "Nome:",
         placeholder: "Digite seu nome",
         type: "text",
-        defaultValue: user?.name || ssrUser.name,
+        defaultValue: user?.name,
         editable: true,
         required: true,
         disabled: loading,
       },
     ] as unknown as FieldFormSchema[];
-  }, [ssrUser, user, loading]);
+  }, [user, loading]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
