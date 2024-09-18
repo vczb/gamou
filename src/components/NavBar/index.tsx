@@ -56,7 +56,7 @@ const Navbar = () => {
             className={`flex items-center no-underline hover:no-underline font-bold text-2xl lg:text-4xl transition-all ${
               solidStyle ? "text-gray-800" : "text-white"
             }`}
-            href="/"
+            href={isAuth ? "/painel" : "/"}
           >
             <Diamond
               className={`h-8 inline fill-current ${
