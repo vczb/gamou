@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, useMemo } from "react";
 export type ButtonProps = {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "emerald" | "light";
-  size?: "medium" | "large";
+  size?: "small" | "medium" | "large";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({
@@ -29,6 +29,10 @@ const Button = ({
   }, [variant]);
 
   const variantSize = useMemo(() => {
+    if (size === "small") {
+      return "py-1 px-2 text-xs";
+    }
+
     if (size === "medium") {
       return "py-1 px-2 text-sm";
     }

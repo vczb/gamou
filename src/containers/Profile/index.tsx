@@ -5,7 +5,6 @@ import Button from "@/components/Button";
 import DynamicForm, { FieldFormSchema } from "@/components/DynamicForm";
 import { useUser } from "@/hooks/use-user";
 import { User } from "@/types/user";
-import renderFlashMessage from "@/utils/renderFlashMessage";
 import { useCallback, useMemo } from "react";
 
 const BREADCUMB = [
@@ -17,8 +16,8 @@ type ProfileProps = {
   user: User;
 };
 
-const Profile = ({ user }: ProfileProps) => {
-  const { editUser, loading } = useUser();
+const Profile = ({ user: ssrUser }: ProfileProps) => {
+  const { editUser, deleteUser, loading, user } = useUser();
 
   const formData = useMemo(() => {
     return [
@@ -26,7 +25,7 @@ const Profile = ({ user }: ProfileProps) => {
         name: "email",
         label: "Email:",
         type: "paragraph",
-        defaultValue: user.email,
+        defaultValue: ssrUser.email,
         editable: false,
         required: true,
       },
@@ -35,13 +34,13 @@ const Profile = ({ user }: ProfileProps) => {
         label: "Nome:",
         placeholder: "Digite seu nome",
         type: "text",
-        defaultValue: user.name,
+        defaultValue: user?.name || ssrUser.name,
         editable: true,
         required: true,
         disabled: loading,
       },
     ] as unknown as FieldFormSchema[];
-  }, [user, loading]);
+  }, [ssrUser, user, loading]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,19 +51,21 @@ const Profile = ({ user }: ProfileProps) => {
       const name = (formData.get("name") || "") as string;
       const password = (formData.get("password") || "") as string;
 
-      try {
-        await editUser({ name, password });
-
-        renderFlashMessage({
-          message: "Usuário atualizado com sucesso!",
-          variant: "success",
-        });
-      } catch (error: any) {
-        renderFlashMessage({ message: error.message, variant: "alert" });
-      }
+      await editUser({ name, password });
     },
     [editUser]
   );
+
+  const handleDelete = useCallback(async () => {
+    if (
+      window.confirm(
+        `Você tem certeza que quer rdeletar sua conta ?\n\nVocê perderá todos seus dados de forma irrecuperável!
+        `
+      )
+    ) {
+      await deleteUser();
+    }
+  }, [deleteUser]);
 
   return (
     <div className="container mx-auto px-4 pb-28 pt-8 max-w-lg">
@@ -80,6 +81,16 @@ const Profile = ({ user }: ProfileProps) => {
             disabled: loading,
           }}
         />
+      </div>
+      <div className="mt-4 text-end">
+        <Button
+          variant="light"
+          type="button"
+          size="small"
+          onClick={handleDelete}
+        >
+          Deletar conta
+        </Button>
       </div>
     </div>
   );

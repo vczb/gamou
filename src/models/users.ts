@@ -34,8 +34,7 @@ export const createUser = async (params: {email: string, password: string}) => {
   return user;
 };
 
-export const destroyUser = async (params: { id: number }) => {
-  const { id } = params;
+export const destroyUser = async (id: string) => {
   const result = await connection("users")
     .where({ id })
     .del();

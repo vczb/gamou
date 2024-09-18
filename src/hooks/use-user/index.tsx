@@ -1,10 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { User } from "@/types/user";
 import { BASE_URL } from "@/utils/constants";
 import renderFlashMessage from "@/utils/renderFlashMessage";
 import { getStorageItem, setStorageItem } from "@/utils/storage/browser";
+import { useRouter } from "next/navigation";
+
 export type UserProviderProps = {
   children: React.ReactNode;
 };
@@ -14,6 +22,7 @@ export type UserContextData = {
   setUser: (user: User) => void;
   loading: boolean;
   editUser: ({ name, password }: { name?: string; password?: string }) => void;
+  deleteUser: () => void;
   error?: string;
 };
 
@@ -21,7 +30,8 @@ export const UserContextDefaultValues = {
   user: undefined,
   loading: false,
   editUser: async () => {},
-  setUser: (user: User) => {},
+  deleteUser: async () => {},
+  setUser: () => {},
   error: undefined,
 };
 
@@ -35,10 +45,46 @@ const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
+  const router = useRouter();
 
-  const updateUser = (user: User) => {
-    setUser(user);
-  };
+  const deleteUser = useCallback(async () => {
+    setLoading(true);
+    setError(undefined);
+
+    try {
+      const userId = user.id;
+
+      if (!userId) {
+        throw new Error("Não foi possível processar dados do usuário");
+      }
+
+      const url = `${BASE_URL}/api/users/${userId}`;
+
+      if (!BASE_URL) {
+        throw new Error("variável BASE_URL não pode ser nula");
+      }
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const dataJson = await response.json();
+
+      if (response.status !== 200) {
+        throw new Error(dataJson?.message);
+      }
+
+      router.push("/");
+    } catch (error: any) {
+      setError(error);
+      renderFlashMessage({ message: error.message, variant: "alert" });
+    } finally {
+      setLoading(false);
+    }
+  }, [user, router]);
 
   const editUser = async ({
     name = "",
@@ -87,6 +133,11 @@ const UserProvider = ({ children }: UserProviderProps) => {
       }
 
       setUser(user);
+
+      renderFlashMessage({
+        message: "Usuário atualizado com sucesso!",
+        variant: "success",
+      });
     } catch (error: any) {
       setError(error);
       renderFlashMessage({ message: error.message, variant: "alert" });
@@ -114,6 +165,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
         error,
         editUser,
         setUser,
+        deleteUser,
       }}
     >
       {children}

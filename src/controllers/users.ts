@@ -126,7 +126,13 @@ export const updateUser = async ({name, password}: {name?: string; password?: st
     return serverError("Não foi possível identificar o usuário");
   }
 
-  const user = await editUser({id: userId, name, password})
+  const [user] = await editUser({id: userId, name, password})
+
+  if(!user?.id){
+    return unprocessableEntity(
+      "Não foi possível realizar esta operação. Tente novamente mais tarde"
+    );
+  }
 
   const data = {
     user,
@@ -136,15 +142,25 @@ export const updateUser = async ({name, password}: {name?: string; password?: st
 
 };
 
-export const deleteUser = async (token: string) => {
-  const { id: userId } = verifySessionToken(token) as { id?: number };
+export const deleteUser = async (id: string) => {
+  const token = getCookie("token");
 
-  if (!userId) {
+  if(!token?.value) {
+    return serverError("Não foi possível checar a autenticidade da requisição");
+  }
+
+  const { id: userId } = verifySessionToken(token.value) as { id?: string };
+
+
+  console.log(id)
+  console.log(userId)
+
+  if (!userId || id != userId) {
     return unauthorized("Não foi possível verificar a autenticidade do usuário");
   }
 
   try {
-    const result = await destroyUser({ id: userId });
+    const result = await destroyUser(userId);
 
     if (result === 0) {
       return unprocessableEntity("Não foi possível deletar o usuário");
