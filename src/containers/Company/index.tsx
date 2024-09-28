@@ -4,7 +4,7 @@ import React, { useCallback, useMemo } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import DynamicForm, { FieldFormSchema } from "@/components/DynamicForm";
 import { Company as CompanyType } from "@/types/company";
-import { useCompany } from "@/hooks/use-company";
+import { editCompanyProps, useCompany } from "@/hooks/use-company";
 
 const BREADCRUMB = [
   { link: "/painel", label: "Painel" },
@@ -25,6 +25,7 @@ const Company = ({ company }: CompanyProps) => {
         label: "Loja:",
         placeholder: "Digite o nome da sua loja",
         type: "text",
+        required: true,
         defaultValue: company?.name || "",
       },
       {
@@ -68,16 +69,22 @@ const Company = ({ company }: CompanyProps) => {
 
       const formData = new FormData(e.currentTarget);
 
+      const imageFile = formData.get("image");
+      const imageSrc = formData.get("image-src");
+      // @ts-ignore
+      const image = imageFile?.size > 0 ? imageFile : imageSrc;
+
       const data = {
         name: formData.get("name") as string,
-        image: formData.get("image") as string,
+        image: image,
         description: formData.get("description") as string,
         active: formData.get("active") === "on",
         currency: (formData.get("currency") || "brl") as string,
-      } as CompanyType;
+      } as editCompanyProps;
 
       await editCompany(data);
     },
+
     [editCompany]
   );
 

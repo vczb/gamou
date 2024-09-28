@@ -7,7 +7,7 @@ type UploadImageProps = {
 
 const UploadImage: React.FC<UploadImageProps> = ({
   name,
-  defaultValue,
+  defaultValue = "",
   ...rest
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,6 +37,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
         {...rest}
       />
       <div className="mt-4">
+        <input type="hidden" name={`${name}-src`} value={defaultValue} />
         <img ref={imgRef} src={defaultValue} alt="Preview" />
       </div>
     </div>
