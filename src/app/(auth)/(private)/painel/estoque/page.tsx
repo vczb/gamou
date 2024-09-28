@@ -2,8 +2,8 @@ import Inventory from "@/containers/Inventory";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Gerencia suas categorias",
-  description: "Gerencie seus dados e produtos.",
+  title: "Gerencia seu estoque",
+  description: "Gerencie seus produtos e categorias.",
 };
 
 const Index = async () => {
