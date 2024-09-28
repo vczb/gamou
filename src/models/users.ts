@@ -2,7 +2,6 @@ import connection from "@/database/connection";
 import { User } from "@/types/user";
 import { encrypt } from "@/utils/criptography";
 
-
 type QueryUserParams = { id: number } | { email: string };
 
 export const queryUser = async (
@@ -21,7 +20,10 @@ export const queryUser = async (
   return user;
 };
 
-export const createUser = async (params: {email: string, password: string}) => {
+export const createUser = async (params: {
+  email: string;
+  password: string;
+}) => {
   const { email, password } = params;
   const hashPassword = await encrypt(password);
   const user = await connection("users")
@@ -35,14 +37,20 @@ export const createUser = async (params: {email: string, password: string}) => {
 };
 
 export const destroyUser = async (id: string) => {
-  const result = await connection("users")
-    .where({ id })
-    .del();
+  const result = await connection("users").where({ id }).del();
 
   return result; // Returns the number of rows deleted
 };
 
-export const editUser = async ({id, name, password} :{ id: number; name?: string; password?: string; }) => {
+export const editUser = async ({
+  id,
+  name,
+  password,
+}: {
+  id: number;
+  name?: string;
+  password?: string;
+}) => {
   const updateData: Partial<User> = {};
 
   if (name) updateData.name = name;
@@ -58,4 +66,38 @@ export const editUser = async ({id, name, password} :{ id: number; name?: string
     .returning(["id", "name", "email"]);
 
   return updatedUser;
+};
+
+export const createUserWithCompany = async (params: {
+  email: string;
+  password: string;
+}) => {
+  const { email, password } = params;
+
+  return await connection.transaction(async (trx) => {
+    try {
+      const hashPassword = await encrypt(password);
+
+      const [user] = await trx("users")
+        .insert({
+          email,
+          password: hashPassword,
+        })
+        .returning("*");
+
+      const companyInsertData = {
+        slug: user.id,
+        name: "",
+        user_id: user.id,
+      };
+
+      const [company] = await trx("companies")
+        .insert(companyInsertData)
+        .returning("*");
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  });
 };

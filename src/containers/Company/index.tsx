@@ -4,6 +4,7 @@ import React, { useCallback, useMemo } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import DynamicForm, { FieldFormSchema } from "@/components/DynamicForm";
 import { Company as CompanyType } from "@/types/company";
+import { useCompany } from "@/hooks/use-company";
 
 const BREADCRUMB = [
   { link: "/painel", label: "Painel" },
@@ -15,6 +16,8 @@ type CompanyProps = {
 };
 
 const Company = ({ company }: CompanyProps) => {
+  const { editCompany, loading } = useCompany();
+
   const formData = useMemo(() => {
     const fields: FieldFormSchema[] = [
       {
@@ -71,13 +74,11 @@ const Company = ({ company }: CompanyProps) => {
         description: formData.get("description") as string,
         active: formData.get("active") === "on",
         currency: (formData.get("currency") || "brl") as string,
-      };
+      } as CompanyType;
 
-      console.log(data);
-
-      // Perform form submission logic here
+      await editCompany(data);
     },
-    []
+    [editCompany]
   );
 
   return (
@@ -91,6 +92,7 @@ const Company = ({ company }: CompanyProps) => {
           onSubmit={handleSubmit}
           btnProps={{
             text: "Salvar",
+            disabled: loading,
           }}
         />
       </div>

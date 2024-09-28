@@ -1,6 +1,15 @@
-import { createUser, destroyUser, editUser, queryUser } from "@/models/users";
+import {
+  createUserWithCompany,
+  destroyUser,
+  editUser,
+  queryUser,
+} from "@/models/users";
 import { getCookie, setCookies } from "@/utils/storage/server";
-import { createSessionToken, decrypt, verifySessionToken } from "@/utils/criptography";
+import {
+  createSessionToken,
+  decrypt,
+  verifySessionToken,
+} from "@/utils/criptography";
 import {
   badRequest,
   ok,
@@ -15,7 +24,7 @@ export const signIn = async (email: string, password: string) => {
       return badRequest("Email e Senha são obrigatórios!");
     }
 
-    const user = await queryUser({email});
+    const user = await queryUser({ email });
 
     if (!user?.password) {
       return unauthorized("Email ou Senha incorretos");
@@ -56,7 +65,7 @@ export const signUp = async (email: string, password: string) => {
       return badRequest("Email e Password são obrigatórios!");
     }
 
-    const [user] = await createUser({ email, password });
+    const user = await createUserWithCompany({ email, password });
 
     if (!user?.id) {
       return unprocessableEntity(
@@ -87,15 +96,17 @@ export const signUp = async (email: string, password: string) => {
 };
 
 export const getUser = async (token: string) => {
-  const {id: userId} = verifySessionToken(token) as {id?: number}
+  const { id: userId } = verifySessionToken(token) as { id?: number };
 
-  if(!userId){
-    return unauthorized("Não foi possível verificar a autenticidade do usuário")
+  if (!userId) {
+    return unauthorized(
+      "Não foi possível verificar a autenticidade do usuário"
+    );
   }
 
-  const user = await queryUser({id: userId})
+  const user = await queryUser({ id: userId });
 
-  if(!user?.id){
+  if (!user?.id) {
     return unprocessableEntity(
       "Não foi possível realizar esta operação. Tente novamente mais tarde"
     );
@@ -108,27 +119,30 @@ export const getUser = async (token: string) => {
   };
 
   return ok("Dados do usuários carregados com sucesso!", data);
+};
 
-}
-
-
-
-export const updateUser = async ({name, password}: {name?: string; password?: string}) => {
+export const updateUser = async ({
+  name,
+  password,
+}: {
+  name?: string;
+  password?: string;
+}) => {
   const token = getCookie("token");
 
-  if(!token?.value) {
+  if (!token?.value) {
     return serverError("Não foi possível checar a autenticidade da requisição");
   }
 
   const { id: userId } = verifySessionToken(token.value) as { id?: number };
 
-  if(!userId) {
+  if (!userId) {
     return serverError("Não foi possível identificar o usuário");
   }
 
-  const [user] = await editUser({id: userId, name, password})
+  const [user] = await editUser({ id: userId, name, password });
 
-  if(!user?.id){
+  if (!user?.id) {
     return unprocessableEntity(
       "Não foi possível realizar esta operação. Tente novamente mais tarde"
     );
@@ -139,24 +153,24 @@ export const updateUser = async ({name, password}: {name?: string; password?: st
   };
 
   return ok("Usuário editado com sucesso!", data);
-
 };
 
 export const deleteUser = async (id: string) => {
   const token = getCookie("token");
 
-  if(!token?.value) {
+  if (!token?.value) {
     return serverError("Não foi possível checar a autenticidade da requisição");
   }
 
   const { id: userId } = verifySessionToken(token.value) as { id?: string };
 
-
-  console.log(id)
-  console.log(userId)
+  console.log(id);
+  console.log(userId);
 
   if (!userId || id != userId) {
-    return unauthorized("Não foi possível verificar a autenticidade do usuário");
+    return unauthorized(
+      "Não foi possível verificar a autenticidade do usuário"
+    );
   }
 
   try {
