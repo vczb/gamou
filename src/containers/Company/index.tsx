@@ -75,6 +75,7 @@ const Company = ({ company }: CompanyProps) => {
       const image = imageFile?.size > 0 ? imageFile : imageSrc;
 
       const data = {
+        ...company,
         name: formData.get("name") as string,
         image: image,
         description: formData.get("description") as string,
@@ -85,7 +86,7 @@ const Company = ({ company }: CompanyProps) => {
       await editCompany(data);
     },
 
-    [editCompany]
+    [editCompany, company]
   );
 
   return (
