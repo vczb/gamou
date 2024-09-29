@@ -37,6 +37,7 @@ export type FieldFormSchema = {
   editable?: boolean;
   required?: boolean;
   checked?: boolean;
+  className?: string;
   selectOptions?: {
     label: string;
     value: string;
@@ -51,6 +52,7 @@ export type DynamicFormProps = {
   headingText?: string;
   linkProps?: FormLink;
   btnProps?: FormSubmit;
+  className?: string;
 };
 
 const DynamicForm = ({
@@ -89,6 +91,7 @@ const DynamicForm = ({
       checked,
       selectOptions,
       checkboxLabel,
+      className,
     } = field;
 
     const fieldId = `${formId}-${name}`;
@@ -167,7 +170,9 @@ const DynamicForm = ({
           <UploadImage
             id={fieldId}
             name={name}
+            required={required}
             defaultValue={defaultValue as string}
+            className={className}
           />,
           fieldId
         );

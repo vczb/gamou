@@ -1,5 +1,6 @@
 import AddToCartButton from "@/components/AddToCartButton";
 import { CURRENCY } from "@/utils/constants";
+import Image from "../Image";
 
 export type ProductProps = {
   uid: string;
@@ -9,16 +10,14 @@ export type ProductProps = {
   price: number;
 };
 
-
 const Product = (product: ProductProps) => {
   const { title, image, description, price, uid } = product;
   return (
     <div id={uid} className="grid gap-2 p-2 max-w-4xl md:grid-cols-2">
       <div className="flex pb-2 border-b-2 md:border-b-0 md:pb-0 md:row-span-2">
-        <img
+        <Image
           src={image}
           alt={title}
-          loading="lazy"
           className="w-20 h-20 md:w-32 md:h-32 lg:w-48 lg:h-48"
         />
         <div className="ml-4">

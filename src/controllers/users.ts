@@ -164,9 +164,6 @@ export const deleteUser = async (id: string) => {
 
   const { id: userId } = verifySessionToken(token.value) as { id?: string };
 
-  console.log(id);
-  console.log(userId);
-
   if (!userId || id != userId) {
     return unauthorized(
       "Não foi possível verificar a autenticidade do usuário"

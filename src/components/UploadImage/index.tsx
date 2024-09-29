@@ -1,4 +1,5 @@
 import React, { useRef, InputHTMLAttributes } from "react";
+import Image from "../Image";
 
 type UploadImageProps = {
   name: string;
@@ -38,7 +39,12 @@ const UploadImage: React.FC<UploadImageProps> = ({
       />
       <div className="mt-4">
         <input type="hidden" name={`${name}-src`} value={defaultValue} />
-        <img ref={imgRef} src={defaultValue} alt="Preview" />
+        <Image
+          ref={imgRef}
+          src={defaultValue}
+          alt="Preview"
+          className={rest.className}
+        />
       </div>
     </div>
   );
