@@ -1,34 +1,14 @@
-import { createProductHandler, updateProduct, deleteProduct, getProduct, getProducts } from "@/controllers/products";
+import { createProduct, modifyProduct, removeProduct, fetchProductByIdAndUserToken, fetchAllProductsByUserToken } from "@/controllers/products";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-
-    const id = body?.id;
-    const title = body?.title;
-    const image = body?.image;
-    const description = body?.description;
-    const price = body?.price;
-    const amount = body?.amount;
-    const category_id = body?.category_id;
-    const active = body?.active;
-
-    const data = await updateProduct({
-      id,
-      title,
-      image,
-      description,
-      price,
-      amount,
-      category_id,
-      active,
-    });
-
+    const data = await modifyProduct(body);
     const { status } = data;
     return NextResponse.json(data, { status });
   } catch (error) {
-    console.error(error);
+    console.error("Error updating product:", error);
     return NextResponse.json({ message: "Erro interno." }, { status: 500 });
   }
 }
@@ -37,28 +17,12 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const title = body?.title;
-    const image = body?.image;
-    const description = body?.description;
-    const price = body?.price;
-    const amount = body?.amount;
-    const category_id = body?.category_id;
-    const active = body?.active;
+    if (!body.title || !body.price) {
+      return NextResponse.json({ message: "Título e preço são obrigatórios." }, { status: 400 });
+    }
 
-    const productData = {
-      title,
-      image,
-      description,
-      price,
-      amount,
-      category_id,
-      active,
-    };
-
-    const data = await createProductHandler(productData);
-
+    const data = await createProduct(body);
     const { status } = data;
-
     return NextResponse.json(data, { status });
   } catch (error) {
     console.error("Error creating product:", error);
@@ -75,8 +39,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ message: "ID do produto não fornecido." }, { status: 400 });
     }
 
-    const data = await deleteProduct(productId);
-
+    const data = await removeProduct(productId);
     const { status } = data;
     return NextResponse.json(data, { status });
   } catch (error) {
@@ -96,11 +59,11 @@ export async function GET(req: Request) {
     }
 
     if (productId) {
-      const data = await getProduct({ token, productId });
+      const data = await fetchProductByIdAndUserToken({ token, productId });
       const { status } = data;
       return NextResponse.json(data, { status });
     } else {
-      const data = await getProducts(token);
+      const data = await fetchAllProductsByUserToken(token);
       const { status } = data;
       return NextResponse.json(data, { status });
     }

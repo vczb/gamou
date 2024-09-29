@@ -1,5 +1,5 @@
 import Products from "@/containers/Products";
-import { getProducts } from "@/controllers/products";
+import { fetchAllProductsByUserToken } from "@/controllers/products";
 import { getCookie } from "@/utils/storage/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -16,7 +16,7 @@ const Index = async () => {
     return redirect("/sair");
   }
 
-  const response = await getProducts(token?.value);
+  const response = await fetchAllProductsByUserToken(token?.value);
 
   if (response.status !== 200) {
     throw new Error(response.message);

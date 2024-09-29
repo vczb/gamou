@@ -1,18 +1,14 @@
 import { Product } from "@/types/product";
-import connection from "@/database/connection"; // Adjust the path to your Knex connection
+import connection from "@/database/connection";
 
-/**
- * Create a new product record with provided data.
- * @param {Partial<Product>} data - The data to create the product with.
- * @returns {Promise<Product | undefined>} - Returns the created product if successful, otherwise undefined.
- */
-export const createProduct = async (
-  data: Partial<Product>
+
+export const insertProductModel = async (
+  data: Product
 ): Promise<Product | undefined> => {
   try {
     const [newProduct] = await connection<Product>("products")
       .insert(data)
-      .returning("*"); // Ensure your DB supports 'returning'
+      .returning("*"); 
 
     return newProduct || undefined;
   } catch (error) {
@@ -21,7 +17,8 @@ export const createProduct = async (
   }
 };
 
-export const getProductByIdAndUserId = async (
+
+export const selectProductByIdAndUserTokenModel = async (
   data: { id: string; user_id: string }
 ): Promise<Product | undefined> => {
   try {
@@ -35,7 +32,8 @@ export const getProductByIdAndUserId = async (
   }
 };
 
-export const queryProducts = async (
+
+export const selectProductsModel = async (
   props: Partial<Product>
 ): Promise<Product[] | undefined> => {
   try {
@@ -47,7 +45,8 @@ export const queryProducts = async (
   }
 };
 
-export const queryProduct = async (
+
+export const selectProductModel = async (
   props: Partial<Product>
 ): Promise<Product | undefined> => {
   try {
@@ -61,21 +60,25 @@ export const queryProduct = async (
   }
 };
 
-/**
- * Update a product record with new data.
- * @param {number} id - The ID of the product to update.
- * @param {Partial<Product>} data - The data to update the product with.
- * @returns {Promise<Product | undefined>} - Returns the updated product if successful.
- */
-export const editProduct = async (
+
+export const updateProductModel = async (
   id: number,
   data: Partial<Product>
 ): Promise<Product | undefined> => {
   try {
+    const updateData: Partial<Product> = {};
+    if (data.title) updateData.title = data.title;
+    if (data.description) updateData.description = data.description;
+    if (data.image) updateData.image = data.image;
+    if (data.active !== undefined) updateData.active = data.active;
+    if (data.price !== undefined) updateData.price = data.price;
+    if (data.amount !== undefined) updateData.amount = data.amount;
+    if (data.category_id !== undefined) updateData.category_id = data.category_id;
+
     const [updatedProduct] = await connection<Product>("products")
-      .where({ id })
-      .update(data)
-      .returning("*"); // Ensure your DB supports 'returning'
+      .where({ id: id })
+      .update(updateData)
+      .returning("*"); 
 
     return updatedProduct || undefined;
   } catch (error) {
@@ -84,8 +87,13 @@ export const editProduct = async (
   }
 };
 
-export const destroyProduct = async (id: string) => {
-  const result = await connection("products").where({ id }).del();
 
-  return result; // Returns the number of rows deleted
+export const deleteProductModel = async (data: { id: number }): Promise<number> => {
+  try {
+    const result = await connection("products").where({ id: data.id }).del();
+    return result; // Returns the number of rows deleted
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw error;
+  }
 };

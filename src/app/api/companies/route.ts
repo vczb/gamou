@@ -1,28 +1,22 @@
-import { updateCompany } from "@/controllers/companies";
+import { modifyCompany } from "@/controllers/companies";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
 
-    const name = body?.name;
-    const image = body?.image;
-    const description = body?.description;
-    const active = body?.active;
-    const currency = body?.currency;
+    const { name, image, description, active, currency } = body;
 
-    const data = await updateCompany({
-      name,
-      image,
-      description,
-      active,
-      currency,
-    });
+    if (!name || !image || !description || active === undefined || !currency) {
+      return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+    }
+
+    const data = await modifyCompany({ name, image, description, active, currency });
 
     const { status } = data;
     return NextResponse.json(data, { status });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Erro interno." }, { status: 500 });
+    console.error("Error updating company:", error);
+    return NextResponse.json({ message: "Internal server error." }, { status: 500 });
   }
 }

@@ -1,5 +1,5 @@
 import Category from "@/containers/Category";
-import { getCategory } from "@/controllers/categories";
+import { fetchCategoryByIdAndUserToken } from "@/controllers/categories";
 import { getCookie } from "@/utils/storage/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -22,7 +22,10 @@ export default async function Index({ params }: { params: { id: string } }) {
 
   const categoryId = params.id;
 
-  const response = await getCategory({ token: token?.value, categoryId });
+  const response = await fetchCategoryByIdAndUserToken({
+    token: token?.value,
+    categoryId,
+  });
 
   if (response.status !== 200) {
     throw new Error(response.message);

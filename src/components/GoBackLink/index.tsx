@@ -1,7 +1,7 @@
 import Link from "@/components/Link";
 import Arrow from "@/icons/Arrow";
 
-type GoBackLinkProps = {
+export type GoBackLinkProps = {
   path: string;
   text: string;
 };

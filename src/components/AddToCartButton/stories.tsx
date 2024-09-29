@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 import AddToCartButton from ".";

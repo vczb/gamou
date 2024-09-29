@@ -1,7 +1,7 @@
 import React, { useRef, InputHTMLAttributes } from "react";
 import Image from "../Image";
 
-type UploadImageProps = {
+export type UploadImageProps = {
   name: string;
   defaultValue?: string;
 } & InputHTMLAttributes<HTMLInputElement>;

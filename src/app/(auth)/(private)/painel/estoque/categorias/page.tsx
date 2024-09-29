@@ -1,5 +1,5 @@
 import Categories from "@/containers/Categories";
-import { getCategories } from "@/controllers/categories";
+import { fetchAllCategoriesByUserToken } from "@/controllers/categories";
 import { getCookie } from "@/utils/storage/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -16,7 +16,7 @@ const Index = async () => {
     return redirect("/sair");
   }
 
-  const response = await getCategories(token?.value);
+  const response = await fetchAllCategoriesByUserToken({ token: token.value });
 
   if (response.status !== 200) {
     throw new Error(response.message);

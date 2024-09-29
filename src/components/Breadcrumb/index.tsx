@@ -1,6 +1,6 @@
 import Link from "../Link";
 
-type BreadcrumbProps = {
+export type BreadcrumbProps = {
   items: {
     link: string;
     label: string;

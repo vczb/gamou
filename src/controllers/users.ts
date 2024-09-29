@@ -1,9 +1,4 @@
-import {
-  createUserWithCompany,
-  destroyUser,
-  editUser,
-  queryUser,
-} from "@/models/users";
+
 import { getCookie, setCookies } from "@/utils/storage/server";
 import {
   createSessionToken,
@@ -17,6 +12,7 @@ import {
   unauthorized,
   unprocessableEntity,
 } from "@/utils/http-helpers";
+import { insertUserWithCompanyModel, selectUserModel, deleteUserModel, updateUserModel } from "@/models/users";
 
 export const signIn = async (email: string, password: string) => {
   try {
@@ -24,7 +20,7 @@ export const signIn = async (email: string, password: string) => {
       return badRequest("Email e Senha são obrigatórios!");
     }
 
-    const user = await queryUser({ email });
+    const user = await selectUserModel({ email });
 
     if (!user?.password) {
       return unauthorized("Email ou Senha incorretos");
@@ -65,7 +61,7 @@ export const signUp = async (email: string, password: string) => {
       return badRequest("Email e Password são obrigatórios!");
     }
 
-    const user = await createUserWithCompany({ email, password });
+    const user = await insertUserWithCompanyModel({ email, password });
 
     if (!user?.id) {
       return unprocessableEntity(
@@ -95,7 +91,7 @@ export const signUp = async (email: string, password: string) => {
   }
 };
 
-export const getUser = async (token: string) => {
+export const fetchUserByToken = async (token: string) => {
   const { id: userId } = verifySessionToken(token) as { id?: number };
 
   if (!userId) {
@@ -104,7 +100,7 @@ export const getUser = async (token: string) => {
     );
   }
 
-  const user = await queryUser({ id: userId });
+  const user = await selectUserModel({ id: userId });
 
   if (!user?.id) {
     return unprocessableEntity(
@@ -121,7 +117,7 @@ export const getUser = async (token: string) => {
   return ok("Dados do usuários carregados com sucesso!", data);
 };
 
-export const updateUser = async ({
+export const modifyUser = async ({
   name,
   password,
 }: {
@@ -140,7 +136,7 @@ export const updateUser = async ({
     return serverError("Não foi possível identificar o usuário");
   }
 
-  const [user] = await editUser({ id: userId, name, password });
+  const [user] = await updateUserModel({ id: userId, name, password });
 
   if (!user?.id) {
     return unprocessableEntity(
@@ -155,7 +151,7 @@ export const updateUser = async ({
   return ok("Usuário editado com sucesso!", data);
 };
 
-export const deleteUser = async (id: string) => {
+export const removeUser = async (id: string) => {
   const token = getCookie("token");
 
   if (!token?.value) {
@@ -171,7 +167,7 @@ export const deleteUser = async (id: string) => {
   }
 
   try {
-    const result = await destroyUser(userId);
+    const result = await deleteUserModel({id: userId});
 
     if (result === 0) {
       return unprocessableEntity("Não foi possível deletar o usuário");

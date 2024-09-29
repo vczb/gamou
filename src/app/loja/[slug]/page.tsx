@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import Store, { StoreProps } from "@/containers/Store";
-import { getStoreBySlug } from "@/controllers/store";
+import { fetchStoreBySlug } from "@/controllers/store";
 
 const Page = async ({ params }: { params: { slug: string } }) => {
   const slug = params.slug;
-  const data = await getStoreBySlug({ slug });
+  const { data } = await fetchStoreBySlug({ slug });
   const { categories, category_product_list, image, name } = data;
 
   const props = {

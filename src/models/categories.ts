@@ -1,19 +1,20 @@
 import { Category } from "@/types/category";
-import connection from "@/database/connection"; // Adjust the path to your Knex connection
+import connection from "@/database/connection";
 
 
-/**
- * Create a new category record with provided data.
- * @param {Partial<Category>} data - The data to create the category with.
- * @returns {Promise<Category | undefined>} - Returns the created category if successful, otherwise undefined.
- */
-export const createCategory = async (
-  data: Partial<Category>
+export const insertCategoryModel = async (
+  data: {
+    title: string;
+    description?: string;
+    image?: string;
+    active?: boolean;
+    user_id: number;
+  }
 ): Promise<Category | undefined> => {
   try {
     const [newCategory] = await connection<Category>("categories")
       .insert(data)
-      .returning("*"); // Ensure your DB supports 'returning'
+      .returning("*"); 
 
     return newCategory || undefined;
   } catch (error) {
@@ -22,8 +23,8 @@ export const createCategory = async (
   }
 };
 
-export const getCategoryByIdAndUserId = async (
-  data: {id: string, user_id: string}
+export const selectCategoryByIdAndUserTokenModel = async (
+  data: { id: string; user_id: string }
 ): Promise<Category | undefined> => {
   try {
     const category = await connection<Category>("categories")
@@ -36,23 +37,27 @@ export const getCategoryByIdAndUserId = async (
   }
 };
 
-export const queryCategories = async (
+
+export const selectCategoriesModel = async (
   props: Partial<Category>
 ): Promise<Category[] | undefined> => {
   try {
-    const category = await connection<Category>("categories").where(props)
-    return category || undefined;
+    const categories = await connection<Category>("categories").where(props);
+    return categories || undefined;
   } catch (error) {
-    console.error("Error querying category:", error);
+    console.error("Error querying categories:", error);
     throw error;
   }
 };
 
-export const queryCategory = async (
+
+export const selectCategoryModel = async (
   props: Partial<Category>
 ): Promise<Category | undefined> => {
   try {
-    const category = await connection<Category>("categories").where(props).first()
+    const category = await connection<Category>("categories")
+      .where(props)
+      .first();
     return category || undefined;
   } catch (error) {
     console.error("Error querying category:", error);
@@ -60,21 +65,27 @@ export const queryCategory = async (
   }
 };
 
-/**
- * Update a category record with new data.
- * @param {number} id - The ID of the category to update.
- * @param {Partial<Category>} data - The data to update the category with.
- * @returns {Promise<Category | undefined>} - Returns the updated category if successful.
- */
-export const editCategory = async (
-  id: number,
-  data: Partial<Category>
+
+export const updateCategoryModel = async (
+  data: {
+    id: number;
+    title?: string;
+    description?: string;
+    image?: string;
+    active?: boolean;
+  }
 ): Promise<Category | undefined> => {
   try {
+    const updateData: Partial<Category> = {};
+    if (data.title) updateData.title = data.title;
+    if (data.description) updateData.description = data.description;
+    if (data.image) updateData.image = data.image;
+    if (data.active !== undefined) updateData.active = data.active;
+
     const [updatedCategory] = await connection<Category>("categories")
-      .where({ id })
-      .update(data)
-      .returning("*"); // Ensure your DB supports 'returning'
+      .where({ id: data.id })
+      .update(updateData)
+      .returning("*"); 
 
     return updatedCategory || undefined;
   } catch (error) {
@@ -83,8 +94,15 @@ export const editCategory = async (
   }
 };
 
-export const destroyCategory = async (id: string) => {
-  const result = await connection("categories").where({ id }).del();
 
-  return result; // Returns the number of rows deleted
+export const deleteCategoryModel = async (
+  data: { id: number }
+): Promise<number> => {
+  try {
+    const result = await connection("categories").where({ id: data.id }).del();
+    return result; // Returns the number of rows deleted
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    throw error;
+  }
 };

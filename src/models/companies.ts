@@ -1,12 +1,8 @@
 import { Company } from "@/types/company";
-import connection from "@/database/connection"; // Adjust the path to your Knex connection
+import connection from "@/database/connection"; 
 
-/**
- * Query a single company based on provided criteria.
- * @param {Partial<Company>} props - The properties to filter the company.
- * @returns {Promise<Company | undefined>} - Returns the company if found, otherwise undefined.
- */
-export const queryCompany = async (
+
+export const selectCompanyModel = async (
   props: Partial<Company>
 ): Promise<Company | undefined> => {
   try {
@@ -18,13 +14,8 @@ export const queryCompany = async (
   }
 };
 
-/**
- * Update a company record with new data.
- * @param {number} id - The ID of the company to update.
- * @param {Partial<Company>} data - The data to update the company with.
- * @returns {Promise<Company | undefined>} - Returns the updated company if successful.
- */
-export const editCompany = async (
+
+export const updateCompanyModel = async (
   id: number,
   data: Partial<Company>
 ): Promise<Company | undefined> => {
@@ -32,7 +23,7 @@ export const editCompany = async (
     const [updatedCompany] = await connection<Company>("companies")
       .where({ id })
       .update(data)
-      .returning("*"); // Ensure your DB supports 'returning'
+      .returning("*"); 
 
     return updatedCompany || undefined;
   } catch (error) {

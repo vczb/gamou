@@ -1,11 +1,11 @@
-import { deleteCategory } from "@/controllers/categories";
+import { removeCategory } from "@/controllers/categories";
 import { NextResponse } from "next/server";
 
 export async function DELETE(req: Request, { params }: {params: {id: string}}) {
   try {
     const { id } = params;
 
-    const data = await deleteCategory(id);
+    const data = await removeCategory({categoryId: id});
 
     const { status } = data;
     return NextResponse.json(data, { status });

@@ -1,6 +1,6 @@
 import Button from "../Button";
 
-type GetStartedProps = {
+export type GetStartedProps = {
   title: string;
   subtitle: string;
   cta: string;

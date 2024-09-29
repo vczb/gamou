@@ -1,6 +1,6 @@
 import React, { SelectHTMLAttributes } from "react";
 
-type SelectProps = {
+export type SelectProps = {
   name: string;
   options: {
     value: string;

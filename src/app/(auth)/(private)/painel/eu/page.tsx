@@ -1,5 +1,5 @@
 import Profile from "@/containers/Profile";
-import { getUser } from "@/controllers/users";
+import { fetchUserByToken } from "@/controllers/users";
 import { getCookie } from "@/utils/storage/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -16,7 +16,7 @@ const Index = async () => {
     return redirect("/sair");
   }
 
-  const response = await getUser(token?.value);
+  const response = await fetchUserByToken(token?.value);
 
   if (response.status !== 200) {
     throw new Error(response.message);

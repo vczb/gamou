@@ -5,7 +5,6 @@ import Button from "@/components/Button";
 import Image from "@/components/Image";
 import Link from "@/components/Link";
 import Table from "@/components/Table";
-import { deleteProduct } from "@/controllers/products";
 import { useCategory } from "@/hooks/use-category";
 import { useProduct } from "@/hooks/use-product";
 import { Category } from "@/types/category";

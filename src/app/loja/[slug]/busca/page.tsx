@@ -1,7 +1,6 @@
 import { CategoryProductListProps } from "@/components/CategoryProductList";
 import Search, { SearchProps } from "@/containers/Search";
-import { getStoreBySlug } from "@/controllers/store";
-import { getInventoryByCompanySlug } from "@/models/store";
+import { fetchStoreBySlug } from "@/controllers/store";
 
 const Index = async ({
   params,
@@ -13,7 +12,7 @@ const Index = async ({
   const slug = params.slug;
   const query = searchParams?.q || "";
 
-  const data = await getStoreBySlug({ slug });
+  const { data } = await fetchStoreBySlug({ slug });
 
   const { category_product_list } = data;
 

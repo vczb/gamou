@@ -1,5 +1,4 @@
-import { editCompany, queryCompany } from "@/models/companies";
-import { Company } from "@/types/company";
+import { updateCompanyModel, selectCompanyModel } from "@/models/companies";
 import { verifySessionToken } from "@/utils/criptography";
 import {
   ok,
@@ -9,7 +8,8 @@ import {
 } from "@/utils/http-helpers";
 import { getCookie } from "@/utils/storage/server";
 
-export const getCompany = async (token: string) => {
+
+export const fetchCompanyByUserToken = async ({ token }: { token: string }) => {
   try {
     const { id: userId } = verifySessionToken(token) as { id?: number };
 
@@ -19,7 +19,7 @@ export const getCompany = async (token: string) => {
       );
     }
 
-    const company = await queryCompany({ user_id: userId });
+    const company = await selectCompanyModel({ user_id: userId });
 
     if (!company) {
       return unprocessableEntity("Empresa não encontrada para este usuário.");
@@ -36,7 +36,20 @@ export const getCompany = async (token: string) => {
   }
 };
 
-export const updateCompany = async (companyData: Partial<Company>) => {
+
+export const modifyCompany = async ({
+  name,
+  image,
+  description,
+  active,
+  currency,
+}: {
+  name: string;
+  image: string;
+  description: string;
+  active: boolean;
+  currency: string;
+}) => {
   try {
     const token = getCookie("token");
 
@@ -53,13 +66,19 @@ export const updateCompany = async (companyData: Partial<Company>) => {
       );
     }
 
-    const existingCompany = await queryCompany({ user_id: userId });
+    const existingCompany = await selectCompanyModel({ user_id: userId });
 
     if (!existingCompany) {
       return unprocessableEntity("Empresa não encontrada para este usuário.");
     }
 
-    const updatedCompany = await editCompany(existingCompany.id, companyData);
+    const updatedCompany = await updateCompanyModel(existingCompany.id, {
+      name,
+      image,
+      description,
+      active,
+      currency,
+    });
 
     if (!updatedCompany) {
       return unprocessableEntity("Não foi possível atualizar a empresa.");

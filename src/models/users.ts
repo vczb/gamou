@@ -2,76 +2,83 @@ import connection from "@/database/connection";
 import { User } from "@/types/user";
 import { encrypt } from "@/utils/criptography";
 
-type QueryUserParams = { id: number } | { email: string };
+type QueryUserParams = { id?: number; email?: string };
 
-export const queryUser = async (
-  params: QueryUserParams
-): Promise<User | undefined> => {
-  const query = connection("users").select("*");
 
-  if ("id" in params) {
-    query.where({ id: params.id });
-  } else {
-    query.where({ email: params.email });
+export const selectUserModel = async (params: QueryUserParams): Promise<User | undefined> => {
+  try {
+    const query = connection("users").select("*");
+
+    if (params.id) {
+      query.where({ id: params.id });
+    } else if (params.email) {
+      query.where({ email: params.email });
+    }
+
+    const user = await query.first();
+    return user || undefined;
+  } catch (error) {
+    console.error("Error querying user:", error);
+    throw error;
   }
-
-  const user = await query.first();
-
-  return user;
 };
 
-export const createUser = async (params: {
-  email: string;
-  password: string;
-}) => {
-  const { email, password } = params;
-  const hashPassword = await encrypt(password);
-  const user = await connection("users")
-    .insert({
-      email,
-      password: hashPassword,
-    })
-    .returning("id");
 
-  return user;
-};
+export const insertUserModel = async (params: { email: string; password: string }): Promise<number[]> => {
+  try {
+    const { email, password } = params;
+    const hashPassword = await encrypt(password);
+    const user = await connection("users")
+      .insert({
+        email,
+        password: hashPassword,
+      })
+      .returning("id");
 
-export const destroyUser = async (id: string) => {
-  const result = await connection("users").where({ id }).del();
-
-  return result; // Returns the number of rows deleted
-};
-
-export const editUser = async ({
-  id,
-  name,
-  password,
-}: {
-  id: number;
-  name?: string;
-  password?: string;
-}) => {
-  const updateData: Partial<User> = {};
-
-  if (name) updateData.name = name;
-  if (password) updateData.password = await encrypt(password);
-
-  if (Object.keys(updateData).length === 0) {
-    throw new Error("No fields to update");
+    return user;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
   }
-
-  const updatedUser = await connection("users")
-    .where({ id })
-    .update(updateData)
-    .returning(["id", "name", "email"]);
-
-  return updatedUser;
 };
 
-export const createUserWithCompany = async (params: {
-  email: string;
-  password: string;
-}) => {
+
+export const deleteUserModel = async (params: { id: string }): Promise<number> => {
+  try {
+    const result = await connection("users").where({ id: params.id }).del();
+    return result; // Returns the number of rows deleted
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+};
+
+
+export const updateUserModel = async (params: { id: number; name?: string; password?: string }): Promise<User[]> => {
+  try {
+    const updateData: Partial<User> = {};
+
+    if (params.name) updateData.name = params.name;
+    if (params.password) updateData.password = await encrypt(params.password);
+
+    if (Object.keys(updateData).length === 0) {
+      throw new Error("No fields to update");
+    }
+
+    const updatedUser = await connection("users")
+      .where({ id: params.id })
+      .update(updateData)
+      .returning(["id", "name", "email"]);
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+};
+
+
+export const insertUserWithCompanyModel = async (params: { email: string; password: string }): Promise<User> => {
   const { email, password } = params;
 
   return await connection.transaction(async (trx) => {
@@ -97,6 +104,7 @@ export const createUserWithCompany = async (params: {
 
       return user;
     } catch (error) {
+      console.error("Error creating user with company:", error);
       throw error;
     }
   });

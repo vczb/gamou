@@ -1,5 +1,11 @@
-import { createCategory, destroyCategory, editCategory, queryCategories, getCategoryByIdAndUserId, queryCategory } from "@/models/categories";
-import { Category } from "@/types/category";
+import { 
+  insertCategoryModel, 
+  deleteCategoryModel, 
+  updateCategoryModel, 
+  selectCategoriesModel, 
+  selectCategoryByIdAndUserTokenModel, 
+  selectCategoryModel 
+} from "@/models/categories";
 import { verifySessionToken } from "@/utils/criptography";
 import {
   badRequest,
@@ -10,85 +16,73 @@ import {
 } from "@/utils/http-helpers";
 import { getCookie } from "@/utils/storage/server";
 
-export const getCategory = async ({token, categoryId}: {token: string, categoryId: string}) => {
+export const fetchCategoryByIdAndUserToken = async ({ token, categoryId }: { token: string, categoryId: string }) => {
   try {
-    const { id: userId } = verifySessionToken(token) as { id?: number };
+    const { id: userId } = verifySessionToken(token) as { id?: string };
 
     if (!userId) {
-      return unauthorized(
-        "Não foi possível verificar a autenticidade do usuário"
-      );
+      return unauthorized("Não foi possível verificar a autenticidade do usuário");
     }
 
-    const category = await getCategoryByIdAndUserId({ user_id: String(userId), id: categoryId });
+    const category = await selectCategoryByIdAndUserTokenModel({ user_id: userId, id: categoryId });
 
     if (!category) {
       return unprocessableEntity("Categoria não encontrada para este usuário.");
     }
 
-    const data = {
-      category,
-    };
+    const data = { category };
 
     return ok("Dados da categoria carregados com sucesso!", data);
   } catch (error) {
+    console.error("Error fetching category:", error);
     return unprocessableEntity("Ocorreu um erro ao buscar as categorias.");
   }
 };
 
-export const getCategories = async (token: string) => {
+export const fetchAllCategoriesByUserToken = async ({ token }: { token: string }) => {
   try {
     const { id: userId } = verifySessionToken(token) as { id?: number };
 
     if (!userId) {
-      return unauthorized(
-        "Não foi possível verificar a autenticidade do usuário"
-      );
+      return unauthorized("Não foi possível verificar a autenticidade do usuário");
     }
 
-    const categories = await queryCategories({ user_id: userId });
+    const categories = await selectCategoriesModel({ user_id: userId });
 
-    const data = {
-      categories,
-    };
+    const data = { categories };
 
     return ok("Dados das categorias carregados com sucesso!", data);
   } catch (error) {
-    console.error("Error fetching category:", error);
+    console.error("Error fetching categories:", error);
     return unprocessableEntity("Ocorreu um erro ao buscar a categoria.");
   }
 };
 
-export const updateCategory = async (categoryData: Partial<Category>) => {
+
+export const modifyCategory = async ({ id, title, image, description, active }: { id: number, title: string, image: string, description: string, active: boolean }) => {
   try {
     const token = getCookie("token");
 
     if (!token?.value) {
-      return serverError(
-        "Não foi possível checar a autenticidade da requisição"
-      );
+      return serverError("Não foi possível checar a autenticidade da requisição");
     }
     const { id: userId } = verifySessionToken(token.value) as { id?: number };
 
     if (!userId) {
-      return unauthorized(
-        "Não foi possível verificar a autenticidade do usuário"
-      );
+      return unauthorized("Não foi possível verificar a autenticidade do usuário");
     }
 
-    if(!categoryData.id) {
-      return badRequest("Erro no corpo da requisição")
+    if (!id) {
+      return badRequest("Erro no corpo da requisição");
     }
 
-    const updatedCategory = await editCategory(categoryData.id, categoryData);
+    const updatedCategory = await updateCategoryModel({ id, title, image, description, active });
 
     if (!updatedCategory) {
       return unprocessableEntity("Não foi possível atualizar a categoria.");
     }
 
-    const data = {
-      category: updatedCategory,
-    };
+    const data = { category: updatedCategory };
 
     return ok("Categoria atualizada com sucesso!", data);
   } catch (error) {
@@ -97,35 +91,26 @@ export const updateCategory = async (categoryData: Partial<Category>) => {
   }
 };
 
-export const createCategoryHandler = async (categoryData: Partial<Category>) => {
+export const createCategory = async ({ title, image, description, active }: { title: string, image: string, description: string, active: boolean }) => {
   try {
     const token = getCookie("token");
 
     if (!token?.value) {
-      return serverError(
-        "Não foi possível checar a autenticidade da requisição"
-      );
+      return serverError("Não foi possível checar a autenticidade da requisição");
     }
     const { id: userId } = verifySessionToken(token.value) as { id?: number };
 
     if (!userId) {
-      return unauthorized(
-        "Não foi possível verificar a autenticidade do usuário"
-      );
+      return unauthorized("Não foi possível verificar a autenticidade do usuário");
     }
 
-    const newCategory = await createCategory({
-      ...categoryData,
-      user_id: userId,
-    });
+    const newCategory = await insertCategoryModel({ title, image, description, active, user_id: userId });
 
     if (!newCategory) {
       return unprocessableEntity("Não foi possível criar a categoria.");
     }
 
-    const data = {
-      category: newCategory,
-    };
+    const data = { category: newCategory };
 
     return ok("Categoria criada com sucesso!", data);
   } catch (error) {
@@ -134,30 +119,26 @@ export const createCategoryHandler = async (categoryData: Partial<Category>) => 
   }
 };
 
-export const deleteCategory = async (categoryId: string) => {
+export const removeCategory = async ({ categoryId }: { categoryId: string }) => {
   try {
     const token = getCookie("token");
 
     if (!token?.value) {
-      return serverError(
-        "Não foi possível checar a autenticidade da requisição"
-      );
+      return serverError("Não foi possível checar a autenticidade da requisição");
     }
     const { id: userId } = verifySessionToken(token.value) as { id?: number };
 
     if (!userId) {
-      return unauthorized(
-        "Não foi possível verificar a autenticidade do usuário"
-      );
+      return unauthorized("Não foi possível verificar a autenticidade do usuário");
     }
 
-    const existingCategory = await queryCategory({ id: parseInt(categoryId), user_id: userId });
+    const existingCategory = await selectCategoryModel({ id: parseInt(categoryId), user_id: userId });
 
     if (!existingCategory) {
       return unprocessableEntity("Categoria não encontrada para este usuário.");
     }
 
-    const deletedCategory = await destroyCategory(categoryId);
+    const deletedCategory = await deleteCategoryModel({ id: parseInt(categoryId) });
 
     if (!deletedCategory) {
       return unprocessableEntity("Não foi possível deletar a categoria.");

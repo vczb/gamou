@@ -1,6 +1,6 @@
 import Product from "@/containers/Product";
-import { getCategories } from "@/controllers/categories";
-import { getProduct } from "@/controllers/products";
+import { fetchAllCategoriesByUserToken } from "@/controllers/categories";
+import { fetchProductByIdAndUserToken } from "@/controllers/products";
 import { getCookie } from "@/utils/storage/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -23,13 +23,18 @@ export default async function Index({ params }: { params: { id: string } }) {
 
   const productId = params.id;
 
-  const response = await getProduct({ token: token?.value, productId });
+  const response = await fetchProductByIdAndUserToken({
+    token: token?.value,
+    productId,
+  });
 
   if (response.status !== 200) {
     throw new Error(response.message);
   }
 
-  const categoriesResponse = await getCategories(token?.value);
+  const categoriesResponse = await fetchAllCategoriesByUserToken({
+    token: token?.value,
+  });
 
   if (categoriesResponse.status !== 200) {
     throw new Error(categoriesResponse.message);
