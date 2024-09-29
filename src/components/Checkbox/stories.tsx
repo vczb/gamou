@@ -6,7 +6,8 @@ export default {
   title: "Checkbox",
   component: Checkbox,
   args: {
-    label: "Ativo",
+    label: "Accept Terms",
+    className: "",
   },
 } as Meta;
 

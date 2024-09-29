@@ -6,15 +6,10 @@ export default {
   title: "CartButton",
   component: CartButton,
   args: {
-    message: "Items no carrinho",
-    amount: 10,
-    price: 179.99,
-    onClick: () => console.log("ok"),
+    variant: "black",
   },
 } as Meta;
 
 export const Default: StoryFn<CartButtonProps> = (args) => (
-  <div className="h-[200vh] relative">
-    <CartButton {...args} />
-  </div>
+  <CartButton {...args} />
 );

@@ -10,6 +10,8 @@ export default {
     title: "Mushroom Pizza 4x3",
     image: "https://picsum.photos/200/300",
     price: 121.5,
+    description: "Delicious mushroom pizza with a crispy crust.",
+    amount: 2,
   },
 } as Meta;
 

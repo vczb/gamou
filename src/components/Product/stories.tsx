@@ -6,12 +6,11 @@ export default {
   title: "Product",
   component: Product,
   args: {
-    uid: "xyz",
-    title: "Mushroom Pizza 4x3",
+    uid: "123",
+    title: "Sample Product",
     image: "https://picsum.photos/200/300",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    price: 121.5,
+    description: "This is a sample product description.",
+    price: 99.99,
   },
 } as Meta;
 
