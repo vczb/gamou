@@ -8,6 +8,7 @@ import Select from "../Select";
 import TextArea from "../TextArea";
 import TextField from "../TextField";
 import UploadImage from "../UploadImage";
+import NumberField from "../NumberField";
 
 type FormSubmit = {
   text: string;
@@ -31,13 +32,15 @@ export type FieldFormSchema = {
     | "paragraph"
     | "checkbox"
     | "select"
-    | "upload-image";
+    | "upload-image"
+    | "text-number";
   defaultValue?: string | boolean;
   placeholder?: string;
   editable?: boolean;
   required?: boolean;
   checked?: boolean;
   className?: string;
+  step?: "1" | "0.1";
   selectOptions?: {
     label: string;
     value: string;
@@ -92,6 +95,7 @@ const DynamicForm = ({
       selectOptions,
       checkboxLabel,
       className,
+      step,
     } = field;
 
     const fieldId = `${formId}-${name}`;
@@ -147,6 +151,23 @@ const DynamicForm = ({
             required={required}
             defaultChecked={checked}
             label={checkboxLabel || "Sim"}
+          />,
+          fieldId
+        );
+      case "text-number":
+        return renderLabeledField(
+          name,
+          label,
+          <TextField
+            id={fieldId}
+            type={"number"}
+            step={step}
+            name={name}
+            placeholder={placeholder}
+            required={required}
+            {...(editable
+              ? { defaultValue: defaultValue as string }
+              : { value: defaultValue as string, disabled: true })}
           />,
           fieldId
         );

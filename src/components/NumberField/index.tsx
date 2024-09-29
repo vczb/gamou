@@ -3,16 +3,22 @@ import Plus from "../../icons/Plus";
 import { useCallback, useRef } from "react";
 
 export type NumberFieldProps = {
+  id?: string;
+  name?: string;
   defaultValue?: number;
   onChange?: (value: number) => void;
   minusDisabled?: boolean;
   plusDisabled?: boolean;
+  required?: boolean;
 };
 
 const NumberField = ({
   defaultValue = 0,
   minusDisabled = false,
   plusDisabled = false,
+  required = false,
+  id,
+  name,
   onChange,
 }: NumberFieldProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +60,9 @@ const NumberField = ({
         ref={inputRef}
         min={0}
         disabled
+        id={id}
+        required={required}
+        name={name}
         className="rounded-lg p-2 text-black w-10 h-9 text-center number-field"
       />
       <button

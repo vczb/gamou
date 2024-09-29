@@ -5,61 +5,65 @@ import Button from "@/components/Button";
 import Image from "@/components/Image";
 import Link from "@/components/Link";
 import Table from "@/components/Table";
+import { deleteProduct } from "@/controllers/products";
 import { useCategory } from "@/hooks/use-category";
+import { useProduct } from "@/hooks/use-product";
 import { Category } from "@/types/category";
 import { useCallback, useMemo } from "react";
 
 const BREADCUMB = [
   { link: "/painel", label: "Painel" },
   { link: "/painel/estoque", label: "Estoque" },
-  { link: "/painel/estoque/categorias", label: "Categorias", active: true },
+  { link: "/painel/estoque/produtos", label: "Produtos", active: true },
 ];
 
 type CategoriesProps = {
-  categories: Category[];
+  products: Category[];
 };
 
-const CATEGORIES_TABLE_COLUMNS = [
+const PRODUCTS_TABLE_COLUMNS = [
   { title: "Ações", key: "actions" },
   { title: "Imagem", key: "image" },
   { title: "Título", key: "title" },
+  { title: "Preço", key: "price" },
+  { title: "Quantidade", key: "amount" },
   { title: "Descrição", key: "description" },
   { title: "Ativa", key: "active" },
 ];
 
-const Categories = ({ categories }: CategoriesProps) => {
-  const { deleteCategory } = useCategory();
+const Products = ({ products }: CategoriesProps) => {
+  const { deleteProduct } = useProduct();
 
   const handleDelete = useCallback(
-    async (categoryId: number) => {
-      if (!categoryId) return;
+    async (productId: number) => {
+      if (!productId) return;
 
       if (
         window.confirm(
-          `Você tem certeza que quer deletar esta categoria?\n\nEsta ação não pode ser desfeita!`
+          `Você tem certeza que quer deletar esta produto?\n\nEsta ação não pode ser desfeita!`
         )
       ) {
-        await deleteCategory(categoryId);
+        await deleteProduct(productId);
       }
     },
-    [deleteCategory]
+    [deleteProduct]
   );
 
   const tableData = useMemo(() => {
-    return categories.map((category) => {
+    return products.map((product) => {
       return {
-        ...category,
+        ...product,
         image: (
           <Image
             className="w-32 h-24"
-            src={category.image}
-            alt={`Imagem da categoria ${category.title}`}
+            src={product.image}
+            alt={`Imagem da produto ${product.title}`}
           />
         ),
-        active: category.active ? "Sim" : "Não",
+        active: product.active ? "Sim" : "Não",
         actions: (
           <div className="flex flex-col gap-4">
-            <Link href={`/painel/estoque/categorias/editar/${category.id}`}>
+            <Link href={`/painel/estoque/produtos/editar/${product.id}`}>
               <Button variant="secondary" size="small">
                 Editar
               </Button>
@@ -67,7 +71,7 @@ const Categories = ({ categories }: CategoriesProps) => {
             <Button
               variant="light"
               size="small"
-              onClick={() => handleDelete(category.id)}
+              onClick={() => handleDelete(product.id)}
             >
               Deletar
             </Button>
@@ -75,24 +79,24 @@ const Categories = ({ categories }: CategoriesProps) => {
         ),
       };
     });
-  }, [categories, handleDelete]);
+  }, [products, handleDelete]);
 
   return (
     <div className="container mx-auto px-4 pb-28 pt-8 max-w-lg">
       <Breadcrumb items={BREADCUMB} />
       <div className="mt-4 text-end">
-        <Link href="/painel/estoque/categorias/adicionar">
-          <Button variant="secondary">Adicionar categoria</Button>
+        <Link href="/painel/estoque/produtos/adicionar">
+          <Button variant="secondary">Adicionar produto</Button>
         </Link>
       </div>
       <div className="mt-8">
-        {categories.length ? (
+        {products.length ? (
           <div className="shadow-lg rounded-sm">
-            <Table columns={CATEGORIES_TABLE_COLUMNS} data={tableData} />
+            <Table columns={PRODUCTS_TABLE_COLUMNS} data={tableData} />
           </div>
         ) : (
           <p className="text-blueGray-600 text-center">
-            Não há categorias, crie uma nova
+            Não há produtos, crie um novo
           </p>
         )}
       </div>
@@ -100,4 +104,4 @@ const Categories = ({ categories }: CategoriesProps) => {
   );
 };
 
-export default Categories;
+export default Products;
