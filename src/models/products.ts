@@ -45,14 +45,15 @@ export const selectProductsModel = async (
   }
 };
 
-export const selectProductsWithCategoryModel = async (
-  props: Partial<Product>
+export const selectJoinProductsModel = async (
+  props: Partial<Product> & {userId: string}
 ): Promise<(Product & { categoryTitle: string; categoryImage: string })[] | undefined> => {
   try {
     const products = await connection<Product>("products")
       .join("categories", "products.category_id", "=", "categories.id")
+      .join("companies", "products.company_id", "=", "companies.id")
       .select("products.*", "categories.title as categoryTitle", "categories.image as categoryImage")
-      .where("products.user_id", props.user_id);  // Specify "products.user_id"
+      .where("companies.user_id", props.userId);  // Specify "companies.user_id"
       
     return products || undefined;
   } catch (error) {
@@ -60,6 +61,7 @@ export const selectProductsWithCategoryModel = async (
     throw error;
   }
 };
+
 
 export const selectProductModel = async (
   props: Partial<Product>

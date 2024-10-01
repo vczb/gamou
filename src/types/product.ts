@@ -10,7 +10,7 @@ export interface Product {
   category_id: number;
   categoryTitle?: string;
   categoryImage?: string;
-  user_id: number;
+  company_id: number;
   active: boolean;
   created_at: Date;
   updated_at: Date;

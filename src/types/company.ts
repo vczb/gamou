@@ -7,4 +7,5 @@ export type Company = {
   active: boolean;
   currency: string;
   user_id: number;
+  company_sequence: number;
 };

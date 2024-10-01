@@ -4,7 +4,7 @@ import {
   updateProductModel,
   selectProductByIdAndUserTokenModel,
   selectProductModel,
-  selectProductsWithCategoryModel,
+  selectJoinProductsModel,
 } from "@/models/products";
 import { Product } from "@/types/product";
 import { verifySessionToken } from "@/utils/criptography";
@@ -54,7 +54,7 @@ export const fetchProductByIdAndUserToken = async ({
 
 export const fetchAllProductsByUserToken = async (token: string) => {
   try {
-    const { id: userId } = verifySessionToken(token) as { id?: number };
+    const { id: userId } = verifySessionToken(token) as { id?: string };
 
     if (!userId) {
       return unauthorized(
@@ -62,7 +62,7 @@ export const fetchAllProductsByUserToken = async (token: string) => {
       );
     }
 
-    const products = await selectProductsWithCategoryModel({ user_id: userId });
+    const products = await selectJoinProductsModel({ userId });
 
     const data = {
       products,
@@ -79,16 +79,14 @@ export const fetchAllProductsByUserToken = async (token: string) => {
 export const fetchAllProductsByCompanyId = async ({
   userId,
 }: {
-  userId: number;
+  userId: string;
 }) => {
   try {
     if (!userId) {
       return badRequest("Não foi possível verificar o ID da empresa");
     }
 
-    const products = await selectProductsWithCategoryModel({
-      user_id: userId,
-    });
+    const products = await selectJoinProductsModel({  userId   });
 
     const data = {
       products,
@@ -190,7 +188,7 @@ export const removeProduct = async (productId: string) => {
         "Não foi possível checar a autenticidade da requisição"
       );
     }
-    const { id: userId } = verifySessionToken(token.value) as { id?: number };
+    const { id: userId } = verifySessionToken(token.value) as { id?: string };
 
     if (!userId) {
       return unauthorized(
@@ -198,9 +196,9 @@ export const removeProduct = async (productId: string) => {
       );
     }
 
-    const existingProduct = await selectProductModel({
+    const existingProduct = await selectJoinProductsModel({
       id: parseInt(productId),
-      user_id: userId,
+      userId,
     });
 
     if (!existingProduct) {
