@@ -5,11 +5,19 @@ type LinkProps = {
   href: string;
   className?: string;
   children: ReactNode;
+  id?: string;
+  target?: string;
 };
 
-const Link = ({ href, children, className }: LinkProps) => {
+const Link = ({ href, children, className, id, target }: LinkProps) => {
   return (
-    <NextLink href={href} className={className} passHref>
+    <NextLink
+      href={href}
+      className={className}
+      id={id}
+      target={target}
+      passHref
+    >
       {children}
     </NextLink>
   );

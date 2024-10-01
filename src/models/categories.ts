@@ -1,20 +1,17 @@
 import { Category } from "@/types/category";
 import connection from "@/database/connection";
 
-
-export const insertCategoryModel = async (
-  data: {
-    title: string;
-    description?: string;
-    image?: string;
-    active?: boolean;
-    user_id: number;
-  }
-): Promise<Category | undefined> => {
+export const insertCategoryModel = async (data: {
+  title: string;
+  description?: string;
+  image?: string;
+  active?: boolean;
+  user_id: number;
+}): Promise<Category | undefined> => {
   try {
     const [newCategory] = await connection<Category>("categories")
       .insert(data)
-      .returning("*"); 
+      .returning("*");
 
     return newCategory || undefined;
   } catch (error) {
@@ -23,9 +20,10 @@ export const insertCategoryModel = async (
   }
 };
 
-export const selectCategoryByIdAndUserTokenModel = async (
-  data: { id: string; user_id: string }
-): Promise<Category | undefined> => {
+export const selectCategoryByIdAndUserIdModel = async (data: {
+  id: string;
+  user_id: string;
+}): Promise<Category | undefined> => {
   try {
     const category = await connection<Category>("categories")
       .where(data)
@@ -36,7 +34,6 @@ export const selectCategoryByIdAndUserTokenModel = async (
     throw error;
   }
 };
-
 
 export const selectCategoriesModel = async (
   props: Partial<Category>
@@ -49,7 +46,6 @@ export const selectCategoriesModel = async (
     throw error;
   }
 };
-
 
 export const selectCategoryModel = async (
   props: Partial<Category>
@@ -65,16 +61,13 @@ export const selectCategoryModel = async (
   }
 };
 
-
-export const updateCategoryModel = async (
-  data: {
-    id: number;
-    title?: string;
-    description?: string;
-    image?: string;
-    active?: boolean;
-  }
-): Promise<Category | undefined> => {
+export const updateCategoryModel = async (data: {
+  id: number;
+  title?: string;
+  description?: string;
+  image?: string;
+  active?: boolean;
+}): Promise<Category | undefined> => {
   try {
     const updateData: Partial<Category> = {};
     if (data.title) updateData.title = data.title;
@@ -85,7 +78,7 @@ export const updateCategoryModel = async (
     const [updatedCategory] = await connection<Category>("categories")
       .where({ id: data.id })
       .update(updateData)
-      .returning("*"); 
+      .returning("*");
 
     return updatedCategory || undefined;
   } catch (error) {
@@ -94,10 +87,9 @@ export const updateCategoryModel = async (
   }
 };
 
-
-export const deleteCategoryModel = async (
-  data: { id: number }
-): Promise<number> => {
+export const deleteCategoryModel = async (data: {
+  id: number;
+}): Promise<number> => {
   try {
     const result = await connection("categories").where({ id: data.id }).del();
     return result; // Returns the number of rows deleted

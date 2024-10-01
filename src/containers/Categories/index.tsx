@@ -60,13 +60,14 @@ const Categories = ({ categories }: CategoriesProps) => {
         actions: (
           <div className="flex flex-col gap-4">
             <Link href={`/painel/estoque/categorias/editar/${category.id}`}>
-              <Button variant="secondary" size="small">
+              <Button variant="secondary" size="small" className="w-full">
                 Editar
               </Button>
             </Link>
             <Button
               variant="light"
               size="small"
+              className="w-full"
               onClick={() => handleDelete(category.id)}
             >
               Deletar

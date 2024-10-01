@@ -1,18 +1,24 @@
 import { notFound } from "next/navigation";
 import Store, { StoreProps } from "@/containers/Store";
 import { fetchStoreBySlug } from "@/controllers/store";
+import { groupProductsByCategory } from "@/utils/mappers";
 
+// TODO: Optimize this
 const Page = async ({ params }: { params: { slug: string } }) => {
   const slug = params.slug;
   const { data } = await fetchStoreBySlug({ slug });
-  const { categories, category_product_list, image, name } = data;
+
+  const { products, company, categories } = data;
+
+  const categoryProductList = groupProductsByCategory(products);
 
   const props = {
-    slug,
+    products,
     categories,
-    categoryProductList: category_product_list,
-    image,
-    name,
+    categoryProductList,
+    image: company.image,
+    name: company.name,
+    slug: company.slug,
   } as unknown as StoreProps;
 
   if (!props) {

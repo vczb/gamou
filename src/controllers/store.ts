@@ -1,18 +1,36 @@
-import { selectCompanyBySlugModel, selectInventoryByCompanySlugModel } from "@/models/store";
+import { selectInventoryByCompanySlugModel } from "@/models/store";
 import { serverError, ok, unprocessableEntity } from "@/utils/http-helpers";
+import { fetchCompanyBySlug } from "./companies";
+import { fetchAllProductsByCompanyId } from "./products";
+import { fetchAllCategoriesByUserId } from "./categories";
 
+// TODO: Refactor for using Promise.all
 export const fetchStoreBySlug = async ({ slug }: { slug: string }) => {
   try {
-    const company = await selectCompanyBySlugModel({ slug });
-    const inventory = await selectInventoryByCompanySlugModel({ slug });
+    const { data: companyData } = await fetchCompanyBySlug({ slug });
 
-    if (!company || !inventory) {
-      return unprocessableEntity("Company or inventory not found.");
+    const { company } = companyData;
+
+    const { data: productsData } = await fetchAllProductsByCompanyId({
+      userId: company.user_id,
+    });
+
+    const { products } = productsData;
+
+    const { data: categoriesData } = await fetchAllCategoriesByUserId({
+      userId: company.user_id,
+    });
+
+    const { categories } = categoriesData;
+
+    if (!company || !products || !categories) {
+      return unprocessableEntity("Dados da loja não foram encontrados");
     }
 
-    return ok("Store data retrieved successfully", {
-      ...company,
-      ...inventory,
+    return ok("Dados da loja carregados com sucesso!", {
+      company,
+      products,
+      categories,
     });
   } catch (error) {
     console.error("Error fetching store by slug:", error);

@@ -1,13 +1,14 @@
 import { updateCompanyModel, selectCompanyModel } from "@/models/companies";
 import { verifySessionToken } from "@/utils/criptography";
+import { slugify } from "@/utils/formatters";
 import {
+  badRequest,
   ok,
   serverError,
   unauthorized,
   unprocessableEntity,
 } from "@/utils/http-helpers";
 import { getCookie } from "@/utils/storage/server";
-
 
 export const fetchCompanyByUserToken = async ({ token }: { token: string }) => {
   try {
@@ -36,6 +37,28 @@ export const fetchCompanyByUserToken = async ({ token }: { token: string }) => {
   }
 };
 
+export const fetchCompanyBySlug = async ({ slug }: { slug: string }) => {
+  try {
+    if (!slug) {
+      return badRequest("Corpo da requisição inválida.");
+    }
+
+    const company = await selectCompanyModel({ slug });
+
+    if (!company) {
+      return unprocessableEntity("Empresa não encontrada para este usuário.");
+    }
+
+    const data = {
+      company,
+    };
+
+    return ok("Dados da empresa carregados com sucesso!", data);
+  } catch (error) {
+    console.error("Error fetching company:", error);
+    return unprocessableEntity("Ocorreu um erro ao buscar a empresa.");
+  }
+};
 
 export const modifyCompany = async ({
   name,
@@ -72,7 +95,10 @@ export const modifyCompany = async ({
       return unprocessableEntity("Empresa não encontrada para este usuário.");
     }
 
+    const companySlug = slugify(name);
+
     const updatedCompany = await updateCompanyModel(existingCompany.id, {
+      slug: companySlug,
       name,
       image,
       description,

@@ -30,6 +30,7 @@ export type FieldFormSchema = {
     | "text"
     | "description"
     | "paragraph"
+    | "link"
     | "checkbox"
     | "select"
     | "upload-image"
@@ -40,6 +41,7 @@ export type FieldFormSchema = {
   required?: boolean;
   checked?: boolean;
   className?: string;
+  target?: string;
   step?: "1" | "0.1";
   selectOptions?: {
     label: string;
@@ -96,6 +98,7 @@ const DynamicForm = ({
       checkboxLabel,
       className,
       step,
+      target,
     } = field;
 
     const fieldId = `${formId}-${name}`;
@@ -119,11 +122,27 @@ const DynamicForm = ({
           />,
           fieldId
         );
+      case "link":
+        const value = (defaultValue as string) || "";
+        return renderLabeledField(
+          name,
+          label,
+          <Link
+            className={`text-primary-500 hover:text-secondary-600 ${className}`}
+            href={value}
+            target={target}
+          >
+            {value}
+          </Link>,
+          fieldId
+        );
       case "paragraph":
         return renderLabeledField(
           name,
           label,
-          <p id={fieldId}>{(defaultValue as string) || ""}</p>,
+          <p className={className} id={fieldId}>
+            {(defaultValue as string) || ""}
+          </p>,
           fieldId
         );
       case "description":

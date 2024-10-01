@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import DynamicForm, { FieldFormSchema } from "@/components/DynamicForm";
 import { Company as CompanyType } from "@/types/company";
 import { editCompanyProps, useCompany } from "@/hooks/use-company";
+import { BASE_URL } from "@/utils/constants";
 
 const BREADCRUMB = [
   { link: "/painel", label: "Painel" },
@@ -20,6 +21,14 @@ const Company = ({ company }: CompanyProps) => {
 
   const formData = useMemo(() => {
     const fields: FieldFormSchema[] = [
+      {
+        name: "site",
+        label: "Site:",
+        type: "link",
+        target: "_blank",
+        defaultValue: `${BASE_URL}/loja/${company?.slug}`,
+        className: company.slug === String(company.id) ? "hidden" : "",
+      },
       {
         name: "name",
         label: "Loja:",
