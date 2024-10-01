@@ -17,9 +17,9 @@ export const insertProductModel = async (
   }
 };
 
-
+// TODO: Fix names and types
 export const selectProductByIdAndUserTokenModel = async (
-  data: { id: string; user_id: string }
+  data: { id: string; company_id: number }
 ): Promise<Product | undefined> => {
   try {
     const product = await connection<Product>("products")
@@ -79,7 +79,6 @@ export const selectProductModel = async (
 
 
 export const updateProductModel = async (
-  id: number,
   data: Partial<Product>
 ): Promise<Product | undefined> => {
   try {
@@ -91,9 +90,12 @@ export const updateProductModel = async (
     if (data.price !== undefined) updateData.price = data.price;
     if (data.amount !== undefined) updateData.amount = data.amount;
     if (data.category_id !== undefined) updateData.category_id = data.category_id;
+    if (data.company_id !== undefined) updateData.company_id = data.company_id;
+
+    console.log("updateData", updateData)
 
     const [updatedProduct] = await connection<Product>("products")
-      .where({ id: id })
+      .where({ id: data.id })
       .update(updateData)
       .returning("*"); 
 

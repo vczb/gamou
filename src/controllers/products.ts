@@ -1,3 +1,4 @@
+import { selectCompanyModel } from "@/models/companies";
 import {
   insertProductModel,
   deleteProductModel,
@@ -5,6 +6,7 @@ import {
   selectProductByIdAndUserTokenModel,
   selectProductModel,
   selectJoinProductsModel,
+  selectProductsModel,
 } from "@/models/products";
 import { Product } from "@/types/product";
 import { verifySessionToken } from "@/utils/criptography";
@@ -33,8 +35,17 @@ export const fetchProductByIdAndUserToken = async ({
       );
     }
 
+
+    const company = await selectCompanyModel({id: userId as unknown as number})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+
     const product = await selectProductByIdAndUserTokenModel({
-      user_id: userId,
+      company_id: company.id,
       id: productId,
     });
 
@@ -86,7 +97,16 @@ export const fetchAllProductsByCompanyId = async ({
       return badRequest("Não foi possível verificar o ID da empresa");
     }
 
-    const products = await selectJoinProductsModel({  userId   });
+
+    const company = await selectCompanyModel({id: userId as unknown as number})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+
+    const products = await selectProductsModel({  company_id: company.id   });
 
     const data = {
       products,
@@ -120,8 +140,16 @@ export const modifyProduct = async (productData: Partial<Product>) => {
       return badRequest("Erro no corpo da requisição");
     }
 
+
+    const company = await selectCompanyModel({id: userId as unknown as number})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+
     const updatedProduct = await updateProductModel(
-      productData.id,
       productData
     );
 
@@ -157,9 +185,17 @@ export const createProduct = async (productData: Partial<Product>) => {
       );
     }
 
+    const company = await selectCompanyModel({id: userId as unknown as number})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+
     const payload = {
       ...productData,
-      user_id: userId as number,
+      company_id: company.id,
     } as Product;
 
     const newProduct = await insertProductModel(payload);

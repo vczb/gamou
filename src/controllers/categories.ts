@@ -6,6 +6,8 @@ import {
   selectCategoryByIdAndUserIdModel,
   selectCategoryModel,
 } from "@/models/categories";
+import { selectCompanyModel } from "@/models/companies";
+import { selectUserModel } from "@/models/users";
 import { verifySessionToken } from "@/utils/criptography";
 import {
   badRequest,
@@ -28,8 +30,17 @@ export const fetchAllCategoriesByUserId = async ({
       );
     }
 
+
+    const company = await selectCompanyModel({id: userId})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+
     const categories = await selectCategoriesModel({
-      user_id: userId,
+      company_id: company.id,
     });
 
     if (!categories) {
@@ -69,7 +80,6 @@ export const fetchCategoryByIdAndUserToken = async ({
     if (!category) {
       return unprocessableEntity("Categoria não encontrada para este usuário.");
     }
-
     const data = { category };
 
     return ok("Dados da categoria carregados com sucesso!", data);
@@ -93,7 +103,15 @@ export const fetchAllCategoriesByUserToken = async ({
       );
     }
 
-    const categories = await selectCategoriesModel({ user_id: userId });
+    const company = await selectCompanyModel({id: userId})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+
+    const categories = await selectCategoriesModel({ company_id: company?.id });
 
     const data = { categories };
 
@@ -185,12 +203,20 @@ export const createCategory = async ({
       );
     }
 
+    const company = await selectCompanyModel({id: userId})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+
     const newCategory = await insertCategoryModel({
       title,
       image,
       description,
       active,
-      user_id: userId,
+      company_id: company.id,
     });
 
     if (!newCategory) {
@@ -227,9 +253,18 @@ export const removeCategory = async ({
       );
     }
 
+    const company = await selectCompanyModel({id: userId})
+
+    if (!company?.id) {
+      return unauthorized(
+        "Não foi possível fazer a relação entre os dados"
+      );
+    }
+    
+
     const existingCategory = await selectCategoryModel({
       id: parseInt(categoryId),
-      user_id: userId,
+      company_id: company.id,
     });
 
     if (!existingCategory) {

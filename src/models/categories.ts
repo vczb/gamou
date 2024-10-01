@@ -6,7 +6,7 @@ export const insertCategoryModel = async (data: {
   description?: string;
   image?: string;
   active?: boolean;
-  user_id: number;
+  company_id: number;
 }): Promise<Category | undefined> => {
   try {
     const [newCategory] = await connection<Category>("categories")
@@ -26,8 +26,12 @@ export const selectCategoryByIdAndUserIdModel = async (data: {
 }): Promise<Category | undefined> => {
   try {
     const category = await connection<Category>("categories")
-      .where(data)
-      .first();
+      .join("companies", "categories.company_id", "=", "companies.id")  // Join the companies table
+      .where("categories.id", data.id)
+      .andWhere("companies.user_id", data.user_id)  // Check user_id in companies
+      .select("categories.*")
+      .first();  // Get the first matching result
+
     return category || undefined;
   } catch (error) {
     console.error("Error querying category by id and userId:", error);
@@ -35,17 +39,28 @@ export const selectCategoryByIdAndUserIdModel = async (data: {
   }
 };
 
+
 export const selectCategoriesModel = async (
-  props: Partial<Category>
+  props: Partial<Category> & { user_id?: string }
 ): Promise<Category[] | undefined> => {
   try {
-    const categories = await connection<Category>("categories").where(props);
+    const query = connection<Category>("categories")
+      .join("companies", "categories.company_id", "=", "companies.id") // Join companies
+      .select("categories.*");
+
+    if (props.user_id) {
+      query.andWhere("companies.user_id", props.user_id);  // Filter by user_id from companies
+      delete props.user_id;  // Remove user_id from props to avoid conflict
+    }
+
+    const categories = await query.where(props);  // Apply other props as filters
     return categories || undefined;
   } catch (error) {
     console.error("Error querying categories:", error);
     throw error;
   }
 };
+
 
 export const selectCategoryModel = async (
   props: Partial<Category>

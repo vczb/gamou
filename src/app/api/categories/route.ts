@@ -10,7 +10,7 @@ export async function PUT(req: Request) {
     const image = body?.image;
     const description = body?.description;
     const active = body?.active;
-
+    
     const data = await modifyCategory({
       id,
       title,

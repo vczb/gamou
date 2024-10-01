@@ -4,5 +4,5 @@ export type Category = {
   image?: string;
   description: string;
   active: boolean;
-  user_id: number;
+  company_id: number;
 };
