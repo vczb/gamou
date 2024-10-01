@@ -78,7 +78,7 @@ const Categories = ({ categories }: CategoriesProps) => {
   }, [categories, handleDelete]);
 
   return (
-    <div className="container mx-auto px-4 pb-28 pt-8 max-w-lg">
+    <div className="container mx-auto px-4 pb-28 pt-8">
       <Breadcrumb items={BREADCUMB} />
       <div className="mt-4 text-end">
         <Link href="/painel/estoque/categorias/adicionar">

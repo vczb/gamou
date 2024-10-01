@@ -2,9 +2,9 @@ import {
   insertProductModel, 
   deleteProductModel, 
   updateProductModel, 
-  selectProductsModel, 
   selectProductByIdAndUserTokenModel, 
-  selectProductModel 
+  selectProductModel, 
+  selectProductsWithCategoryModel
 } from "@/models/products";
 import { Product } from "@/types/product";
 import { verifySessionToken } from "@/utils/criptography";
@@ -49,7 +49,7 @@ export const fetchAllProductsByUserToken = async (token: string) => {
       return unauthorized("Não foi possível verificar a autenticidade do usuário");
     }
 
-    const products = await selectProductsModel({ user_id: userId });
+    const products = await selectProductsWithCategoryModel({ user_id: userId });
 
     const data = {
       products,

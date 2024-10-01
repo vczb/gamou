@@ -8,6 +8,8 @@ export interface Product {
   price: number;
   amount: number;
   category_id: number;
+  categoryTitle?: string;
+  categoryImage?: string;
   user_id: number;
   active: boolean;
   created_at: Date;

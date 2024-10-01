@@ -27,6 +27,7 @@ const PRODUCTS_TABLE_COLUMNS = [
   { title: "Preço", key: "price" },
   { title: "Quantidade", key: "amount" },
   { title: "Descrição", key: "description" },
+  { title: "Categoria", key: "categoryTitle" },
   { title: "Ativa", key: "active" },
 ];
 
@@ -63,13 +64,14 @@ const Products = ({ products }: CategoriesProps) => {
         actions: (
           <div className="flex flex-col gap-4">
             <Link href={`/painel/estoque/produtos/editar/${product.id}`}>
-              <Button variant="secondary" size="small">
+              <Button variant="secondary" size="small" className="w-full">
                 Editar
               </Button>
             </Link>
             <Button
               variant="light"
               size="small"
+              className="w-full"
               onClick={() => handleDelete(product.id)}
             >
               Deletar
@@ -81,7 +83,7 @@ const Products = ({ products }: CategoriesProps) => {
   }, [products, handleDelete]);
 
   return (
-    <div className="container mx-auto px-4 pb-28 pt-8 max-w-lg">
+    <div className="container mx-auto px-4 pb-28 pt-8 ">
       <Breadcrumb items={BREADCUMB} />
       <div className="mt-4 text-end">
         <Link href="/painel/estoque/produtos/adicionar">

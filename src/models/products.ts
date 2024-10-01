@@ -45,6 +45,21 @@ export const selectProductsModel = async (
   }
 };
 
+export const selectProductsWithCategoryModel = async (
+  props: Partial<Product>
+): Promise<(Product & { categoryTitle: string; categoryImage: string })[] | undefined> => {
+  try {
+    const products = await connection<Product>("products")
+      .join("categories", "products.category_id", "=", "categories.id")
+      .select("products.*", "categories.title as categoryTitle", "categories.image as categoryImage")
+      .where("products.user_id", props.user_id);  // Specify "products.user_id"
+      
+    return products || undefined;
+  } catch (error) {
+    console.error("Error querying products with category title and image:", error);
+    throw error;
+  }
+};
 
 export const selectProductModel = async (
   props: Partial<Product>
