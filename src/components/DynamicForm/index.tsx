@@ -40,6 +40,7 @@ export type FieldFormSchema = {
   editable?: boolean;
   required?: boolean;
   checked?: boolean;
+  hidden?: boolean;
   className?: string;
   target?: string;
   step?: "1" | "0.1";
@@ -98,8 +99,13 @@ const DynamicForm = ({
       checkboxLabel,
       className,
       step,
+      hidden,
       target,
     } = field;
+
+    if (hidden) {
+      return null;
+    }
 
     const fieldId = `${formId}-${name}`;
 

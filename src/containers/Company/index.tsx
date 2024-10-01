@@ -27,7 +27,7 @@ const Company = ({ company }: CompanyProps) => {
         type: "link",
         target: "_blank",
         defaultValue: `${BASE_URL}/loja/${company?.slug}`,
-        className: company.slug === String(company.id) ? "hidden" : "",
+        hidden: company.slug === String(company.user_id),
       },
       {
         name: "name",
