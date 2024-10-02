@@ -1,4 +1,4 @@
-import { modifyUser } from "@/controllers/users";
+import { UserController } from "@/controllers/UserController";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request) {
@@ -6,9 +6,10 @@ export async function PUT(req: Request) {
     const body = await req.json();
 
     const name = body?.name;
-    const password = body?.password;
 
-    const data = await modifyUser({ name, password });
+    const controller = new UserController()
+
+    const data = await controller.updateUser({name})
 
     const { status } = data;
     return NextResponse.json(data, { status });

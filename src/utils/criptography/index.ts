@@ -13,7 +13,7 @@ export const decrypt = async (value1: string, value2: string) => {
   return bcrypt.compareSync(value1, value2);
 };
 
-export const createSessionToken = (userId: string) => {
+export const createSessionToken = (userId: string | number) => {
   if (!TOKEN_SECRET) {
     throw new Error("variável TOKEN_SECRET é obrigatória");
   }

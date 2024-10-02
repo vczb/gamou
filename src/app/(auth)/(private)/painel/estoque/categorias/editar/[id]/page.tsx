@@ -1,31 +1,18 @@
 import Category from "@/containers/Category";
-import { fetchCategoryByIdAndUserToken } from "@/controllers/categories";
-import { getCookie } from "@/utils/storage/server";
+import { CategoryController } from "@/controllers/CategoryController";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
-
-export const fetchCache = "force-no-store";
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Editar categoria",
   description: "Preencha o formuário para editar uma categoria existente",
 };
 
-export default async function Index({ params }: { params: { id: string } }) {
-  const token = getCookie("token");
+export default async function Index({ params }: { params: { id: number } }) {
+  const id = params.id;
 
-  if (!token?.value) {
-    return redirect("/sair");
-  }
+  const controller = new CategoryController();
 
-  const categoryId = params.id;
-
-  const response = await fetchCategoryByIdAndUserToken({
-    token: token?.value,
-    categoryId,
-  });
+  const response = await controller.selectCategoryById(id);
 
   if (response.status !== 200) {
     throw new Error(response.message);

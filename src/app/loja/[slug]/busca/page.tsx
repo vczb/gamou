@@ -1,8 +1,9 @@
-import { CategoryProductListProps } from "@/components/CategoryProductList";
+import { notFound } from "next/navigation";
 import Search, { SearchProps } from "@/containers/Search";
-import { fetchStoreBySlug } from "@/controllers/store";
+import { groupProductsByCategory } from "@/utils/mappers";
+import { StoreController } from "@/controllers/StoreController";
 
-const Index = async ({
+const Page = async ({
   params,
   searchParams,
 }: {
@@ -10,42 +11,31 @@ const Index = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
   const slug = params.slug;
+
   const query = searchParams?.q || "";
 
-  const { data } = await fetchStoreBySlug({ slug });
+  const controller = new StoreController();
 
-  const { category_product_list } = data;
+  const { data } = await controller.selectStoreBySlugAndQuery(slug, query);
 
-  const categoryProductList =
-    category_product_list as unknown as CategoryProductListProps[];
+  const { products, company, categories } = data;
 
-  const filteredCategoryProductList = categoryProductList
-    .map((item) => {
-      const filteredProducts = item.products.filter((product) =>
-        product.title.toLocaleLowerCase().includes(query.toLocaleLowerCase())
-      );
-
-      if (
-        item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-        filteredProducts.length > 0
-      ) {
-        return {
-          ...item,
-          products:
-            filteredProducts.length > 0 ? filteredProducts : item.products,
-        };
-      }
-
-      return null;
-    })
-    .filter(Boolean);
+  const categoryProductList = groupProductsByCategory(products);
 
   const props = {
-    slug,
-    query,
-    categoryProductList: filteredCategoryProductList,
+    products,
+    categories,
+    categoryProductList,
+    image: company.image,
+    name: company.name,
+    slug: company.slug,
   } as unknown as SearchProps;
+
+  if (!props) {
+    notFound();
+  }
 
   return <Search {...props} />;
 };
-export default Index;
+
+export default Page;

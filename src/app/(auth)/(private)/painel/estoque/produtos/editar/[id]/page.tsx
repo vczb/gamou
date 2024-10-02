@@ -1,47 +1,32 @@
 import Product from "@/containers/Product";
-import { fetchAllCategoriesByUserToken } from "@/controllers/categories";
-import { fetchProductByIdAndUserToken } from "@/controllers/products";
-import { getCookie } from "@/utils/storage/server";
+import { CategoryController } from "@/controllers/CategoryController";
+import { ProductController } from "@/controllers/ProductController";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
-
-export const fetchCache = "force-no-store";
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Editar categoria",
-  description: "Preencha o formuário para editar uma categoria existente",
+  title: "Editar produto",
+  description: "Preencha o formuário para editar uma produto existente",
 };
 
-export default async function Index({ params }: { params: { id: string } }) {
-  const token = getCookie("token");
+export default async function Index({ params }: { params: { id: number } }) {
+  const id = params.id;
 
-  if (!token?.value) {
-    return redirect("/sair");
+  const productController = new ProductController();
+  const categoryController = new CategoryController();
+
+  const productResponse = await productController.selectProductById(id);
+  const categoryResponse =
+    await categoryController.selectAllCategoriesByToken();
+
+  if (productResponse.status !== 200) {
+    throw new Error(productResponse.message);
+  }
+  if (categoryResponse.status !== 200) {
+    throw new Error(categoryResponse.message);
   }
 
-  const productId = params.id;
+  const { product } = productResponse.data;
+  const { categories } = categoryResponse.data;
 
-  const response = await fetchProductByIdAndUserToken({
-    token: token?.value,
-    productId,
-  });
-
-  if (response.status !== 200) {
-    throw new Error(response.message);
-  }
-
-  const categoriesResponse = await fetchAllCategoriesByUserToken({
-    token: token?.value,
-  });
-
-  if (categoriesResponse.status !== 200) {
-    throw new Error(categoriesResponse.message);
-  }
-
-  const { product } = response.data;
-  const { categories } = categoriesResponse.data;
-
-  return <Product action="edit" categories={categories} product={product} />;
+  return <Product action="edit" product={product} categories={categories} />;
 }

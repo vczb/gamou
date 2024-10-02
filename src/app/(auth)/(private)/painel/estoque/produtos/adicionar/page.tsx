@@ -1,32 +1,23 @@
 import Product from "@/containers/Product";
-import { fetchAllCategoriesByUserToken } from "@/controllers/categories";
-import { getCookie } from "@/utils/storage/server";
+import { CategoryController } from "@/controllers/CategoryController";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
-
-export const fetchCache = "force-no-store";
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Adicionar produto",
-  description: "Preencha o formuário para criar um novo produto.",
+  title: "Novo produto",
+  description: "Preencha o formuário para criar uma nova produto.",
 };
 
 const Index = async () => {
-  const token = getCookie("token");
+  const categoryController = new CategoryController();
 
-  if (!token?.value) {
-    return redirect("/sair");
+  const categoryResponse =
+    await categoryController.selectAllCategoriesByToken();
+
+  if (categoryResponse.status !== 200) {
+    throw new Error(categoryResponse.message);
   }
 
-  const response = await fetchAllCategoriesByUserToken({ token: token?.value });
-
-  if (response.status !== 200) {
-    throw new Error(response.message);
-  }
-
-  const { categories } = response.data;
+  const { categories } = categoryResponse.data;
 
   return <Product action="create" categories={categories} />;
 };

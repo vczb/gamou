@@ -1,8 +1,6 @@
 import Company from "@/containers/Company";
-import { fetchCompanyByUserToken } from "@/controllers/companies";
-import { getCookie } from "@/utils/storage/server";
+import { CompanyController } from "@/controllers/CompanyController";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Gerencie seus pedidos",
@@ -10,13 +8,9 @@ export const metadata: Metadata = {
 };
 
 const Index = async () => {
-  const token = getCookie("token");
+  const controller = new CompanyController();
 
-  if (!token?.value) {
-    return redirect("/sair");
-  }
-
-  const response = await fetchCompanyByUserToken({ token: token?.value });
+  const response = await controller.selectFirstCompanyByToken();
 
   if (response.status !== 200) {
     throw new Error(response.message);

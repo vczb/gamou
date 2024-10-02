@@ -1,11 +1,13 @@
-import { removeProduct } from "@/controllers/products";
+import { ProductController } from "@/controllers/ProductController";
 import { NextResponse } from "next/server";
 
-export async function DELETE(req: Request, { params }: {params: {id: string}}) {
+export async function DELETE(req: Request, { params }: {params: {id: number}}) {
   try {
     const { id } = params;
 
-    const data = await removeProduct(id);
+    const controller = new ProductController()
+
+    const data = await controller.deleteProduct(id);
 
     const { status } = data;
     return NextResponse.json(data, { status });

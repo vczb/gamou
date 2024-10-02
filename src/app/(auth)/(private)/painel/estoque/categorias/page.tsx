@@ -1,8 +1,6 @@
 import Categories from "@/containers/Categories";
-import { fetchAllCategoriesByUserToken } from "@/controllers/categories";
-import { getCookie } from "@/utils/storage/server";
+import { CategoryController } from "@/controllers/CategoryController";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Gerencia suas categorias",
@@ -10,13 +8,9 @@ export const metadata: Metadata = {
 };
 
 const Index = async () => {
-  const token = getCookie("token");
+  const controller = new CategoryController();
 
-  if (!token?.value) {
-    return redirect("/sair");
-  }
-
-  const response = await fetchAllCategoriesByUserToken({ token: token.value });
+  const response = await controller.selectAllCategoriesByToken();
 
   if (response.status !== 200) {
     throw new Error(response.message);

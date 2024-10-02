@@ -1,4 +1,4 @@
-import { signUp } from "@/controllers/users";
+import { UserController } from "@/controllers/UserController";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -14,7 +14,9 @@ export async function POST(req: Request) {
       );
     }
 
-    const data = await signUp(email, password);
+    const controller = new UserController()
+
+    const data = await controller.signUp(email, password);
 
     if (!data) {
       return NextResponse.json(

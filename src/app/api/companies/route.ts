@@ -1,4 +1,4 @@
-import { modifyCompany } from "@/controllers/companies";
+import { CompanyController } from "@/controllers/CompanyController";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request) {
@@ -11,7 +11,9 @@ export async function PUT(req: Request) {
       return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
     }
 
-    const data = await modifyCompany({ name, image, description, active, currency });
+    const controller = new CompanyController()
+
+    const data = await controller.updateCompany({ name, image, description, active, currency })
 
     const { status } = data;
     return NextResponse.json(data, { status });

@@ -4,10 +4,9 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import Image from "@/components/Image";
 import Link from "@/components/Link";
-import Table from "@/components/Table";
-import { useCategory } from "@/hooks/use-category";
+import Table, { TableRow } from "@/components/Table";
 import { useProduct } from "@/hooks/use-product";
-import { Category } from "@/types/category";
+import { Product } from "@/types/product";
 import { useCallback, useMemo } from "react";
 
 const BREADCUMB = [
@@ -16,8 +15,8 @@ const BREADCUMB = [
   { link: "/painel/estoque/produtos", label: "Produtos", active: true },
 ];
 
-type CategoriesProps = {
-  products: Category[];
+type ProductsProps = {
+  products: Product[];
 };
 
 const PRODUCTS_TABLE_COLUMNS = [
@@ -31,7 +30,7 @@ const PRODUCTS_TABLE_COLUMNS = [
   { title: "Ativa", key: "active" },
 ];
 
-const Products = ({ products }: CategoriesProps) => {
+const Products = ({ products }: ProductsProps) => {
   const { deleteProduct } = useProduct();
 
   const handleDelete = useCallback(
@@ -78,7 +77,7 @@ const Products = ({ products }: CategoriesProps) => {
             </Button>
           </div>
         ),
-      };
+      } as unknown as TableRow;
     });
   }, [products, handleDelete]);
 

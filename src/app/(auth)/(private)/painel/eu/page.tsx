@@ -1,8 +1,6 @@
 import Profile from "@/containers/Profile";
-import { fetchUserByToken } from "@/controllers/users";
-import { getCookie } from "@/utils/storage/server";
+import { UserController } from "@/controllers/UserController";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Gerencie seus dados",
@@ -10,13 +8,9 @@ export const metadata: Metadata = {
 };
 
 const Index = async () => {
-  const token = getCookie("token");
+  const controller = new UserController();
 
-  if (!token?.value) {
-    return redirect("/sair");
-  }
-
-  const response = await fetchUserByToken(token?.value);
+  const response = await controller.selectUserByToken();
 
   if (response.status !== 200) {
     throw new Error(response.message);

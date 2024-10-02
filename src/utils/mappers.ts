@@ -4,7 +4,7 @@ import { Product } from "@/types/product";
 export function groupProductsByCategory(products: Product[]): CategoryProductListProps[] {
   return Object.values(
     products.reduce((acc, product) => {
-      const categoryUid = product.category_id.toString();
+      const categoryUid = product?.category_id?.toString();
 
       if (!acc[categoryUid]) {
         acc[categoryUid] = {
@@ -15,7 +15,7 @@ export function groupProductsByCategory(products: Product[]): CategoryProductLis
       }
 
       acc[categoryUid].products.push({
-        uid: `p${product.id}`,
+        uid: `p${product.category_id}`,
         title: product.title,
         image: product.image,
         description: product.description,
