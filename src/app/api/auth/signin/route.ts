@@ -1,4 +1,4 @@
-import { signIn } from "@/controllers/users";
+import { UserController } from "@/controllers/UserController";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -6,7 +6,10 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const { email, password } = body;
-    const data = await signIn(email, password);
+
+    const controller = new UserController()
+
+    const data  = await controller.signIn(email, password);
 
     const { status } = data;
 

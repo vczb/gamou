@@ -1,4 +1,4 @@
-import { createCategory, modifyCategory } from "@/controllers/categories";
+import { CategoryController } from "@/controllers/CategoryController";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request) {
@@ -11,7 +11,9 @@ export async function PUT(req: Request) {
     const description = body?.description;
     const active = body?.active;
     
-    const data = await modifyCategory({
+    const controller = new CategoryController()
+
+    const data = await controller.updateCategory({
       id,
       title,
       image,
@@ -43,7 +45,9 @@ export async function POST(req: Request) {
       active,
     };
 
-    const data = await createCategory(categoryData);
+    const controller = new CategoryController()
+
+    const data = await controller.createCategory(categoryData);
 
     const { status } = data;
 

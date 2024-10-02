@@ -32,12 +32,13 @@ const Product = ({ product, action, categories }: ProductProps) => {
   const { createOrEditProduct, deleteProduct, loading } = useProduct();
 
   const formData = useMemo(() => {
-    const selectOptions = categories.map((category) => {
-      return {
-        label: category.title,
-        value: category.id,
-      };
-    });
+    const selectOptions =
+      categories?.map((category) => {
+        return {
+          label: category.title,
+          value: category.id,
+        };
+      }) || [];
 
     return [
       {
@@ -147,8 +148,6 @@ const Product = ({ product, action, categories }: ProductProps) => {
         category_id,
         active,
       } as editProductProps;
-
-      console.log(payload);
 
       await createOrEditProduct(payload, action);
     },

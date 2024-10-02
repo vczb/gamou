@@ -1,15 +1,15 @@
 export type CategoryLinkProps = {
   image: string;
   name: string;
-  uid: string;
+  id: string;
 };
 
-const CategoryLink = ({ image, name, uid }: CategoryLinkProps) => {
+const CategoryLink = ({ image, name, id }: CategoryLinkProps) => {
   return (
     <div className="w-fit border-b-[1px] b-col border-current text-blueGray-600 hover:text-primary-500 duration-200">
       <a
         className="flex-col items-center justify-center cursor-pointer group text-center"
-        href={`#${uid}`}
+        href={`#${id}`}
       >
         <picture className="flex w-24 h-24 lg:w-14 lg:h-14 rounded-full overflow-hidden group-hover:shadow-md mx-auto">
           <img

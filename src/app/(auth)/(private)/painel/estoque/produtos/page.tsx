@@ -1,8 +1,6 @@
 import Products from "@/containers/Products";
-import { fetchAllProductsByUserToken } from "@/controllers/products";
-import { getCookie } from "@/utils/storage/server";
+import { ProductController } from "@/controllers/ProductController";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Gerencia seus produtos",
@@ -10,13 +8,8 @@ export const metadata: Metadata = {
 };
 
 const Index = async () => {
-  const token = getCookie("token");
-
-  if (!token?.value) {
-    return redirect("/sair");
-  }
-
-  const response = await fetchAllProductsByUserToken(token?.value);
+  const controller = new ProductController();
+  const response = await controller.selectAllProductsByToken();
 
   if (response.status !== 200) {
     throw new Error(response.message);
