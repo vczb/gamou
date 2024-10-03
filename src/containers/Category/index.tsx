@@ -30,6 +30,7 @@ const Category = ({ category, action }: CategoryProps) => {
   const { createOrEditCategory, deleteCategory, loading } = useCategory();
 
   const formData = useMemo(() => {
+    console.log("category", category);
     return [
       {
         name: "title",
@@ -66,7 +67,8 @@ const Category = ({ category, action }: CategoryProps) => {
         name: "active",
         label: "Ativa:",
         type: "checkbox",
-        defaultValue: category?.active,
+        checked:
+          typeof category?.active !== "undefined" ? category.active : true,
         editable: true,
         required: false,
         disabled: loading,

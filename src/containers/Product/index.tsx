@@ -112,7 +112,7 @@ const Product = ({ product, action, categories }: ProductProps) => {
         name: "active",
         label: "Ativo:",
         type: "checkbox",
-        defaultValue: product?.active,
+        checked: typeof product?.active !== "undefined" ? product.active : true,
         editable: true,
         required: false,
         disabled: loading,
