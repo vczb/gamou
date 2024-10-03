@@ -5,7 +5,6 @@ import renderFlashMessage from "@/utils/renderFlashMessage";
 import { useCallback, useState } from "react";
 import { useUser } from "../use-user";
 import { BASE_URL } from "@/utils/constants";
-import { useRouter } from "next/navigation";
 
 export type editCategoryProps = {
   image?: File;
@@ -14,7 +13,6 @@ export type editCategoryProps = {
 const useCategory = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const router = useRouter();
   const { user } = useUser();
 
   const createOrEditCategory = useCallback(
@@ -78,10 +76,6 @@ const useCategory = () => {
         }
 
         renderFlashMessage({ message: result.message, variant: "success" });
-
-        setTimeout(() => {
-          router.push("/painel/estoque/categorias/");
-        }, 2000);
       } catch (error: any) {
         setError(error);
         console.error(error);
@@ -90,50 +84,45 @@ const useCategory = () => {
         setLoading(false);
       }
     },
-    [user, router]
+    [user]
   );
 
-  const deleteCategory = useCallback(
-    async (categoryId: number) => {
-      setLoading(true);
-      setError(undefined);
+  const deleteCategory = useCallback(async (categoryId: number) => {
+    setLoading(true);
+    setError(undefined);
 
-      try {
-        if (!categoryId) {
-          throw new Error("Não foi possível processar dados da categoria");
-        }
-
-        if (!BASE_URL) {
-          throw new Error("variável BASE_URL não pode ser nula");
-        }
-
-        const url = `${BASE_URL}/api/categories/${categoryId}`;
-
-        const response = await fetch(url, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const dataJson = await response.json();
-
-        if (response.status !== 200) {
-          throw new Error(dataJson?.message);
-        }
-
-        renderFlashMessage({ message: dataJson.message, variant: "success" });
-
-        router.push("/painel/estoque/categorias/");
-      } catch (error: any) {
-        setError(error);
-        renderFlashMessage({ message: error.message, variant: "alert" });
-      } finally {
-        setLoading(false);
+    try {
+      if (!categoryId) {
+        throw new Error("Não foi possível processar dados da categoria");
       }
-    },
-    [router]
-  );
+
+      if (!BASE_URL) {
+        throw new Error("variável BASE_URL não pode ser nula");
+      }
+
+      const url = `${BASE_URL}/api/categories/${categoryId}`;
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const dataJson = await response.json();
+
+      if (response.status !== 200) {
+        throw new Error(dataJson?.message);
+      }
+
+      renderFlashMessage({ message: dataJson.message, variant: "success" });
+    } catch (error: any) {
+      setError(error);
+      renderFlashMessage({ message: error.message, variant: "alert" });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return {
     deleteCategory,

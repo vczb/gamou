@@ -5,7 +5,6 @@ import renderFlashMessage from "@/utils/renderFlashMessage";
 import { useCallback, useState } from "react";
 import { useUser } from "../use-user";
 import { BASE_URL } from "@/utils/constants";
-import { useRouter } from "next/navigation";
 
 export type editProductProps = {
   image?: File;
@@ -15,7 +14,6 @@ const useProduct = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [products, setProducts] = useState<Product[] | undefined>(undefined);
-  const router = useRouter();
   const { user } = useUser();
 
   const createOrEditProduct = useCallback(
@@ -76,10 +74,6 @@ const useProduct = () => {
         }
 
         renderFlashMessage({ message: result.message, variant: "success" });
-
-        setTimeout(() => {
-          router.push("/painel/estoque/produtos/");
-        }, 2000);
       } catch (error: any) {
         setError(error);
         console.error(error);
@@ -88,50 +82,45 @@ const useProduct = () => {
         setLoading(false);
       }
     },
-    [user, router]
+    [user]
   );
 
-  const deleteProduct = useCallback(
-    async (productId: number) => {
-      setLoading(true);
-      setError(undefined);
+  const deleteProduct = useCallback(async (productId: number) => {
+    setLoading(true);
+    setError(undefined);
 
-      try {
-        if (!productId) {
-          throw new Error("Não foi possível processar dados do produto");
-        }
-
-        if (!BASE_URL) {
-          throw new Error("variável BASE_URL não pode ser nula");
-        }
-
-        const url = `${BASE_URL}/api/products/${productId}`;
-
-        const response = await fetch(url, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const dataJson = await response.json();
-
-        if (response.status !== 200) {
-          throw new Error(dataJson?.message);
-        }
-
-        renderFlashMessage({ message: dataJson.message, variant: "success" });
-
-        router.push("/painel/estoque/produtos/");
-      } catch (error: any) {
-        setError(error);
-        renderFlashMessage({ message: error.message, variant: "alert" });
-      } finally {
-        setLoading(false);
+    try {
+      if (!productId) {
+        throw new Error("Não foi possível processar dados do produto");
       }
-    },
-    [router]
-  );
+
+      if (!BASE_URL) {
+        throw new Error("variável BASE_URL não pode ser nula");
+      }
+
+      const url = `${BASE_URL}/api/products/${productId}`;
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const dataJson = await response.json();
+
+      if (response.status !== 200) {
+        throw new Error(dataJson?.message);
+      }
+
+      renderFlashMessage({ message: dataJson.message, variant: "success" });
+    } catch (error: any) {
+      setError(error);
+      renderFlashMessage({ message: error.message, variant: "alert" });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
