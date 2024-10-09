@@ -30,6 +30,7 @@ export class CompanyController extends BaseController {
   async updateCompany({
     name,
     image,
+    phone,
     description,
     active,
     currency,
@@ -37,6 +38,7 @@ export class CompanyController extends BaseController {
     name: string;
     image: string;
     description: string;
+    phone: string;
     active: boolean;
     currency: string;
   }){
@@ -62,6 +64,7 @@ export class CompanyController extends BaseController {
       const updatedCompany = await companyModel.update(company.id, {
         slug: companySlug,
         name,
+        phone,
         image,
         description,
         active,

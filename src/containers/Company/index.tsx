@@ -38,6 +38,14 @@ const Company = ({ company }: CompanyProps) => {
         defaultValue: company?.name || "",
       },
       {
+        name: "phone",
+        label: "WhatsApp:",
+        placeholder: "Exemplo (pais/estado/número): 5551991901783",
+        type: "text",
+        required: true,
+        defaultValue: company?.phone || "",
+      },
+      {
         name: "image",
         label: "Imagem",
         type: "upload-image",
@@ -86,6 +94,7 @@ const Company = ({ company }: CompanyProps) => {
       const data = {
         ...company,
         name: formData.get("name") as string,
+        phone: formData.get("phone") as string,
         image: image,
         description: formData.get("description") as string,
         active: formData.get("active") === "on",

@@ -5,15 +5,15 @@ export async function PUT(req: Request) {
   try {
     const body = await req.json();
 
-    const { name, image, description, active, currency } = body;
+    const { name, image, description, active, currency, phone } = body;
 
-    if (!name || !image || !description || active === undefined || !currency) {
+    if (!name || !image || !phone || !description || active === undefined || !currency) {
       return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
     }
 
     const controller = new CompanyController()
 
-    const data = await controller.updateCompany({ name, image, description, active, currency })
+    const data = await controller.updateCompany({ name, image, phone, description, active, currency })
 
     const { status } = data;
     return NextResponse.json(data, { status });
