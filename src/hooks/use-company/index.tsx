@@ -42,9 +42,6 @@ const useCompany = () => {
           const upload = await fetch(upload_url, {
             method: "POST",
             body: formData,
-            headers: {
-              "user-id": String(user.id),
-            },
           });
 
           const uploadResult = await upload.json();

@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { BaseController } from './BaseController';
@@ -20,7 +19,8 @@ export class UploaderController extends BaseController {
       if (!userId) {
         return this.unprocessableEntity("User not found.");
       }
-
+      
+      // TODO: Move this to utils/file
       const userDir = path.join(process.cwd(), 'public/uploads', String(userId));
       fs.mkdirSync(userDir, { recursive: true });
 
