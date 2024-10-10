@@ -27,6 +27,25 @@ export class CompanyController extends BaseController {
     }
   }
 
+  async selectCompanyBySlug(slug: string){
+    try {
+
+      const companyModel = new CompanyModel()
+
+      const company = await companyModel.selectFirst({slug})
+
+      const data = {
+        company,
+      };
+
+      return this.ok("Dados da empresa carregados com sucesso!", data);
+
+    } catch (error) {
+      console.error("Error fetching company:", error);
+      return this.unprocessableEntity("Ocorreu um erro ao buscar a empresa.");
+    }
+  }
+
   async updateCompany({
     name,
     image,

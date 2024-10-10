@@ -9,15 +9,15 @@ import TextField from "@/components/TextField";
 import { useCart } from "@/hooks/use-cart";
 import { useOrder } from "@/hooks/use-order";
 import WhatsApp from "@/icons/WhatsApp";
-import { GAMOU_PHONE_NUMBER } from "@/utils/constants";
 import sendWhatsApp from "@/utils/sendWhatsApp";
 import { useCallback } from "react";
 
 type OrderProps = {
   slug: string;
+  whatsapp: string;
 };
 
-const Order = ({ slug }: OrderProps) => {
+const Order = ({ slug, whatsapp }: OrderProps) => {
   const { products, cartNotes } = useOrder();
   const { total } = useCart();
 
@@ -60,9 +60,9 @@ const Order = ({ slug }: OrderProps) => {
 
       message += `\nPedido realizado em ${new Date().toLocaleString()} pelo Gamou Pedidos.\n`;
 
-      sendWhatsApp(GAMOU_PHONE_NUMBER, message);
+      sendWhatsApp(whatsapp, message);
     },
-    [cartNotes, products, total]
+    [cartNotes, products, total, whatsapp]
   );
 
   return (
