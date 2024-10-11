@@ -43,12 +43,15 @@ export type FieldFormSchema = {
   hidden?: boolean;
   className?: string;
   target?: string;
+  pattern?: string;
+  helperText?: string;
   step?: "1" | "0.1";
   selectOptions?: {
     label: string;
     value: string;
   }[];
   checkboxLabel?: string;
+  sublabel?: string;
 };
 
 export type DynamicFormProps = {
@@ -73,13 +76,17 @@ const DynamicForm = ({
     key: string,
     label: string | undefined,
     fieldComponent: React.ReactNode,
-    fieldId: string
+    fieldId: string,
+    sublabel?: string
   ) => (
     <div className="flex flex-col" key={key}>
       {label && (
         <label htmlFor={fieldId} className="text-black">
           <b>{label}</b>
         </label>
+      )}
+      {sublabel && (
+        <span className="text-xs text-blueGray-800">{sublabel}</span>
       )}
       {fieldComponent}
     </div>
@@ -101,6 +108,9 @@ const DynamicForm = ({
       step,
       hidden,
       target,
+      pattern,
+      sublabel,
+      helperText,
     } = field;
 
     if (hidden) {
@@ -122,11 +132,14 @@ const DynamicForm = ({
             name={name}
             placeholder={placeholder}
             required={required}
+            pattern={pattern}
+            helperText={helperText}
             {...(editable
               ? { defaultValue: defaultValue as string }
               : { value: defaultValue as string, disabled: true })}
           />,
-          fieldId
+          fieldId,
+          sublabel
         );
       case "link":
         const value = (defaultValue as string) || "";
@@ -140,7 +153,8 @@ const DynamicForm = ({
           >
             {value}
           </Link>,
-          fieldId
+          fieldId,
+          sublabel
         );
       case "paragraph":
         return renderLabeledField(
@@ -149,7 +163,8 @@ const DynamicForm = ({
           <p className={className} id={fieldId}>
             {(defaultValue as string) || ""}
           </p>,
-          fieldId
+          fieldId,
+          sublabel
         );
       case "description":
         return renderLabeledField(
@@ -164,7 +179,8 @@ const DynamicForm = ({
               ? { defaultValue: defaultValue as string }
               : { value: defaultValue as string, disabled: true })}
           />,
-          fieldId
+          fieldId,
+          sublabel
         );
       case "checkbox":
         return renderLabeledField(
@@ -177,7 +193,8 @@ const DynamicForm = ({
             defaultChecked={checked}
             label={checkboxLabel || "Sim"}
           />,
-          fieldId
+          fieldId,
+          sublabel
         );
       case "text-number":
         return renderLabeledField(
@@ -189,12 +206,15 @@ const DynamicForm = ({
             step={step}
             name={name}
             placeholder={placeholder}
+            pattern={pattern}
             required={required}
+            helperText={helperText}
             {...(editable
               ? { defaultValue: defaultValue as string }
               : { value: defaultValue as string, disabled: true })}
           />,
-          fieldId
+          fieldId,
+          sublabel
         );
       case "select":
         return renderLabeledField(
@@ -207,7 +227,8 @@ const DynamicForm = ({
             defaultValue={defaultValue as string}
             options={selectOptions || []}
           />,
-          fieldId
+          fieldId,
+          sublabel
         );
       case "upload-image":
         return renderLabeledField(
@@ -220,7 +241,8 @@ const DynamicForm = ({
             defaultValue={defaultValue as string}
             className={className}
           />,
-          fieldId
+          fieldId,
+          sublabel
         );
       default:
         throw new Error(

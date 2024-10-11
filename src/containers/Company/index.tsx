@@ -6,6 +6,7 @@ import DynamicForm, { FieldFormSchema } from "@/components/DynamicForm";
 import { Company as CompanyType } from "@/types/company";
 import { editCompanyProps, useCompany } from "@/hooks/use-company";
 import { BASE_URL } from "@/utils/constants";
+import { WHATSAPP_PATTERN } from "@/utils/regex";
 
 const BREADCRUMB = [
   { link: "/painel", label: "Painel" },
@@ -24,6 +25,7 @@ const Company = ({ company }: CompanyProps) => {
       {
         name: "site",
         label: "Site:",
+        sublabel: "Compartilhe este link com seus clientes",
         type: "link",
         target: "_blank",
         defaultValue: `${BASE_URL}/loja/${company?.slug}`,
@@ -40,7 +42,11 @@ const Company = ({ company }: CompanyProps) => {
       {
         name: "phone",
         label: "WhatsApp:",
-        placeholder: "Exemplo (pais/estado/número): 5551991901783",
+        sublabel:
+          "Deve conter apenas números, cod. país (55), estado (51) e telefone (912345678). Totalizando 13 dígitos",
+        placeholder: "Exemplo: 5551912345678",
+        pattern: WHATSAPP_PATTERN.source,
+        helperText: "O número deve seguir o padrão solicitado",
         type: "text",
         required: true,
         defaultValue: company?.phone || "",
@@ -61,6 +67,8 @@ const Company = ({ company }: CompanyProps) => {
       {
         name: "active",
         label: "Loja em atividade",
+        sublabel:
+          "Marque para garantir que sua loja esteja visível para seus clientes",
         checkboxLabel: "Sim",
         type: "checkbox",
         checked: typeof company?.active !== "undefined" ? company.active : true,
@@ -69,6 +77,7 @@ const Company = ({ company }: CompanyProps) => {
         name: "currency",
         label: "Moeda",
         type: "select",
+        hidden: true,
         defaultValue: company?.currency || "brl",
         selectOptions: [
           { value: "brl", label: "BRL" },

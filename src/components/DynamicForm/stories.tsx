@@ -1,6 +1,7 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 import DynamicForm, { DynamicFormProps } from ".";
+import { PASSWORD_PATTERN } from "@/utils/regex";
 
 const schema = [
   {
@@ -22,8 +23,11 @@ const schema = [
     name: "password",
     label: "Senha",
     type: "password",
-    defaultValue: "123456789",
-    editable: false,
+    defaultValue: "Abc123DEF",
+    sublabel: "Deve conter pelo menos 4 dígitos sendo um deles maiúsculo",
+    pattern: PASSWORD_PATTERN.source,
+    helperText: "Senha não corresponde ao padrão",
+    editable: true,
     required: true,
   },
   {
