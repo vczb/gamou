@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
 
 export type AccordionProps = {
-  title: string;
+  title?: string | ReactNode;
   children: ReactNode;
   detailsClassName?: string;
   summaryClassName?: string;
+  open?: boolean;
 };
 
 const Accordion = ({
@@ -12,8 +13,12 @@ const Accordion = ({
   children,
   detailsClassName = "",
   summaryClassName = "",
+  open = true,
 }: AccordionProps) => (
-  <details className={`shadow-lg p-4 group w-fit ${detailsClassName}`} open >
+  <details
+    className={`shadow-lg p-4 group w-fit ${detailsClassName}`}
+    open={open}
+  >
     <summary
       className={`block font-bold text-large cursor-pointer text-black group-hover:text-primary-500 duration-200 ${summaryClassName}`}
     >
