@@ -1,4 +1,6 @@
 import Inventory from "@/containers/Inventory";
+import { CategoryController } from "@/controllers/CategoryController";
+import { ProductController } from "@/controllers/ProductController";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,7 +9,18 @@ export const metadata: Metadata = {
 };
 
 const Index = async () => {
-  return <Inventory />;
+  const productController = new ProductController();
+  const categoryController = new CategoryController();
+
+  const [productResponse, categoryResponse] = await Promise.all([
+    productController.selectAllProductsByToken(),
+    categoryController.selectAllCategoriesByToken(),
+  ]);
+
+  const { products } = productResponse?.data || [];
+  const { categories } = categoryResponse?.data || [];
+
+  return <Inventory categories={categories} products={products} />;
 };
 
 export default Index;
