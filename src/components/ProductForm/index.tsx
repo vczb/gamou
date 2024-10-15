@@ -6,7 +6,7 @@ import DynamicForm, { FieldFormSchema } from "../DynamicForm";
 
 export type ProductFormProps = {
   action: "create" | "edit";
-  product?: ProductTypes;
+  product?: Partial<ProductTypes>;
   categories: Category[];
   handleSubmit?: (product?: ProductTypes) => void;
 };

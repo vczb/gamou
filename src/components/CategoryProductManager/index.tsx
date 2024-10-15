@@ -1,13 +1,14 @@
 import { Category } from "@/types/category";
 import { Product as ProductType } from "@/types/product";
 import Accordion from "../Accordion";
-import Image from "../Image";
 import Button from "../Button";
 import ProductManager from "../ProductManager";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Modal from "../Modal";
 import CategoryForm from "../CategoryForm";
-import { CategoryContext } from "@/hooks/use-category";
+import { CategoryContext, useCategory } from "@/hooks/use-category";
+import ProductForm from "../ProductForm";
+import PenSquare from "@/icons/PenSquare";
 
 export type CategoryProductManagerProps = {
   category: Category;
@@ -18,59 +19,112 @@ const CategoryProductManager = ({
   category,
   products,
 }: CategoryProductManagerProps) => {
-  const [open, setOpen] = useState(false);
-  const [categoryState, setCategoryState] = useState<Category>(category);
-  const categories = useContext(CategoryContext);
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [productModalOpen, setProductModalOpen] = useState(false);
+
+  const [categoryState, setCategoryState] = useState<Category | undefined>(
+    category
+  );
+  const [productsState, setProductsState] = useState<ProductType[]>(products);
+
+  const { categories } = useContext(CategoryContext);
+
+  const { deleteCategory, loading: categoryLoading } = useCategory();
 
   const handleEditCategory = (updatedCategory?: Category) => {
     if (updatedCategory) {
       setCategoryState(updatedCategory);
-      setOpen(false);
+      setCategoryModalOpen(false);
     }
   };
 
+  const handleCreateProduct = (newProduct?: ProductType) => {
+    if (newProduct) {
+      setProductsState((prev) => [...prev, newProduct]);
+      setProductModalOpen(false);
+    }
+  };
+
+  const handleDeleteCategory = useCallback(
+    async (categoryId: number) => {
+      if (!categoryId) return;
+
+      if (
+        window.confirm(
+          `Você tem certeza que quer deletar esta categoria?\n\nEsta ação não pode ser desfeita!`
+        )
+      ) {
+        await deleteCategory(categoryId);
+        setCategoryModalOpen(false);
+        setCategoryState(undefined);
+      }
+    },
+    [deleteCategory]
+  );
+
+  if (!categoryState) return <></>;
+
   return (
     <>
-      <Modal isOpen={open} onClose={() => setOpen(false)} showCloseButton>
+      <Modal
+        isOpen={categoryModalOpen}
+        onClose={() => setCategoryModalOpen(false)}
+        showCloseButton
+      >
         <CategoryForm
           category={categoryState}
           action="edit"
           handleSubmit={handleEditCategory}
+        />
+        <Button
+          variant="light"
+          type="button"
+          size="small"
+          className="flex ml-auto mt-2"
+          onClick={() => handleDeleteCategory(categoryState.id)}
+          disabled={categoryLoading}
+        >
+          Deletar categoria
+        </Button>
+      </Modal>
+      <Modal
+        isOpen={productModalOpen}
+        onClose={() => setProductModalOpen(false)}
+        showCloseButton
+      >
+        <ProductForm
+          categories={categories}
+          product={{ category_id: category.id }}
+          action="create"
+          handleSubmit={handleCreateProduct}
         />
       </Modal>
       <Accordion
         open={false}
         detailsClassName="w-full max-w-lg"
         title={
-          <div
-            className="flex flex-col w-full gap-2"
-            title="Clique para expandir/colapsar"
-          >
-            <Image
-              src={categoryState.image}
-              className="max-h-32 font-normal text-sm text-blueGray-400"
-              placeholder="Adicione uma image para esta categoria"
-              alt={`Image da categoria ${categoryState.title}`}
-            />
+          <div className="flex justify-between">
             {categoryState.title}
-            <span className="text-blueGray-600 font-normal">
-              {categoryState.description}
-            </span>
-            <Button variant="secondary" onClick={() => setOpen(true)}>
-              Gerenciar categoria
+            <Button
+              size="small"
+              variant="light"
+              onClick={() => setCategoryModalOpen(true)}
+            >
+              <PenSquare className="h-4 w-4" />
             </Button>
           </div>
         }
       >
         <div className="flex flex-col">
-          {products?.length ? (
+          {productsState?.length ? (
             <div className="grid gap-4">
-              {products.map((product) => (
-                <ProductManager
+              {productsState.map((product) => (
+                <div
+                  className="border-dashed border-blueGray-200 pb-4 border-b-2"
                   key={product.id}
-                  product={product}
-                  categories={categories}
-                />
+                >
+                  <ProductManager product={product} categories={categories} />
+                </div>
               ))}
             </div>
           ) : (
@@ -79,7 +133,11 @@ const CategoryProductManager = ({
               para cadastrar um produto!
             </i>
           )}
-          <Button variant="primary" className="mt-4">
+          <Button
+            variant="primary"
+            className="mt-4"
+            onClick={() => setProductModalOpen(true)}
+          >
             Novo Produto
           </Button>
         </div>

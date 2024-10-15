@@ -33,16 +33,19 @@ const Modal = ({ isOpen, onClose, showCloseButton, children }: ModalProps) => {
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
       onClick={handleOutsideClick}
     >
-      <dialog ref={modalRef} className="" open>
+      <dialog
+        ref={modalRef}
+        className="max-h-screen overflow-y-auto bg-transparent  py-6 px-2"
+        open
+      >
         {showCloseButton && (
           <button
             onClick={handleClose}
-            className="absolute top-3 right-3 text-gray-500 hover:text-black"
+            className="absolute top-9 right-5 text-gray-500 hover:text-black"
           >
             &times;
           </button>
         )}
-
         {children}
       </dialog>
     </div>

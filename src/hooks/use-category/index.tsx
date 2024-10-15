@@ -133,7 +133,17 @@ const useCategory = () => {
   };
 };
 
-const CategoryContext = createContext<Category[]>([]);
+type CategoryContextData = {
+  categories: Category[];
+};
+
+const CategoryContextDefaultValues = {
+  categories: [],
+};
+
+const CategoryContext = createContext<CategoryContextData>(
+  CategoryContextDefaultValues
+);
 
 const CategoryProvider = ({
   children,
@@ -143,7 +153,7 @@ const CategoryProvider = ({
   categories: Category[];
 }) => {
   return (
-    <CategoryContext.Provider value={categories}>
+    <CategoryContext.Provider value={{ categories }}>
       {children}
     </CategoryContext.Provider>
   );
