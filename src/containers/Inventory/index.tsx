@@ -1,7 +1,9 @@
 "use client";
 
-import Accordion from "@/components/Accordion";
+// import Accordion from "@/components/Accordion";
 import Breadcrumb from "@/components/Breadcrumb";
+import CategoryProductManager from "@/components/CategoryProductManager";
+import { CategoryProvider } from "@/hooks/use-category";
 // import ControlCardList from "@/components/ControlCardList";
 // import Box from "@/icons/Box";
 // import Tags from "@/icons/Tags";
@@ -36,6 +38,17 @@ const Inventory = ({ categories, products }: InventoryProps) => {
     <div className="container mx-auto px-4 pb-28 pt-8 max-w-lg">
       <Breadcrumb items={BREADCUMB} />
       <div className="mt-4">
+        <CategoryProvider categories={categories}>
+          {categories.map((category) => (
+            <CategoryProductManager
+              key={category.id}
+              category={category}
+              products={products.filter(
+                (product) => product.category_id === category.id
+              )}
+            />
+          ))}
+        </CategoryProvider>
         {/* <ControlCardList items={CONTROL_ACTIONS} /> */}
       </div>
     </div>

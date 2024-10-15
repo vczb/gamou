@@ -8,10 +8,16 @@ export type ProductFormProps = {
   action: "create" | "edit";
   product?: ProductTypes;
   categories: Category[];
+  handleSubmit?: (product?: ProductTypes) => void;
 };
 
-const ProductForm = ({ product, action, categories }: ProductFormProps) => {
-  const { createOrEditProduct, deleteProduct, loading } = useProduct();
+const ProductForm = ({
+  product,
+  action,
+  categories,
+  handleSubmit,
+}: ProductFormProps) => {
+  const { createOrEditProduct, loading } = useProduct();
 
   const formData = useMemo(() => {
     const selectOptions =
@@ -102,7 +108,7 @@ const ProductForm = ({ product, action, categories }: ProductFormProps) => {
     ] as unknown as FieldFormSchema[];
   }, [product, loading, action, categories]);
 
-  const handleSubmit = useCallback(
+  const handleSubmitForm = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -131,28 +137,30 @@ const ProductForm = ({ product, action, categories }: ProductFormProps) => {
         active,
       } as editProductProps;
 
-      await createOrEditProduct(payload, action);
+      const data = await createOrEditProduct(payload, action);
+
+      handleSubmit?.(data?.product);
     },
-    [createOrEditProduct, action, product]
+    [createOrEditProduct, action, product, handleSubmit]
   );
 
-  const handleDelete = useCallback(async () => {
-    if (!product?.id) return;
+  // const handleDelete = useCallback(async () => {
+  //   if (!product?.id) return;
 
-    if (
-      window.confirm(
-        `Você tem certeza que quer deletar este produto?\n\nEsta ação não pode ser desfeita!`
-      )
-    ) {
-      await deleteProduct(product.id);
-    }
-  }, [deleteProduct, product]);
+  //   if (
+  //     window.confirm(
+  //       `Você tem certeza que quer deletar este produto?\n\nEsta ação não pode ser desfeita!`
+  //     )
+  //   ) {
+  //     await deleteProduct(product.id);
+  //   }
+  // }, [deleteProduct, product]);
 
   return (
     <DynamicForm
       formId="product-form"
       schema={formData}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmitForm}
       btnProps={{
         text: loading
           ? "Processando..."

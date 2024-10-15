@@ -19,7 +19,8 @@ export class ProductController extends BaseController {
 
       const productModel = new ProductModel();
 
-      const products = await productModel.selectProductsWithCategoryByCompanyId(company.id)
+      // const products = await productModel.selectProductsWithCategoryByCompanyId(company.id)
+      const products = await productModel.select({company_id: company.id})
 
       const data = {
         products: products || [],

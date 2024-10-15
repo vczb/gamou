@@ -37,9 +37,7 @@ const useProduct = () => {
         if (product.image instanceof File) {
           const formData = new FormData();
 
-          const fileName = product.id
-            ? `product-${product.id}-image`
-            : `product-${Date.now()}-temp-image`;
+          const fileName = `product-${Date.now()}`;
 
           formData.append("file", product.image, fileName);
 
@@ -70,7 +68,13 @@ const useProduct = () => {
           throw new Error(result?.message);
         }
 
+        const updatedProduct = result?.data?.product;
+
         renderFlashMessage({ message: result.message, variant: "success" });
+
+        return {
+          product: updatedProduct,
+        };
       } catch (error: any) {
         setError(error);
         console.error(error);
