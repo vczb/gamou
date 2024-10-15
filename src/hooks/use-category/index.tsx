@@ -2,7 +2,7 @@
 
 import { Category } from "@/types/category";
 import renderFlashMessage from "@/utils/renderFlashMessage";
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState, createContext } from "react";
 import { useUser } from "../use-user";
 import { BASE_URL } from "@/utils/constants";
 
@@ -39,9 +39,7 @@ const useCategory = () => {
         if (category.image instanceof File) {
           const formData = new FormData();
 
-          const fileName = category.id
-            ? `category-${category.id}-image`
-            : `category-${Date.now()}-temp-image`;
+          const fileName = `category-${Date.now()}`;
 
           formData.append("file", category.image, fileName);
 
@@ -72,7 +70,13 @@ const useCategory = () => {
           throw new Error(result?.message);
         }
 
+        const updatedCategory = result?.data?.category;
+
         renderFlashMessage({ message: result.message, variant: "success" });
+
+        return {
+          category: updatedCategory,
+        };
       } catch (error: any) {
         setError(error);
         console.error(error);
@@ -129,4 +133,20 @@ const useCategory = () => {
   };
 };
 
-export { useCategory };
+const CategoryContext = createContext<Category[]>([]);
+
+const CategoryProvider = ({
+  children,
+  categories,
+}: {
+  children: ReactNode;
+  categories: Category[];
+}) => {
+  return (
+    <CategoryContext.Provider value={categories}>
+      {children}
+    </CategoryContext.Provider>
+  );
+};
+
+export { useCategory, CategoryProvider, CategoryContext };
