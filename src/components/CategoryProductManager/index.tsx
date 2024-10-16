@@ -101,10 +101,15 @@ const CategoryProductManager = ({
       </Modal>
       <Accordion
         open={false}
-        detailsClassName="w-full max-w-lg"
+        detailsClassName={`w-full max-w-lg ${
+          !categoryState.active && "bg-blueGray-200"
+        }`}
         title={
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             {categoryState.title}
+            {!categoryState.active && (
+              <i className="text-xs ml-2 text-error">Desativada</i>
+            )}
             <Button
               size="small"
               variant="light"

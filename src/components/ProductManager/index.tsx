@@ -64,7 +64,12 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
           Deletar produto
         </Button>
       </Modal>
-      <div id={String(productState.id)} className="grid gap-2 grid-cols-3">
+      <div
+        id={String(productState.id)}
+        className={`grid gap-2 grid-cols-3 ${
+          !productState.active && "bg-blueGray-200"
+        }`}
+      >
         <Image
           src={productState.image}
           alt={productState.title}
@@ -73,6 +78,9 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
         <div className="flex flex-col col-span-2 justify-between">
           <div className="flex justify-between">
             <h3 className="text-sm font-bold line-clamp-1">
+              {!productState.active && (
+                <i className="text-xs mr-2 text-error">Desativado</i>
+              )}
               {productState.title}
             </h3>
             <Button

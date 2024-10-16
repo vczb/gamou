@@ -52,6 +52,7 @@ module.exports = {
         success: base.success,
         white: base.white,
         black: base.black,
+        error: base.error,
       },
       fontSize: {
         small: ["0.875rem", "1.25rem"] /* 14px with 20px line height */,
