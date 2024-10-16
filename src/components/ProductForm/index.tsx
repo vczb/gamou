@@ -32,6 +32,7 @@ const ProductForm = ({
       {
         name: "title",
         label: "Título:",
+        sublabel: "Este é o nome do seu produto",
         placeholder: "Digite o título do produto",
         type: "text",
         defaultValue: product?.title,
@@ -42,6 +43,8 @@ const ProductForm = ({
       {
         name: "image",
         label: "Imagem:",
+        sublabel:
+          "Escolha uma imagem na horientação horizontal de até 1MB (1000KB)",
         placeholder: "Digite a URL da imagem",
         type: "upload-image",
         defaultValue: product?.image,
@@ -53,6 +56,7 @@ const ProductForm = ({
       {
         name: "description",
         label: "Descrição:",
+        sublabel: "Descreva seu produto em detalhes",
         placeholder: "Digite a descrição do produto",
         type: "description",
         defaultValue: product?.description,
@@ -63,7 +67,9 @@ const ProductForm = ({
       {
         name: "price",
         label: "Preço:",
-        placeholder: "Digite o preço do produto",
+        sublabel:
+          "Digite o preço do produto. Apenas números inteiros ou decimais",
+        placeholder: "99,99",
         type: "text-number",
         defaultValue: product?.price,
         editable: true,
@@ -74,17 +80,19 @@ const ProductForm = ({
       {
         name: "amount",
         label: "Quantidade:",
+        sublabel:
+          "Você pode digitar no centro do elemento ou somar e diminuir pelos botões",
         placeholder: "Digite a quantidade do produto",
-        type: "text-number",
+        type: "number",
         defaultValue: product?.amount,
         editable: true,
         required: true,
         disabled: loading,
-        step: "1",
       },
       {
         name: "category_id",
         label: "Categoria:",
+        sublabel: "Sob qual categoria seu produto estará agrupado",
         placeholder: "Selecione a categoria do produto",
         type: "select",
         defaultValue: product?.category_id,
@@ -99,6 +107,8 @@ const ProductForm = ({
       {
         name: "active",
         label: "Ativo:",
+        sublabel:
+          "Ao marcar esta opção seu produto estará disponível no seu site",
         type: "checkbox",
         checked: typeof product?.active !== "undefined" ? product.active : true,
         editable: true,
@@ -122,7 +132,7 @@ const ProductForm = ({
       const title = (formData.get("title") || "") as string;
       const description = (formData.get("description") || "") as string;
       const price = parseFloat(formData.get("price") as string);
-      const amount = parseInt(formData.get("amount") as string, 10);
+      const amount = formData.get("amount") as unknown as number;
       const category_id = parseInt(formData.get("category_id") as string, 10);
       const active = formData.get("active") === "on";
 

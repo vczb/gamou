@@ -21,6 +21,7 @@ const CategoryForm = ({
       {
         name: "title",
         label: "Título:",
+        sublabel: "Este é o nome da sua categoria",
         placeholder: "Digite o título da categoria",
         type: "text",
         defaultValue: category?.title,
@@ -31,6 +32,8 @@ const CategoryForm = ({
       {
         name: "image",
         label: "Imagem:",
+        sublabel:
+          "Escolha uma imagem na horientação horizontal de até 1MB (1000KB)",
         placeholder: "Digite a URL da imagem",
         type: "upload-image",
         defaultValue: category?.image,
@@ -42,6 +45,7 @@ const CategoryForm = ({
       {
         name: "description",
         label: "Descrição:",
+        sublabel: "Descreva sua categoria em detalhes",
         placeholder: "Digite a descrição da categoria",
         type: "description",
         defaultValue: category?.description,
@@ -52,6 +56,7 @@ const CategoryForm = ({
       {
         name: "active",
         label: "Ativa:",
+        sublabel: "Marque ativa e esta categoria estará disponível em seu site",
         type: "checkbox",
         checked:
           typeof category?.active !== "undefined" ? category.active : true,
