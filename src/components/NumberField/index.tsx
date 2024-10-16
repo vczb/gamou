@@ -1,6 +1,6 @@
 import Minus from "../../icons/Minus";
 import Plus from "../../icons/Plus";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export type NumberFieldProps = {
   id?: string;
@@ -10,6 +10,8 @@ export type NumberFieldProps = {
   minusDisabled?: boolean;
   plusDisabled?: boolean;
   required?: boolean;
+  inputDisabled?: boolean;
+  minValue?: number;
 };
 
 const NumberField = ({
@@ -17,37 +19,47 @@ const NumberField = ({
   minusDisabled = false,
   plusDisabled = false,
   required = false,
+  inputDisabled = true,
+  minValue = 0,
   id,
   name,
   onChange,
 }: NumberFieldProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState<number>(defaultValue);
 
   const handleClick = useCallback(
     (type: "increment" | "decrement") => {
-      let value = Number(inputRef?.current?.value || 0);
-
+      let newValue = value;
       if (type === "increment") {
-        value += 1;
+        newValue += 1;
       } else {
-        value -= 1;
+        newValue -= 1;
       }
-      if (value >= 0) {
-        // @ts-expect-error
-        inputRef.current.value = value;
+      if (newValue >= 0) {
+        setValue(newValue);
         if (onChange) {
-          onChange(value);
+          onChange(newValue);
         }
       }
     },
-    [onChange]
+    [value, onChange]
   );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = Number(e.target.value);
+    if (inputValue >= 0) {
+      setValue(inputValue);
+      if (onChange) {
+        onChange(inputValue);
+      }
+    }
+  };
 
   return (
     <div className="flex w-fit items-center">
       <button
         className={`rounded-full border-2 border-blueGray-800 w-6 h-6 bg-primary-400 hover:bg-primary-500 duration-200 focus:shadow-lg ${
-          minusDisabled ? "opacity-50" : ""
+          minusDisabled || minValue == value ? "opacity-50" : ""
         }`}
         onClick={() => handleClick("decrement")}
         disabled={minusDisabled}
@@ -57,9 +69,10 @@ const NumberField = ({
       </button>
       <input
         defaultValue={defaultValue}
-        ref={inputRef}
-        min={0}
-        disabled
+        value={value}
+        onChange={handleInputChange}
+        min={minValue}
+        disabled={inputDisabled}
         id={id}
         required={required}
         name={name}
