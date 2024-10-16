@@ -3,6 +3,7 @@ import { useCallback, useMemo } from "react";
 import { Product as ProductTypes } from "@/types/product";
 import { Category } from "@/types/category";
 import DynamicForm, { FieldFormSchema } from "../DynamicForm";
+import { DECIMAL_PATTERN } from "@/utils/regex";
 
 export type ProductFormProps = {
   action: "create" | "edit";
@@ -72,6 +73,9 @@ const ProductForm = ({
         placeholder: "99,99",
         type: "text-number",
         defaultValue: product?.price,
+        pattern: DECIMAL_PATTERN.source,
+        helperText:
+          "O valor deve ser em formato decimal ou inteiro separado por virgula ou ponto. Exemplo 99,99",
         editable: true,
         required: true,
         disabled: loading,
