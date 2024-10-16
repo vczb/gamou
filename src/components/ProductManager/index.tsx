@@ -66,7 +66,7 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
       </Modal>
       <div
         id={String(productState.id)}
-        className={`grid gap-2 grid-cols-3 ${
+        className={`grid gap-2 grid-cols-3 p-2 ${
           !productState.active && "bg-blueGray-200"
         }`}
       >
@@ -92,7 +92,7 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
               <PenSquare className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-gray-500 line-clamp-2 md:line-clamp-3 lg:line-clamp-none">
+          <p className="text-gray-500 line-clamp-3 md:line-clamp-4 lg:line-clamp-none">
             {productState.description}
           </p>
           <div className="flex gap-2">
