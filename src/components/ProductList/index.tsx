@@ -1,7 +1,8 @@
-import Product, { ProductProps } from "../Product";
+import { Product as ProductTypes } from "@/types/product";
+import Product from "../Product";
 
 export type ProductListProps = {
-  products: ProductProps[];
+  products: ProductTypes[];
 };
 
 const ProductList = ({ products }: ProductListProps) => {
@@ -10,7 +11,7 @@ const ProductList = ({ products }: ProductListProps) => {
       {products.map((product) => (
         <div
           className="mb-4 pb-4 border-b-2 border-dashed border-blueGray-200 last:border-none last:mb-0 last:pb-0"
-          key={product.uid}
+          key={product.id}
         >
           <Product {...product} />
         </div>

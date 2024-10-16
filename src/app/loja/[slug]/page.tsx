@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Store, { StoreProps } from "@/containers/Store";
-import { groupProductsByCategory } from "@/utils/mappers";
 import { StoreController } from "@/controllers/StoreController";
 
 const Page = async ({ params }: { params: { slug: string } }) => {
@@ -16,15 +15,10 @@ const Page = async ({ params }: { params: { slug: string } }) => {
 
   const { products, company, categories } = data;
 
-  const categoryProductList = groupProductsByCategory(products);
-
   const props = {
     products,
     categories,
-    categoryProductList,
-    image: company.image,
-    name: company.name,
-    slug: company.slug,
+    company,
   } as unknown as StoreProps;
 
   return <Store {...props} />;

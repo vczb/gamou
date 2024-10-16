@@ -1,19 +1,14 @@
 import AddToCartButton from "@/components/AddToCartButton";
 import { CURRENCY } from "@/utils/constants";
 import Image from "../Image";
+import { Product as ProductTypes } from "@/types/product";
 
-export type ProductProps = {
-  uid: string;
-  title: string;
-  image: string;
-  description: string;
-  price: number;
-};
+export type ProductProps = ProductTypes;
 
 const Product = (product: ProductProps) => {
-  const { title, image, description, price, uid } = product;
+  const { title, image, description, price, id: uid } = product;
   return (
-    <div id={uid} className="grid gap-2 p-2 max-w-4xl md:grid-cols-2">
+    <div id={String(uid)} className="grid gap-2 p-2 max-w-4xl md:grid-cols-2">
       <div className="flex pb-2 border-b-2 md:border-b-0 md:pb-0 md:row-span-2">
         <Image
           src={image}

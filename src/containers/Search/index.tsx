@@ -1,26 +1,31 @@
+import Accordion from "@/components/Accordion";
 import CartButton from "@/components/CartButton";
-import CategoryProductList, {
-  CategoryProductListProps,
-} from "@/components/CategoryProductList";
 import GoBackLink from "@/components/GoBackLink";
-import Heading from "@/components/Heading";
+import Product from "@/components/Product";
 import SearchField from "@/components/SearchField";
+import { Category } from "@/types/category";
+import { Company } from "@/types/company";
+import { Product as ProductType } from "@/types/product";
 
 export type SearchProps = {
-  slug: string;
   query: string;
-  categoryProductList: CategoryProductListProps[];
+  company: Company;
+  products: ProductType[];
+  categories: Category[];
 };
 
-const Search = ({ slug, query, categoryProductList }: SearchProps) => {
+const Search = ({ company, categories, products, query }: SearchProps) => {
   return (
     <main className="container mx-auto px-4 pb-28">
       <div className="my-6">
-        <GoBackLink path={`/loja/${slug}`} text="Retornar para a loja" />
+        <GoBackLink
+          path={`/loja/${company.slug}`}
+          text="Retornar para a loja"
+        />
       </div>
       <section className="mb-6">
         <SearchField
-          searchPath={`/loja/${slug}/busca`}
+          searchPath={`/loja/${company.slug}/busca`}
           placeholder="Buscar por nome..."
         />
       </section>
@@ -30,16 +35,41 @@ const Search = ({ slug, query, categoryProductList }: SearchProps) => {
       </section>
       <section className="mb-6 text-center">
         <ul className="w-full max-w-4xl mx-auto">
-          {categoryProductList.length ? (
-            categoryProductList.map((item) => (
-              <li className="mb-6" key={item.uid}>
-                <CategoryProductList {...item} />
-              </li>
-            ))
+          {categories.length ? (
+            categories.map(
+              (category) =>
+                products.find(
+                  (product) => product.category_id === category.id
+                ) && (
+                  <li className="mb-6" key={category.id}>
+                    <div id={String(category.id)}>
+                      <Accordion
+                        title={category.title}
+                        detailsClassName="w-full w-full max-w-4xl"
+                      >
+                        <div className="grid gap-4">
+                          {products
+                            .filter(
+                              (product) => product.category_id === category.id
+                            )
+                            .map((product) => (
+                              <div
+                                className="mb-4 pb-4 border-b-2 border-dashed border-blueGray-200 last:border-none last:mb-0 last:pb-0"
+                                key={product.id}
+                              >
+                                <Product {...product} />
+                              </div>
+                            ))}
+                        </div>
+                      </Accordion>
+                    </div>
+                  </li>
+                )
+            )
           ) : (
             <div className="flex justify-center items-center m-auto w-full text-center">
               <p className="text-blueGray-600">
-                Não há resultados para esta busca.
+                Não há resultados para esta busca
               </p>
             </div>
           )}

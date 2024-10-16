@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Search, { SearchProps } from "@/containers/Search";
-import { groupProductsByCategory } from "@/utils/mappers";
 import { StoreController } from "@/controllers/StoreController";
 
 const Page = async ({
@@ -20,15 +19,11 @@ const Page = async ({
 
   const { products, company, categories } = data;
 
-  const categoryProductList = groupProductsByCategory(products);
-
   const props = {
     products,
     categories,
-    categoryProductList,
-    image: company.image,
-    name: company.name,
-    slug: company.slug,
+    company,
+    query,
   } as unknown as SearchProps;
 
   if (!props) {
