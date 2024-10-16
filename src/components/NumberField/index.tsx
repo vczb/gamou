@@ -1,6 +1,6 @@
 import Minus from "../../icons/Minus";
 import Plus from "../../icons/Plus";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 export type NumberFieldProps = {
   id?: string;
