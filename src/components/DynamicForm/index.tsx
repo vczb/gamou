@@ -34,7 +34,8 @@ export type FieldFormSchema = {
     | "checkbox"
     | "select"
     | "upload-image"
-    | "text-number";
+    | "text-number"
+    | "number";
   defaultValue?: string | boolean;
   placeholder?: string;
   editable?: boolean;
@@ -212,6 +213,20 @@ const DynamicForm = ({
             {...(editable
               ? { defaultValue: defaultValue as string }
               : { value: defaultValue as string, disabled: true })}
+          />,
+          fieldId,
+          sublabel
+        );
+      case "number":
+        return renderLabeledField(
+          name,
+          label,
+          <NumberField
+            id={fieldId}
+            name={name}
+            required={required}
+            inputDisabled={false}
+            defaultValue={defaultValue as number | undefined}
           />,
           fieldId,
           sublabel
