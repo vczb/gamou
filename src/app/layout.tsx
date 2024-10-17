@@ -1,3 +1,4 @@
+import GoogleTagManager from "@/components/GoogleTagManager";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -16,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <GoogleTagManager />
+      </head>
       <body className={`${inter.className}`}>{children}</body>
     </html>
   );

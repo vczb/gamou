@@ -17,6 +17,7 @@
 ```
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 TOKEN_SECRET=GAMOU
+NEXT_PUBLIC_GTM_ID=
 ```
 
 ## (localhost) Install & run
