@@ -15,3 +15,19 @@ export const deleteFile = (filePath: string) => {
     return false
   }
 };
+
+export const deleteDirectory = (dirPath: string) => {
+  try {
+    if (fs.existsSync(dirPath)) {
+      fs.rmSync(dirPath, { recursive: true, force: true });
+      console.log(`Directory deleted: ${dirPath}`);
+      return true;
+    } else {
+      console.log(`Directory not found: ${dirPath}`);
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error deleting directory: ${dirPath}`, error);
+    return false;
+  }
+};

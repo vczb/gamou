@@ -2,6 +2,8 @@ import connection from "@/database/connection";
 
 import { BaseModel } from "./BaseModel";
 import { User } from "@/types/user";
+import { deleteDirectory } from "@/utils/file";
+import { generateHashId } from "@/utils/criptography";
 
 export class UserModel extends BaseModel<User> {
   constructor() {
@@ -38,5 +40,28 @@ export class UserModel extends BaseModel<User> {
         throw error;
       }
     });
+  }
+
+
+  async deleteUserAndStorageAssets(id: number | string) {
+    const transaction = await connection.transaction();
+
+    try{
+
+      const result = await connection('users').where({ id }).del();
+
+      await transaction.commit();
+
+      const dirName = await generateHashId(id)
+
+      const path = process.cwd() + '/public/uploads/' + dirName;
+      await deleteDirectory(path);
+
+      return result;
+
+    } catch (error) {
+      console.error("Error deleting user and storage:", error);
+      throw error;
+    }
   }
 }

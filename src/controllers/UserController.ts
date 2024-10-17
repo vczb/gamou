@@ -78,7 +78,7 @@ export class UserController extends BaseController {
 
       const userModel = new UserModel();
 
-      const result = await userModel.delete(id)
+      const result = await userModel.deleteUserAndStorageAssets(id)
 
       if (result === 0) {
         return this.unprocessableEntity("Não foi possível deletar o usuário");
