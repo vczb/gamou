@@ -37,10 +37,10 @@ const CartProvider = ({ children }: CartProviderProps) => {
 
   const addToCart = (product: ProductProps) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.uid === product.uid);
+      const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
         return prev.map((item) =>
-          item.uid === product.uid ? { ...item, amount: item.amount + 1 } : item
+          item.id === product.id ? { ...item, amount: item.amount + 1 } : item
         );
       } else {
         return [...prev, { ...product, amount: 1 }];
@@ -50,19 +50,19 @@ const CartProvider = ({ children }: CartProviderProps) => {
 
   const remFromCart = (product: ProductProps) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.uid === product.uid);
+      const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem && existingItem.amount > 1) {
         return prev.map((item) =>
-          item.uid === product.uid ? { ...item, amount: item.amount - 1 } : item
+          item.id === product.id ? { ...item, amount: item.amount - 1 } : item
         );
       } else {
-        return prev.filter((item) => item.uid !== product.uid);
+        return prev.filter((item) => item.id !== product.id);
       }
     });
   };
 
   const removeAllFromCart = (product: ProductProps) => {
-    setCartItems((prev) => prev.filter((item) => item.uid !== product.uid));
+    setCartItems((prev) => prev.filter((item) => item.id !== product.id));
   };
 
   const total = useMemo(

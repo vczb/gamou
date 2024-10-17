@@ -17,7 +17,7 @@ const CartItem = ({
   title,
   amount,
   description,
-  uid,
+  ...props
 }: CartItemProps) => {
   const { addToCart, remFromCart, removeAllFromCart } = useCart();
 
@@ -32,7 +32,8 @@ const CartItem = ({
         price,
         title,
         description,
-        uid,
+        amount,
+        ...props,
       };
 
       if (newAmount > amount) {
@@ -41,7 +42,7 @@ const CartItem = ({
         remFromCart(product);
       }
     },
-    [image, price, title, amount, description, uid, addToCart, remFromCart]
+    [image, price, title, amount, description, props, addToCart, remFromCart]
   );
 
   const handleRemoveAllitems = useCallback(() => {
@@ -53,12 +54,13 @@ const CartItem = ({
         price,
         title,
         description,
-        uid,
+        amount,
+        ...props,
       };
 
       removeAllFromCart(product);
     }
-  }, [image, price, title, description, uid, amount, removeAllFromCart]);
+  }, [image, price, title, description, amount, props, removeAllFromCart]);
 
   const totalPrice = useMemo(() => {
     return (amount * price).toFixed(2);
