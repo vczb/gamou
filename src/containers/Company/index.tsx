@@ -43,7 +43,7 @@ const Company = ({ company }: CompanyProps) => {
         name: "phone",
         label: "WhatsApp:",
         sublabel:
-          "Deve conter apenas números, cod. país (55), estado (51) e telefone (912345678). Totalizando 13 dígitos",
+          "Deve conter apenas números. Cód. do país, estado e telefone, totalizando 13 dígitos. Ex: 555199190178",
         placeholder: "Exemplo: 5551912345678",
         pattern: WHATSAPP_PATTERN.source,
         helperText: "O número deve seguir o padrão solicitado",
