@@ -36,7 +36,7 @@ const useCompany = () => {
         // @ts-ignore
         if (company.image instanceof File) {
           const formData = new FormData();
-          const fileName = `company-${company.id}-image`;
+          const fileName = `company-${Date.now()}`;
           formData.append("file", company.image, fileName);
 
           const upload = await fetch(upload_url, {

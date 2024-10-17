@@ -80,7 +80,7 @@ export class CompanyController extends BaseController {
       }
 
 
-      const updatedCompany = await companyModel.update(company.id, {
+      const updatedCompany = await companyModel.updateCompanyAndDeletePrevImage(company.id, {
         slug: companySlug,
         name,
         phone,
