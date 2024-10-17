@@ -133,7 +133,7 @@ export class CategoryController extends BaseController {
 
       const categoryModel = new CategoryModel();
 
-      const updatedCategory = await categoryModel.update(id,{
+      const updatedCategory = await categoryModel.updateCategoryAndDeletePrevImage(id,{
         title,
         image,
         description,
@@ -180,7 +180,7 @@ export class CategoryController extends BaseController {
         return this.unprocessableEntity("Categoria não encontrada para este usuário.");
       }
 
-      const deletedCategory = await categoryModel.delete(id);
+      const deletedCategory = await categoryModel.deleteCategoryAndImage(id);
 
       if (!deletedCategory) {
         return this.unprocessableEntity("Não foi possível deletar a categoria.");
