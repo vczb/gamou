@@ -44,27 +44,46 @@ export class CategoryModel extends BaseModel<Category> {
 
   async deleteCategoryAndImage(id: number) {
     const transaction = await connection.transaction();
-
-    try{
-
+  
+    try {
+      // Get the image associated with the category
       const [existingCategory] = await transaction('categories')
-      .where({ id })
-      .select('image');
-
-      const result = await connection('categories').where({ id }).del();
-
+        .where({ id })
+        .select('image');
+  
+      // Get all images of products related to the category
+      const existingProducts = await transaction('products')
+        .where({ category_id: id })
+        .select('image');
+  
+      // Delete the category
+      const result = await transaction('categories').where({ id }).del();
+  
+      // Commit the transaction
       await transaction.commit();
-
-      if(existingCategory.image){
-        const path = process.cwd() + '/public/' + existingCategory.image;
-        await deleteFile(path);
+  
+      // Delete category image if it exists
+      if (existingCategory?.image) {
+        const categoryImagePath = `${process.cwd()}/public/${existingCategory.image}`;
+        await deleteFile(categoryImagePath);
       }
-
+  
+      // Delete all product images related to the category
+      for (const product of existingProducts) {
+        if (product.image) {
+          const productImagePath = `${process.cwd()}/public/${product.image}`;
+          await deleteFile(productImagePath);
+        }
+      }
+  
       return result;
-
+  
     } catch (error) {
+      // Rollback transaction if there is an error
+      await transaction.rollback();
       console.error("Error deleting category and image:", error);
       throw error;
     }
   }
+  
 }
