@@ -1,6 +1,7 @@
 import connection from "@/database/connection";
 import { BaseModel } from "./BaseModel";
 import { Product } from "@/types/product";
+import { deleteFile } from "@/utils/file";
 
 export class ProductModel extends BaseModel<Product> {
   constructor() {
@@ -74,5 +75,66 @@ export class ProductModel extends BaseModel<Product> {
     }
   }
   
+
+  async updateProductAndDeletePrevImage(id: number, data: Partial<Product>) {
+    const transaction = await connection.transaction();
+  
+    try {
+      // Fetch the current product to get the existing image URL
+      const [existingProduct] = await transaction('products')
+        .where({ id })
+        .select('image');
+  
+      // Update the product with the new data
+      const [updatedProduct] = await transaction('products')
+        .where({ id })
+        .update(data)
+        .returning('*');
+  
+      // Commit the transaction before performing the image deletion
+      await transaction.commit();
+  
+      // If the product had an old image and a new image is being uploaded, delete the old image
+      if (existingProduct.image && data.image && existingProduct.image !== data.image) {
+        const path = process.cwd() + '/public/' + existingProduct.image;
+        await deleteFile(path);
+      }
+  
+      return updatedProduct || undefined;
+  
+    } catch (error) {
+      // Rollback the transaction if something goes wrong
+      await transaction.rollback();
+      console.error('Error updating product and deleting previous image:', error);
+      throw error;
+    }
+  }
+
+
+  async deleteProductAndImage(id: number) {
+    const transaction = await connection.transaction();
+
+    try{
+
+      const [existingProduct] = await transaction('products')
+      .where({ id })
+      .select('image');
+
+      const result = await connection('products').where({ id }).del();
+
+      await transaction.commit();
+
+      if(existingProduct.image){
+        const path = process.cwd() + '/public/' + existingProduct.image;
+        await deleteFile(path);
+      }
+
+      return result;
+
+    } catch (error) {
+      console.error("Error deleting product and image:", error);
+      throw error;
+    }
+  }
   
 }

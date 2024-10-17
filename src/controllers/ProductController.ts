@@ -145,7 +145,7 @@ export class ProductController extends BaseController {
 
       const productModel = new ProductModel();
 
-      const updatedProduct = await productModel.update(id,{
+      const updatedProduct = await productModel.updateProductAndDeletePrevImage(id,{
         title,
         image,
         description,
@@ -195,7 +195,7 @@ export class ProductController extends BaseController {
         return this.unprocessableEntity("Produto não encontrada para este usuário.");
       }
 
-      const deletedProduct = await productModel.delete(id);
+      const deletedProduct = await productModel.deleteProductAndImage(id);
 
       if (!deletedProduct) {
         return this.unprocessableEntity("Não foi possível deletar a produto.");
