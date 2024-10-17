@@ -45,6 +45,20 @@ $ npm run dev
 http://localhost:3000/
 ```
 
+## Tips
+
+open psql on localhost
+
+```bash
+$ docker exec -it gamou_db psql -U gamou_user -d gamou_db
+```
+
+stop docker container
+
+```bash
+$ docker stop gamou_app
+```
+
 ## License
 
 This project is licensed under the [Creative Commons Attribution-NonCommercial (CC BY-NC) license](./LICENSE).
