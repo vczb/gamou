@@ -23,7 +23,7 @@ export class BaseController {
   async selectPrimaryCompanyByUserId(userId: number) {
     try {
       const companyModel = new CompanyModel();
-      const company = await companyModel.selectFirst({user_id: userId, company_sequence: 1})
+      const company = await companyModel.selectFirst({user_id: userId, sequence: 1})
       return company || undefined;
     } catch {
       return undefined;
