@@ -18,14 +18,11 @@ const Search = ({ company, categories, products, query }: SearchProps) => {
   return (
     <main className="container mx-auto px-4 pb-28">
       <div className="my-6">
-        <GoBackLink
-          path={`/loja/${company.slug}`}
-          text="Retornar para a loja"
-        />
+        <GoBackLink path={`/${company.slug}`} text="Retornar para a loja" />
       </div>
       <section className="mb-6">
         <SearchField
-          searchPath={`/loja/${company.slug}/busca`}
+          searchPath={`/${company.slug}/busca`}
           placeholder="Buscar por nome..."
         />
       </section>

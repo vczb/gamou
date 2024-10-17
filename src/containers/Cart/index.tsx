@@ -38,7 +38,7 @@ export default function Cart({ slug }: CartProps) {
 
       saveCartNotes(notes as string);
 
-      router.push(`/loja/${slug}/pedido`);
+      router.push(`/${slug}/pedido`);
     },
     [saveProducts, saveCartNotes, router, slug]
   );
@@ -47,7 +47,7 @@ export default function Cart({ slug }: CartProps) {
     <main className="container mx-auto px-4 pb-28">
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className="my-6">
-          <GoBackLink path={`/loja/${slug}`} text="Retornar para a loja" />
+          <GoBackLink path={`/${slug}`} text="Retornar para a loja" />
         </div>
         <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">
           <Heading text="Revise seu pedido" tag="h1" />

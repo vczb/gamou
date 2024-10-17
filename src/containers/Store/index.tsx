@@ -31,7 +31,7 @@ export default function Store({ company, products, categories }: StoreProps) {
       </section>
       <section className="mb-6">
         <SearchField
-          searchPath={`/loja/${company.slug}/busca`}
+          searchPath={`/${company.slug}/busca`}
           placeholder="Buscar por nome..."
         />
       </section>

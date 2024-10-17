@@ -10,7 +10,7 @@ import { WHATSAPP_PATTERN } from "@/utils/regex";
 
 const BREADCRUMB = [
   { link: "/painel", label: "Painel" },
-  { link: "/painel/loja", label: "Loja", active: true },
+  { link: "/painel", label: "Loja", active: true },
 ];
 
 type CompanyProps = {
@@ -28,7 +28,7 @@ const Company = ({ company }: CompanyProps) => {
         sublabel: "Compartilhe este link com seus clientes",
         type: "link",
         target: "_blank",
-        defaultValue: `${BASE_URL}/loja/${company?.slug}`,
+        defaultValue: `${BASE_URL}/${company?.slug}`,
         hidden: company.slug === String(company.user_id),
       },
       {

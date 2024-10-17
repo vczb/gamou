@@ -70,7 +70,7 @@ const Order = ({ slug, whatsapp }: OrderProps) => {
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className="my-6">
           <GoBackLink
-            path={`/loja/${slug}/carrinho`}
+            path={`/${slug}/carrinho`}
             text="Retornar para o carrinho"
           />
         </div>

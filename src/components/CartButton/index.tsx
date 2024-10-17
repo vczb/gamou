@@ -16,7 +16,7 @@ const CartButton = ({ variant = "black" }: CartButtonProps) => {
 
   const { quantity, total } = useCart();
 
-  const path = useMemo(() => `/loja/${slug}/carrinho`, [slug]);
+  const path = useMemo(() => `/${slug}/carrinho`, [slug]);
 
   const quantityMessage: string = useMemo(() => {
     if (quantity > 1) {
