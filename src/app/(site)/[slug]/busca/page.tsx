@@ -26,7 +26,7 @@ export async function generateMetadata({
     company.description ||
     `Pesquise e encontre os melhores produtos da ${company.name}. Aproveite preços especiais e faça seus pedidos diretamente pelo WhatsApp!`;
 
-  const imageUrl = company.image;
+  const imageUrl = `${BASE_URL}/${company.image}`.replace(/\/{2,}/g, "/");
   const url = `${BASE_URL}/${company.slug}/search`;
 
   return {

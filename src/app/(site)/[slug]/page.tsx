@@ -25,7 +25,7 @@ export async function generateMetadata({
   const description =
     company.description ||
     `Descubra a praticidade de comprar online na ${company.name}! Faça seu pedido rápido e seguro, sem complicações.`;
-  const imageUrl = company.image;
+  const imageUrl = `${BASE_URL}/${company.image}`.replace(/\/{2,}/g, "/");
   const url = `${BASE_URL}/${company.slug}`;
 
   return {
