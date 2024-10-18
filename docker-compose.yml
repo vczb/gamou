@@ -17,6 +17,8 @@ services:
       - TOKEN_SECRET=gamou_secret_token
     depends_on:
       - db
+    volumes:
+      - ./public/uploads:/app/public/uploads
   db:
     image: postgres:13
     container_name: gamou_db
