@@ -1,3 +1,5 @@
+import path from 'path';
+
 import connection from "@/database/connection";
 
 import { BaseModel } from "./BaseModel";
@@ -53,9 +55,9 @@ export class UserModel extends BaseModel<User> {
       await transaction.commit();
 
       const dirName = await generateHashId(id)
-
-      const path = process.cwd() + '/public/uploads/' + dirName;
-      await deleteDirectory(path);
+      const userDir = path.join(process.cwd(), 'public/uploads', dirName);
+      
+      await deleteDirectory(userDir);
 
       return result;
 
