@@ -100,7 +100,10 @@ export class CompanyController extends BaseController {
   
       return this.ok("Empresa atualizada com sucesso!", data);
 
-    } catch (error) {
+    } catch (error: any) {
+      if (error.constraint === "companies_slug_unique") {
+        return this.serverError("Este nome de Loja já está em uso! Escolha outro.");
+      }
       return this.serverError("Error modifying user.");
     }
 

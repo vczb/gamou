@@ -7,8 +7,9 @@ export async function PUT(req: Request) {
 
     const { name, image, description, active, currency, phone } = body;
 
-    if (!name || !image || !phone || !description || active === undefined || !currency) {
-      return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+    if (!name || !image || !phone || active === undefined || !currency) {
+      console.error("Invalid request body.")
+      return NextResponse.json({ message: "Algo deu errado na requisição, revise os campos do formulário e tente novamente." }, { status: 400 });
     }
 
     const controller = new CompanyController()
@@ -19,6 +20,6 @@ export async function PUT(req: Request) {
     return NextResponse.json(data, { status });
   } catch (error) {
     console.error("Error updating company:", error);
-    return NextResponse.json({ message: "Internal server error." }, { status: 500 });
+    return NextResponse.json({ message: "Erro interno, tente novamente mais tarde" }, { status: 500 });
   }
 }
