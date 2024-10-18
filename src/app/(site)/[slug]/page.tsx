@@ -27,8 +27,12 @@ export async function generateMetadata({
     `Descubra a praticidade de comprar online na ${company.name}! Faça seu pedido rápido e seguro, sem complicações.`;
   const imageUrl = `${BASE_URL}/${company.image}`.replace(/\/{2,}/g, "/");
   const url = `${BASE_URL}/${company.slug}`;
+  const keywords =
+    company.keywords ||
+    `${company.name}, pedidos online, WhatsApp, compras rápidas, comércio local`;
 
   return {
+    keywords,
     title,
     description,
     openGraph: {
