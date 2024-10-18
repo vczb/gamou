@@ -17,6 +17,8 @@ COPY . .
 # Construa a aplicação Next.js
 RUN npm run build
 
+RUN chmod -R 755 /app/public/uploads
+
 # Exponha a porta onde o Next.js rodará
 EXPOSE 3000
 

@@ -4,6 +4,19 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["knex"],
   },
+  async headers() {
+    return [
+      {
+        source: "/uploads/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store", // Prevent caching for uploaded files
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
