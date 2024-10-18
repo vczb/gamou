@@ -23,7 +23,7 @@ const Navbar = () => {
     if (isAuth) return controlMenu as MenuBarProps["items"];
 
     return [];
-  }, [isHome]);
+  }, [isHome, isAuth]);
 
   const solidStyle = useMemo(() => !isHome || isScrolled, [isHome, isScrolled]);
 

@@ -1,4 +1,5 @@
 import Button from "../Button";
+import Image from "../Image";
 
 const Hero = () => {
   return (
@@ -23,7 +24,11 @@ const Hero = () => {
         </div>
 
         <div className="w-full md:w-3/5 py-6 text-center">
-          <img className="w-full md:w-4/5 z-50" src="/img/hero.png" />
+          <Image
+            className="w-full md:w-4/5 z-50"
+            src="/img/hero.png"
+            alt="Imagem de capa"
+          />
         </div>
       </div>
     </div>

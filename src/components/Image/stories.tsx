@@ -12,4 +12,5 @@ export default {
   },
 } as Meta;
 
+// eslint-disable-next-line jsx-a11y/alt-text
 export const Default: StoryFn<ImageProps> = (args) => <Image {...args} />;
