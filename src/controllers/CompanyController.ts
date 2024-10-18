@@ -9,7 +9,7 @@ export class CompanyController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
 
@@ -66,7 +66,7 @@ export class CompanyController extends BaseController {
       const userId = await this.verifyToken()
   
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const companyModel = new CompanyModel();
@@ -104,7 +104,7 @@ export class CompanyController extends BaseController {
       if (error.constraint === "companies_slug_unique") {
         return this.serverError("Este nome de Loja já está em uso! Escolha outro.");
       }
-      return this.serverError("Error modifying user.");
+      return this.serverError("Erro ao atualizar os dados da empresa");
     }
 
   }

@@ -13,6 +13,6 @@ export async function DELETE(req: Request, { params }: {params: {id: string}}) {
     return NextResponse.json(data, { status });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Internal Server Error." }, { status: 500 });
+    return NextResponse.json({ message: "Erro interno, tente novamente mais tarde" }, { status: 500 });
   }
 }

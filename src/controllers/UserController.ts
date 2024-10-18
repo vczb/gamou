@@ -10,14 +10,14 @@ export class UserController extends BaseController {
       const user = await userModel.selectFirst({id: userId});
 
       if (!user) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       delete user.password; // Ensure password is not returned
 
-      return this.ok("User fetched successfully.", { user });
+      return this.ok("Dados do usuário carregados com sucesso!", { user });
     } catch (error) {
-      return this.serverError("Error fetching user.");
+      return this.serverError("Erro ao carregar os dados do usuário");
     }
   }
 
@@ -27,13 +27,13 @@ export class UserController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       return await this.selectUserById(userId);
 
     } catch (error) {
-      return this.serverError("Error fetching user.");
+      return this.serverError("Erro ao carregar os dados do usuário");
     }
   }
 
@@ -43,7 +43,7 @@ export class UserController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const userModel = new UserModel();
@@ -57,7 +57,7 @@ export class UserController extends BaseController {
       return this.ok("Usuário editado com sucesso!", data);
       
     } catch (error) {
-      return this.serverError("Error modifying user.");
+      return this.serverError("Erro ao atualizar o usuário");
     }
   }
 
@@ -67,7 +67,7 @@ export class UserController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       if (id != userId){
@@ -101,7 +101,7 @@ export class UserController extends BaseController {
   async signUp(email: string, password: string) {
     try {
       if (!email || !password) {
-        return this.badRequest("Email and Password are required!");
+        return this.badRequest("Email e senha são obrigatórios");
       }
 
       const userModel = new UserModel();
@@ -111,26 +111,26 @@ export class UserController extends BaseController {
       const user = await userModel.createUserWithCompany({email, password: hashPassword});
 
       if (!user?.id) {
-        return this.unprocessableEntity("Registration failed. Please try again.");
+        return this.unprocessableEntity("Erro ao cadastrar-se. Tente novamente mais tarde");
       }
 
       const jwt = createSessionToken(user.id);
       setCookies("token", jwt);
 
-      return this.ok("User registered successfully!", { user: { id: user.id } });
+      return this.ok("Usuário criado com sucesso!", { user: { id: user.id } });
     } catch (error: any) {
       console.error("Error during registration:", error);
       if (error.constraint === "users_email_unique") {
-        return this.serverError("This email is already registered.");
+        return this.serverError("Este email já está em uso");
       }
-      return this.serverError("Something went wrong during registration.");
+      return this.serverError("Algo deu errado durante o cadastro");
     }
   }
 
   async signIn(email: string, password: string) {
     try {
       if (!email || !password) {
-        return this.badRequest("Email and Password are required!");
+        return this.badRequest("Email e senha são obrigatórios");
       }
 
       const userModel = new UserModel();
@@ -138,13 +138,13 @@ export class UserController extends BaseController {
       const user = await userModel.selectFirst({email});
 
       if (!user?.password) {
-        return this.unauthorized("Invalid email or password.");
+        return this.unauthorized("Email ou Senha inválidos");
       }
 
       const isPasswordValid = await decrypt(password, user.password);
 
       if (!isPasswordValid) {
-        return this.unauthorized("Invalid email or password.");
+        return this.unauthorized("Email e senha são obrigatórios");
       }
 
       const jwt = createSessionToken(user.id);
@@ -152,10 +152,10 @@ export class UserController extends BaseController {
 
       delete user.password;
 
-      return this.ok("Login successful!", { user });
+      return this.ok("Autenticado com sucesso", { user });
     } catch (error) {
       console.error("Error during login:", error);
-      return this.serverError("Something went wrong during login.");
+      return this.serverError("Algo deu errado durante a autenticação do usuário, tente novamente mais tarde.");
     }
   }
 }

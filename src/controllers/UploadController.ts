@@ -18,7 +18,7 @@ export class UploaderController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const dirName = await generateHashId(userId)

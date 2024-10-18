@@ -8,7 +8,7 @@ export class CategoryController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);
@@ -39,7 +39,7 @@ export class CategoryController extends BaseController {
       const category = await categoryModel.selectFirst({ id });
 
       if (!category) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const data = {
@@ -69,7 +69,7 @@ export class CategoryController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);
@@ -122,7 +122,7 @@ export class CategoryController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);
@@ -163,7 +163,7 @@ export class CategoryController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);

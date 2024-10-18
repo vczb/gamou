@@ -8,7 +8,7 @@ export class ProductController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);
@@ -43,9 +43,9 @@ export class ProductController extends BaseController {
         product,
       };
 
-      return this.ok("Product fetched successfully.",data);
+      return this.ok("Produto carregado com sucesso!.",data);
     } catch (error) {
-      return this.serverError("Error fetching product.");
+      return this.serverError("Erro ao carregar produto");
     }
   }
 
@@ -72,7 +72,7 @@ export class ProductController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);
@@ -134,7 +134,7 @@ export class ProductController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);
@@ -178,7 +178,7 @@ export class ProductController extends BaseController {
       const userId = await this.verifyToken()
 
       if (!userId) {
-        return this.unprocessableEntity("User not found.");
+        return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
       const company = await this.selectPrimaryCompanyByUserId(userId);
