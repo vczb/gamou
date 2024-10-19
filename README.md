@@ -3,7 +3,7 @@
 ## Requirements
 
 - docker
-- nodejs 16.x
+- nodejs 18.x
 
 ## Stack
 

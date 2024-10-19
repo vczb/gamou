@@ -14,5 +14,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env
-.tool-versions
+#.tool-versions
 /public/uploads/
