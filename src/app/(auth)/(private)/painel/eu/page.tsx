@@ -4,7 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Gerencie seus dados",
-  description: "Gerencie seus dados e produtos.",
+  description: "Adicione informações sobre você",
 };
 
 const Index = async () => {

@@ -3,8 +3,9 @@ import { CompanyController } from "@/controllers/CompanyController";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Gerencie seus pedidos",
-  description: "Gerencie seus dados e produtos.",
+  title: "Gerencie sua loja",
+  description:
+    "Edite informações sobre sua loja, ative para ter seu site online",
 };
 
 const Index = async () => {

@@ -5,7 +5,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Gerencia seu estoque",
-  description: "Gerencie seus produtos e categorias.",
+  description:
+    "Adicione categorias e produtos. Ative ou desative para disponibilizar o inventório no seu site",
 };
 
 const Index = async () => {
