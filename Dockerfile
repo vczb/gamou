@@ -1,26 +1,29 @@
-# Use a imagem base oficial do Node.js
+# Use the official Node.js base image
 FROM node:16-alpine
 
-# Defina o diretório de trabalho dentro do container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copie o arquivo package.json e package-lock.json (se houver) para o diretório de trabalho
+# Remove node_modules from the application (in case it was accidentally copied)
+RUN rm -rf node_modules
+
+# Copy package.json and package-lock.json (if available) to the working directory
 COPY package*.json ./
 
-# Instale as dependências do projeto
-#RUN npm install --frozen-lockfile
+# Install dependencies
 RUN npm ci
 
-# Copie o restante dos arquivos da aplicação para o diretório de trabalho
+# Copy the rest of the application files to the working directory
 COPY . .
 
-# Construa a aplicação Next.js
+# Build the Next.js application
 RUN npm run build
 
-RUN chmod -R 755 /app/public/uploads
+# Set permissions for the uploads directory
+#RUN chmod -R 755 /app/public/uploads
 
-# Exponha a porta onde o Next.js rodará
+# Expose the port where Next.js will run
 EXPOSE 3000
 
-# Comando para iniciar a aplicação Next.js
+# Command to start the Next.js application
 CMD ["npm", "start"]
