@@ -3,7 +3,7 @@ import { LabelHTMLAttributes, ReactNode } from "react";
 export type LabelFieldProps = {
   children: ReactNode;
   htmlFor: string;
-  label: string;
+  label: string | ReactNode;
   sublabel?: string;
 } & LabelHTMLAttributes<HTMLLabelElement>;
 
@@ -23,7 +23,9 @@ const LabelField = ({
     >
       {label}
       {sublabel && (
-        <span className="text-xs text-blueGray-800">{sublabel}</span>
+        <span className="text-xs text-blueGray-800 font-normal">
+          {sublabel}
+        </span>
       )}
       {children}
     </label>
