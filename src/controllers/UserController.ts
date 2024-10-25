@@ -144,7 +144,7 @@ export class UserController extends BaseController {
       const isPasswordValid = await decrypt(password, user.password);
 
       if (!isPasswordValid) {
-        return this.unauthorized("Email e senha são obrigatórios");
+        return this.unauthorized("Email ou senha inválidos");
       }
 
       const jwt = createSessionToken(user.id);
