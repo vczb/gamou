@@ -96,9 +96,9 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
             {productState.description}
           </p>
           <div className="flex gap-2">
-            <p className="text-sm">
+            {/* <p className="text-sm">
               Qtd: <b>{productState.amount}</b>
-            </p>
+            </p> */}
             <p className="text-sm">
               Preço:{" "}
               <b>

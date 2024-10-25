@@ -81,18 +81,18 @@ const ProductForm = ({
         disabled: loading,
         step: ".01",
       },
-      {
-        name: "amount",
-        label: "Quantidade:",
-        sublabel:
-          "Você pode digitar no centro do elemento ou somar e diminuir pelos botões",
-        placeholder: "Digite a quantidade do produto",
-        type: "number",
-        defaultValue: product?.amount,
-        editable: true,
-        required: true,
-        disabled: loading,
-      },
+      // {
+      //   name: "amount",
+      //   label: "Quantidade:",
+      //   sublabel:
+      //     "Você pode digitar no centro do elemento ou somar e diminuir pelos botões",
+      //   placeholder: "Digite a quantidade do produto",
+      //   type: "number",
+      //   defaultValue: product?.amount,
+      //   editable: true,
+      //   required: true,
+      //   disabled: loading,
+      // },
       {
         name: "category_id",
         label: "Categoria:",
