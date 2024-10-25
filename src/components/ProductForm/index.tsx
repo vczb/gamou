@@ -109,6 +109,12 @@ const ProductForm = ({
         ],
       },
       {
+        name: "attributes",
+        label: "Atributos:",
+        sublabel: "Adicione Opções de escolha ao seu produto. (opcional)",
+        type: "attribute",
+      },
+      {
         name: "active",
         label: "Ativo:",
         sublabel:

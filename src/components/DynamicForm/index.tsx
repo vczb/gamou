@@ -9,6 +9,7 @@ import TextArea from "../TextArea";
 import TextField from "../TextField";
 import UploadImage from "../UploadImage";
 import NumberField from "../NumberField";
+import AttributeButton from "../AttributeButton";
 
 type FormSubmit = {
   text: string;
@@ -257,6 +258,14 @@ const DynamicForm = ({
             defaultValue={defaultValue as string}
             className={className}
           />,
+          fieldId,
+          sublabel
+        );
+      case "attribute":
+        return renderLabeledField(
+          name,
+          label,
+          <AttributeButton />,
           fieldId,
           sublabel
         );

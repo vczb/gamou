@@ -5,6 +5,7 @@ import TextField from "../TextField";
 import { useState } from "react";
 import AttributeItem, { AttributeItemProps } from "../AttributeItem";
 import LabelField from "../LabelField";
+import Trash from "@/icons/Trash";
 
 export type AttributeVariantProps = {
   title: string;
@@ -24,6 +25,9 @@ const AttributeVariant = ({
   variants = [],
 }: AttributeVariantProps) => {
   const [options, setOptions] = useState<AttributeItemProps[]>(variants);
+  const [isActive, setIsActive] = useState(true);
+
+  if (!isActive) return;
 
   const handleAddOption = () => {
     setOptions((prev) => [...prev, EMPTY_VARIANT]);
@@ -31,38 +35,48 @@ const AttributeVariant = ({
 
   return (
     <div className="flex flex-col p-2 md:p-4 border-2 border-blueGray-200 rounded-lg gap-2 md:gap-4">
-      <div className="flex gap-1 md:gap-2">
-        <LabelField label="Título:">
-          <TextField
-            name="variant-name"
-            placeholder="Ex: Tamanho, Acompanhamento, Sabor, Cor, Etc..."
-            defaultValue={title}
-          />
-        </LabelField>
-        <div className="flex flex-col relative top-5 ">
-          <Checkbox
-            label="Obrigatório"
-            className="text-xs"
-            defaultChecked={isRequired}
-          />
-          <Checkbox
-            label="Múltipla escolha"
-            className="text-xs"
-            defaultChecked={isMultiple}
-          />
-        </div>
+      <LabelField label="Título:" className="w-full">
+        <TextField
+          name="attribute-title"
+          placeholder="Ex: Tamanho, Acompanhamento, Sabor, Cor, Etc..."
+          defaultValue={title}
+        />
+      </LabelField>
+      <div className="flex flex-col">
+        <Checkbox
+          label="Obrigatório"
+          className="text-xs"
+          defaultChecked={isRequired}
+        />
+        <Checkbox
+          label="Múltipla escolha"
+          className="text-xs"
+          defaultChecked={isMultiple}
+        />
       </div>
       {options.map((option, idx) => (
         <AttributeItem key={idx} {...option} />
       ))}
-      <Button
-        size="small"
-        className="flex w-fit mt-2"
-        variant="secondary"
-        onClick={() => handleAddOption()}
-      >
-        <Plus className="h-4 w-4 mr-1" /> Adicionar opção
-      </Button>
+      <div className="flex justify-between mt-2 py-2 border-dashed border-blueGray-200 border-t-2">
+        <Button
+          size="small"
+          className="flex w-fit "
+          variant="secondary"
+          onClick={() => handleAddOption()}
+          type="button"
+        >
+          <Plus className="h-4 w-4 mr-1" /> Adicionar opção
+        </Button>
+        <Button
+          className=""
+          size="small"
+          variant="secondary"
+          onClick={() => setIsActive(false)}
+          type="button"
+        >
+          <Trash className="h-4 w-4 mr-1" />
+        </Button>
+      </div>
     </div>
   );
 };
