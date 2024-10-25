@@ -2,7 +2,7 @@ import { LabelHTMLAttributes, ReactNode } from "react";
 
 export type LabelFieldProps = {
   children: ReactNode;
-  htmlFor: string;
+  htmlFor?: string;
   label: string | ReactNode;
   sublabel?: string;
 } & LabelHTMLAttributes<HTMLLabelElement>;

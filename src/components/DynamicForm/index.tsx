@@ -1,16 +1,14 @@
 import React from "react";
 import Button, { ButtonProps } from "../Button";
+import Checkbox from "../Checkbox";
 import Form from "../Form";
 import Heading from "../Heading";
-import Link, { LinkProps } from "../Link";
-import { CheckboxProps } from "../Checkbox";
-import { SelectProps } from "../Select";
-import { TextAreaProps } from "../TextArea";
-import { TextFieldProps } from "../TextField";
-import { UploadImageProps } from "../UploadImage";
-import { NumberFieldProps } from "../NumberField";
-import DynamicComponent from "../DynamicComponent";
-import LabelField, { LabelFieldProps } from "../LabelField";
+import Link from "../Link";
+import Select from "../Select";
+import TextArea from "../TextArea";
+import TextField from "../TextField";
+import UploadImage from "../UploadImage";
+import NumberField from "../NumberField";
 
 type FormSubmit = {
   text: string;
@@ -37,20 +35,26 @@ export type FieldFormSchema = {
     | "select"
     | "upload-image"
     | "text-number"
-    | "number";
+    | "number"
+    | "attribute";
+  defaultValue?: string | boolean;
+  placeholder?: string;
+  editable?: boolean;
+  required?: boolean;
+  checked?: boolean;
+  hidden?: boolean;
+  className?: string;
+  target?: string;
+  pattern?: string;
+  helperText?: string;
+  step?: "1" | "0.1";
   selectOptions?: {
     label: string;
     value: string;
   }[];
   checkboxLabel?: string;
-} & SelectProps &
-  TextAreaProps &
-  TextFieldProps &
-  UploadImageProps &
-  NumberFieldProps &
-  CheckboxProps &
-  LinkProps &
-  LabelFieldProps;
+  sublabel?: string;
+};
 
 export type DynamicFormProps = {
   formId: string;
@@ -70,22 +74,203 @@ const DynamicForm = ({
   linkProps,
   btnProps,
 }: DynamicFormProps) => {
+  const renderLabeledField = (
+    key: string,
+    label: string | undefined,
+    fieldComponent: React.ReactNode,
+    fieldId: string,
+    sublabel?: string
+  ) => (
+    <div className="flex flex-col" key={key}>
+      {label && (
+        <label htmlFor={fieldId} className="text-black">
+          <b>{label}</b>
+        </label>
+      )}
+      {sublabel && (
+        <span className="text-xs text-blueGray-800">{sublabel}</span>
+      )}
+      {fieldComponent}
+    </div>
+  );
+
+  const renderField = (field: FieldFormSchema) => {
+    const {
+      name,
+      label,
+      type,
+      editable = true,
+      required = false,
+      defaultValue,
+      placeholder,
+      checked,
+      selectOptions,
+      checkboxLabel,
+      className,
+      step,
+      hidden,
+      target,
+      pattern,
+      sublabel,
+      helperText,
+    } = field;
+
+    if (hidden) {
+      return null;
+    }
+
+    const fieldId = `${formId}-${name}`;
+
+    switch (type) {
+      case "email":
+      case "text":
+      case "password":
+        return renderLabeledField(
+          name,
+          label,
+          <TextField
+            id={fieldId}
+            type={type}
+            name={name}
+            placeholder={placeholder}
+            required={required}
+            pattern={pattern}
+            helperText={helperText}
+            {...(editable
+              ? { defaultValue: defaultValue as string }
+              : { value: defaultValue as string, disabled: true })}
+          />,
+          fieldId,
+          sublabel
+        );
+      case "link":
+        const value = (defaultValue as string) || "";
+        return renderLabeledField(
+          name,
+          label,
+          <Link
+            className={`text-primary-500 hover:text-secondary-600 ${className}`}
+            href={value}
+            target={target}
+          >
+            {value}
+          </Link>,
+          fieldId,
+          sublabel
+        );
+      case "paragraph":
+        return renderLabeledField(
+          name,
+          label,
+          <p className={className} id={fieldId}>
+            {(defaultValue as string) || ""}
+          </p>,
+          fieldId,
+          sublabel
+        );
+      case "description":
+        return renderLabeledField(
+          name,
+          label,
+          <TextArea
+            id={fieldId}
+            name={name}
+            required={required}
+            placeholder={placeholder}
+            {...(editable
+              ? { defaultValue: defaultValue as string }
+              : { value: defaultValue as string, disabled: true })}
+          />,
+          fieldId,
+          sublabel
+        );
+      case "checkbox":
+        return renderLabeledField(
+          name,
+          label,
+          <Checkbox
+            id={fieldId}
+            name={name}
+            required={required}
+            defaultChecked={checked}
+            label={checkboxLabel || "Sim"}
+          />,
+          fieldId,
+          sublabel
+        );
+      case "text-number":
+        return renderLabeledField(
+          name,
+          label,
+          <TextField
+            id={fieldId}
+            type={"number"}
+            step={step}
+            name={name}
+            placeholder={placeholder}
+            pattern={pattern}
+            required={required}
+            helperText={helperText}
+            {...(editable
+              ? { defaultValue: defaultValue as string }
+              : { value: defaultValue as string, disabled: true })}
+          />,
+          fieldId,
+          sublabel
+        );
+      case "number":
+        return renderLabeledField(
+          name,
+          label,
+          <NumberField
+            id={fieldId}
+            name={name}
+            required={required}
+            inputDisabled={false}
+            defaultValue={defaultValue as number | undefined}
+          />,
+          fieldId,
+          sublabel
+        );
+      case "select":
+        return renderLabeledField(
+          name,
+          label,
+          <Select
+            id={fieldId}
+            name={name}
+            required={required}
+            defaultValue={defaultValue as string}
+            options={selectOptions || []}
+          />,
+          fieldId,
+          sublabel
+        );
+      case "upload-image":
+        return renderLabeledField(
+          name,
+          label,
+          <UploadImage
+            id={fieldId}
+            name={name}
+            required={required}
+            defaultValue={defaultValue as string}
+            className={className}
+          />,
+          fieldId,
+          sublabel
+        );
+      default:
+        throw new Error(
+          `The type "${type}" is not supported in the dynamic form!`
+        );
+    }
+  };
+
   return (
     <Form id={formId} onSubmit={onSubmit} aria-labelledby={`${formId}-heading`}>
       {headingText && <Heading text={headingText} />}
-      {schema.map((field) => {
-        const fieldId = `${formId}-${field?.name}`;
-        return (
-          <LabelField
-            key={field.name}
-            htmlFor={fieldId}
-            label={<b>{field?.label || ""}</b>}
-            sublabel={field?.sublabel || ""}
-          >
-            <DynamicComponent {...field} />
-          </LabelField>
-        );
-      })}
+      {schema.map((field) => renderField(field))}
       <Button
         type="submit"
         className="mt-2"

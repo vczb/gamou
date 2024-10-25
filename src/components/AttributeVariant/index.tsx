@@ -4,15 +4,26 @@ import Checkbox from "../Checkbox";
 import TextField from "../TextField";
 import { useState } from "react";
 import AttributeItem, { AttributeItemProps } from "../AttributeItem";
+import LabelField from "../LabelField";
 
-export type AttributeVariantProps = {};
+export type AttributeVariantProps = {
+  title: string;
+  isRequired?: boolean;
+  isMultiple?: boolean;
+  variants?: AttributeItemProps[];
+};
 
 const EMPTY_VARIANT = {
   name: "",
 };
 
-const AttributeVariant = () => {
-  const [options, setOptions] = useState<AttributeItemProps[]>([]);
+const AttributeVariant = ({
+  title,
+  isRequired,
+  isMultiple,
+  variants = [],
+}: AttributeVariantProps) => {
+  const [options, setOptions] = useState<AttributeItemProps[]>(variants);
 
   const handleAddOption = () => {
     setOptions((prev) => [...prev, EMPTY_VARIANT]);
@@ -21,10 +32,24 @@ const AttributeVariant = () => {
   return (
     <div className="flex flex-col p-2 md:p-4 border-2 border-blueGray-200 rounded-lg gap-2 md:gap-4">
       <div className="flex gap-1 md:gap-2">
-        <TextField name="variant-name" placeholder="Nome da variante" />
-        <div className="flex flex-col">
-          <Checkbox label="Obrigatório" className="text-xs" />
-          <Checkbox label="Múltipla escolha" className="text-xs" />
+        <LabelField label="Título:">
+          <TextField
+            name="variant-name"
+            placeholder="Ex: Tamanho, Acompanhamento, Sabor, Cor, Etc..."
+            defaultValue={title}
+          />
+        </LabelField>
+        <div className="flex flex-col relative top-5 ">
+          <Checkbox
+            label="Obrigatório"
+            className="text-xs"
+            defaultChecked={isRequired}
+          />
+          <Checkbox
+            label="Múltipla escolha"
+            className="text-xs"
+            defaultChecked={isMultiple}
+          />
         </div>
       </div>
       {options.map((option, idx) => (
@@ -32,7 +57,7 @@ const AttributeVariant = () => {
       ))}
       <Button
         size="small"
-        className="flex w-fit"
+        className="flex w-fit mt-2"
         variant="secondary"
         onClick={() => handleAddOption()}
       >

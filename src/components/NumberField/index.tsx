@@ -12,6 +12,7 @@ export type NumberFieldProps = {
   required?: boolean;
   inputDisabled?: boolean;
   minValue?: number;
+  inputSize?: "small" | "medium";
 };
 
 const NumberField = ({
@@ -23,6 +24,7 @@ const NumberField = ({
   minValue = 0,
   id,
   name,
+  inputSize = "small",
   onChange,
 }: NumberFieldProps) => {
   const [value, setValue] = useState<number>(defaultValue);
@@ -76,7 +78,9 @@ const NumberField = ({
         id={id}
         required={required}
         name={name}
-        className="rounded-lg p-2 text-black w-10 h-9 text-center number-field"
+        className={`rounded-lg p-2 text-black text-center number-field ${
+          inputSize === "small" ? "w-10 h-9" : "w-16"
+        }`}
       />
       <button
         className={`rounded-full border-2 border-blueGray-800 w-6 h-6 bg-primary-400 hover:bg-primary-500 duration-200 focus:shadow-lg ${
