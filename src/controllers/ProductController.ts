@@ -58,16 +58,9 @@ export class ProductController extends BaseController {
     active,
     amount,
     price,
+    variants,
     category_id
-  }: {
-    title: string;
-    image: string;
-    description: string;
-    price: number;
-    amount: number;
-    active: boolean;
-    category_id: number;
-  }){
+  }: Product){
 
     try {
 
@@ -85,13 +78,14 @@ export class ProductController extends BaseController {
 
       const productModel = new ProductModel();
 
-      const newProduct = await productModel.create({
+      const newProduct = await productModel.createProductWithVariants({
         title,
         image,
         description,
         price,
         amount,
         active,
+        variants,
         category_id,
         company_id: company.id,
       })

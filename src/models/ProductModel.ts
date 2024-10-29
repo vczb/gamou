@@ -157,6 +157,56 @@ export class ProductModel extends BaseModel<Product> {
     }
   }
   
+  async createProductWithVariants(data: Partial<Product>) {
+    const transaction = await connection.transaction();
+  
+    try {
+      // Step 1: Separate variants from the main product data
+      const { variants, ...productData } = data;
+  
+      // Step 2: Insert the main product data and retrieve the inserted product
+      const [newProduct] = await transaction("products").insert(productData).returning("*");
+  
+      // Step 3: Insert variants and options if provided
+      if (variants && variants.length > 0) {
+        for (const variant of variants) {
+          const [insertedVariant] = await transaction("product_variants").insert(
+            {
+              title: variant.title,
+              isRequired: variant.isRequired || false,
+              isMultiple: variant.isMultiple || false,
+              product_id: newProduct.id,
+            },
+            ["id"]
+          );
+  
+          const variantId = insertedVariant.id;
+  
+          if (variant.variants && variant.variants.length > 0) {
+            for (const option of variant.variants) {
+              await transaction("variant_options").insert({
+                name: option.name,
+                variant_id: variantId,
+              });
+            }
+          }
+        }
+      }
+  
+      // Commit the transaction after all inserts are successful
+      await transaction.commit();
+  
+      // Include the variants in the returned product structure
+      newProduct.variants = variants;
+  
+      return newProduct;
+    } catch (error) {
+      // Rollback the transaction if something goes wrong
+      await transaction.rollback();
+      console.error("Error creating product with variants and options:", error);
+      throw error;
+    }
+  }
 
   async updateProductWithVariantsAndDeletePrevImage(id: number, data: Partial<Product>) {
     const transaction = await connection.transaction();
