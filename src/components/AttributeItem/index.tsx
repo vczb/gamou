@@ -8,11 +8,12 @@ import LabelField from "../LabelField";
 
 export type AttributeItemProps = {
   name: string;
+  fieldName?: string;
   // price?: number;
   // amount?: number;
 };
 
-const AttributeItem = ({ name }: AttributeItemProps) => {
+const AttributeItem = ({ name, fieldName }: AttributeItemProps) => {
   const [isActive, setIsActive] = useState(true);
 
   if (!isActive) return;
@@ -22,7 +23,7 @@ const AttributeItem = ({ name }: AttributeItemProps) => {
       <div className="flex gap-4 items-center">
         <LabelField label="Nome:" className="text-xs w-full">
           <TextField
-            name="variant-name"
+            name={fieldName}
             placeholder="Nome da variante"
             defaultValue={name}
             required

@@ -2,13 +2,15 @@ import Plus from "@/icons/Plus";
 import Button from "../Button";
 import Checkbox from "../Checkbox";
 import TextField from "../TextField";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AttributeItem, { AttributeItemProps } from "../AttributeItem";
 import LabelField from "../LabelField";
 import Trash from "@/icons/Trash";
+import { slugify } from "@/utils/formatters";
 
 export type AttributeVariantProps = {
   title: string;
+  fieldName?: string;
   isRequired?: boolean;
   isMultiple?: boolean;
   variants?: AttributeItemProps[];
@@ -20,12 +22,14 @@ const EMPTY_VARIANT = {
 
 const AttributeVariant = ({
   title,
+  fieldName,
   isRequired,
   isMultiple,
   variants = [],
 }: AttributeVariantProps) => {
   const [options, setOptions] = useState<AttributeItemProps[]>(variants);
   const [isActive, setIsActive] = useState(true);
+  const [titleState, setTitleState] = useState(title);
 
   if (!isActive) return;
 
@@ -37,25 +41,32 @@ const AttributeVariant = ({
     <div className="flex flex-col p-2 md:p-4 border-2 border-blueGray-200 rounded-lg gap-2 md:gap-4">
       <LabelField label="Título:" className="w-full">
         <TextField
-          name="attribute-title"
+          name={`${fieldName}-title`}
           placeholder="Ex: Tamanho, Acompanhamento, Sabor, Cor, Etc..."
-          defaultValue={title}
+          defaultValue={titleState}
+          onChange={(e) => setTitleState(e.target.value)}
         />
       </LabelField>
       <div className="flex flex-col">
         <Checkbox
+          name={`${fieldName}-required`}
           label="Obrigatório"
           className="text-xs"
           defaultChecked={isRequired}
         />
         <Checkbox
+          name={`${fieldName}-multiple`}
           label="Múltipla escolha"
           className="text-xs"
           defaultChecked={isMultiple}
         />
       </div>
       {options.map((option, idx) => (
-        <AttributeItem key={idx} {...option} />
+        <AttributeItem
+          key={idx}
+          fieldName={`${fieldName}-item-${idx}`}
+          {...option}
+        />
       ))}
       <div className="flex justify-between mt-2 py-2 border-dashed border-blueGray-200 border-t-2">
         <Button
@@ -65,7 +76,7 @@ const AttributeVariant = ({
           onClick={() => handleAddOption()}
           type="button"
         >
-          <Plus className="h-4 w-4 mr-1" /> Adicionar opção
+          <Plus className="h-4 w-4 mr-1" /> Novo item
         </Button>
         <Button
           className=""

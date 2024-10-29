@@ -4,6 +4,8 @@ import { Product as ProductTypes } from "@/types/product";
 import { Category } from "@/types/category";
 import DynamicForm, { FieldFormSchema } from "../DynamicForm";
 import { DECIMAL_PATTERN } from "@/utils/regex";
+import { AttributeVariantProps } from "../AttributeVariant";
+import { AttributeItemProps } from "../AttributeItem";
 
 export type ProductFormProps = {
   action: "create" | "edit";
@@ -110,7 +112,7 @@ const ProductForm = ({
       },
       {
         name: "attributes",
-        label: "Atributos:",
+        label: "Opções:",
         sublabel: "Adicione Opções de escolha ao seu produto. (opcional)",
         type: "attribute",
       },
@@ -157,9 +159,54 @@ const ProductForm = ({
         active,
       } as editProductProps;
 
-      const data = await createOrEditProduct(payload, action);
+      let attributeVariants: AttributeVariantProps[] = [];
 
-      handleSubmit?.(data?.product);
+      for (let variantAttributeCount = 0; ; variantAttributeCount++) {
+        const title = formData.get(
+          `attribute-${variantAttributeCount}-title`
+        ) as string;
+        if (!title) break;
+
+        const isRequired = formData.has(
+          `attribute-${variantAttributeCount}-required`
+        );
+        const isMultiple = formData.has(
+          `attribute-${variantAttributeCount}-multiple`
+        );
+
+        const variantItems: AttributeItemProps[] = [];
+        for (let variantItemCount = 0; ; variantItemCount++) {
+          const itemName = formData.get(
+            `attribute-${variantAttributeCount}-item-${variantItemCount}`
+          ) as string;
+          if (!itemName) break;
+
+          variantItems.push({ name: itemName });
+        }
+
+        attributeVariants.push({
+          title,
+          isMultiple,
+          isRequired,
+          variants: variantItems,
+        });
+      }
+
+      // Create an object to store all form data entries
+      // const allEntries = formData.getAll("attribute-item-0");
+      // const allEntries = {};
+
+      // // // Iterate over each entry in FormData
+      // for (const [key, value] of formData.entries()) {
+      //   allEntries[key] = value;
+      // }
+
+      // Log all entries
+      console.log(attributeVariants);
+
+      // const data = await createOrEditProduct(payload, action);
+
+      // handleSubmit?.(data?.product);
     },
     [createOrEditProduct, action, product, handleSubmit]
   );
