@@ -38,7 +38,7 @@ export type FieldFormSchema = {
     | "upload-image"
     | "text-number"
     | "number"
-    | "attribute";
+    | "variants";
   defaultValue?: string | boolean;
   placeholder?: string;
   editable?: boolean;
@@ -56,7 +56,7 @@ export type FieldFormSchema = {
   }[];
   checkboxLabel?: string;
   sublabel?: string;
-  variants: AttributeVariantProps[];
+  variants?: AttributeVariantProps[];
 };
 
 export type DynamicFormProps = {
@@ -264,7 +264,7 @@ const DynamicForm = ({
           fieldId,
           sublabel
         );
-      case "attribute":
+      case "variants":
         return renderLabeledField(
           name,
           label,

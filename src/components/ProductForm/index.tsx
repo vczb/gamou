@@ -111,10 +111,11 @@ const ProductForm = ({
         ],
       },
       {
-        name: "attributes",
+        name: "variants",
         label: "Opções:",
-        sublabel: "Adicione Opções de escolha ao seu produto. (opcional)",
-        type: "attribute",
+        sublabel: "Adicione opções de escolha ao seu produto. (opcional)",
+        type: "variants",
+        hidden: process.env.NODE_ENV === "production",
         variants: product?.variants || [],
       },
       {
