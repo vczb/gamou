@@ -10,6 +10,7 @@ import TextField from "../TextField";
 import UploadImage from "../UploadImage";
 import NumberField from "../NumberField";
 import AttributeButton from "../AttributeButton";
+import { AttributeVariantProps } from "../AttributeVariant";
 
 type FormSubmit = {
   text: string;
@@ -55,6 +56,7 @@ export type FieldFormSchema = {
   }[];
   checkboxLabel?: string;
   sublabel?: string;
+  variants: AttributeVariantProps[];
 };
 
 export type DynamicFormProps = {
@@ -114,6 +116,7 @@ const DynamicForm = ({
       pattern,
       sublabel,
       helperText,
+      variants,
     } = field;
 
     if (hidden) {
@@ -265,7 +268,7 @@ const DynamicForm = ({
         return renderLabeledField(
           name,
           label,
-          <AttributeButton />,
+          <AttributeButton attributeVariants={variants} />,
           fieldId,
           sublabel
         );

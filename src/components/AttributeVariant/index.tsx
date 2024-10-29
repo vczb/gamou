@@ -10,6 +10,7 @@ import { slugify } from "@/utils/formatters";
 
 export type AttributeVariantProps = {
   title: string;
+  /** fieldName is used only for internal checking */
   fieldName?: string;
   isRequired?: boolean;
   isMultiple?: boolean;

@@ -8,6 +8,7 @@ import LabelField from "../LabelField";
 
 export type AttributeItemProps = {
   name: string;
+  /** fieldName is used only for internal checking */
   fieldName?: string;
   // price?: number;
   // amount?: number;

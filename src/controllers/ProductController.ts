@@ -1,3 +1,4 @@
+import { Product } from "@/types/product";
 import { BaseController } from "./BaseController";
 import { ProductModel } from "@/models/ProductModel";
 
@@ -20,7 +21,8 @@ export class ProductController extends BaseController {
       const productModel = new ProductModel();
 
       // const products = await productModel.selectProductsWithCategoryByCompanyId(company.id)
-      const products = await productModel.select({company_id: company.id})
+      const products = await productModel.selectAllProductVariantsByCompanyId(company.id)
+      // await productModel.selectAllProductVariantsByCompanyId(company.id)
 
       const data = {
         products: products || [],
@@ -117,17 +119,9 @@ export class ProductController extends BaseController {
     active,
     amount,
     price,
+    variants,
     category_id
-  }: {
-    id: number
-    title: string;
-    image: string;
-    description: string;
-    price: number;
-    amount: number;
-    active: boolean;
-    category_id: number;
-  }){
+  }: Product){
 
     try {
 
@@ -145,7 +139,7 @@ export class ProductController extends BaseController {
 
       const productModel = new ProductModel();
 
-      const updatedProduct = await productModel.updateProductAndDeletePrevImage(id,{
+      const updatedProduct = await productModel.updateProductWithVariantsAndDeletePrevImage(id,{
         title,
         image,
         description,
@@ -153,6 +147,7 @@ export class ProductController extends BaseController {
         amount,
         active,
         category_id,
+        variants,
         company_id: company.id,
       })
 

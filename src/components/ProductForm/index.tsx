@@ -115,6 +115,7 @@ const ProductForm = ({
         label: "Opções:",
         sublabel: "Adicione Opções de escolha ao seu produto. (opcional)",
         type: "attribute",
+        variants: product?.variants || [],
       },
       {
         name: "active",
@@ -147,17 +148,6 @@ const ProductForm = ({
       const amount = formData.get("amount") as unknown as number;
       const category_id = parseInt(formData.get("category_id") as string, 10);
       const active = formData.get("active") === "on";
-
-      const payload = {
-        ...product,
-        title,
-        image,
-        description,
-        price,
-        amount,
-        category_id,
-        active,
-      } as editProductProps;
 
       let attributeVariants: AttributeVariantProps[] = [];
 
@@ -192,21 +182,21 @@ const ProductForm = ({
         });
       }
 
-      // Create an object to store all form data entries
-      // const allEntries = formData.getAll("attribute-item-0");
-      // const allEntries = {};
+      const payload = {
+        ...product,
+        title,
+        image,
+        description,
+        price,
+        amount,
+        category_id,
+        active,
+        variants: attributeVariants,
+      } as editProductProps;
 
-      // // // Iterate over each entry in FormData
-      // for (const [key, value] of formData.entries()) {
-      //   allEntries[key] = value;
-      // }
+      const data = await createOrEditProduct(payload, action);
 
-      // Log all entries
-      console.log(attributeVariants);
-
-      // const data = await createOrEditProduct(payload, action);
-
-      // handleSubmit?.(data?.product);
+      handleSubmit?.(data?.product);
     },
     [createOrEditProduct, action, product, handleSubmit]
   );

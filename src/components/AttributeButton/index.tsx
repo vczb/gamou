@@ -3,24 +3,27 @@ import Button from "../Button";
 import AttributeVariant, { AttributeVariantProps } from "../AttributeVariant";
 import Plus from "@/icons/Plus";
 
-export type AttributeButtonProps = {};
+export type AttributeButtonProps = {
+  attributeVariants?: AttributeVariantProps[];
+};
 
 const EMPTY_ATTRIBUTE = {
   title: "",
   fieldName: "",
 };
 
-const AttributeButton = () => {
-  const [attributes, setAttributes] = useState<AttributeVariantProps[]>([]);
+const AttributeButton = ({ attributeVariants = [] }: AttributeButtonProps) => {
+  const [attributesState, setAttributesState] =
+    useState<AttributeVariantProps[]>(attributeVariants);
 
   const handleAddAttribute = () => {
-    setAttributes((prev) => [...prev, EMPTY_ATTRIBUTE]);
+    setAttributesState((prev) => [...prev, EMPTY_ATTRIBUTE]);
   };
 
   return (
     <>
       <div className="flex flex-col gap-2">
-        {attributes.map((attribute, idx) => (
+        {attributesState.map((attribute, idx) => (
           <AttributeVariant
             key={idx}
             {...attribute}

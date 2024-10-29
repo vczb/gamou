@@ -2,10 +2,92 @@ import connection from "@/database/connection";
 import { BaseModel } from "./BaseModel";
 import { Product } from "@/types/product";
 import { deleteFile } from "@/utils/file";
+import { AttributeVariantProps } from "@/components/AttributeVariant";
 
 export class ProductModel extends BaseModel<Product> {
   constructor() {
     super("products");
+  }
+
+  async selectAllProductVariantsByCompanyId(companyId: number){  
+    try {
+      // Step 1: Fetch all products for the given company ID along with basic category info if needed
+      const products = await connection("products")
+        .leftJoin("categories", "products.category_id", "categories.id")
+        .where("products.company_id", companyId)
+        .select(
+          "products.id as productId",
+          "products.title",
+          "products.description",
+          "products.image",
+          "products.price",
+          "products.amount",
+          "products.category_id",
+          "categories.title as categoryTitle",
+          "categories.image as categoryImage",
+          "products.company_id",
+          "products.active",
+          "products.created_at",
+          "products.updated_at"
+        );
+  
+      // Step 2: Fetch all product variants related to these products
+      const productIds = products.map(product => product.productId);
+      const productVariants = await connection("product_variants")
+        .whereIn("product_id", productIds)
+        .select("id", "title", "isRequired", "isMultiple", "product_id");
+  
+      // Step 3: Fetch all variant options associated with these variants
+      const variantIds = productVariants.map(variant => variant.id);
+      const variantItems = await connection("variant_options")
+        .whereIn("variant_id", variantIds)
+        .select("id", "name", "variant_id");
+  
+      // Step 4: Group the data by product, variants, and items
+      const structuredProducts = products.map(product => {
+        // Get the variants associated with this product
+        const variants = productVariants
+          .filter(variant => variant.product_id === product.productId)
+          .map(variant => {
+            // Get items associated with this variant
+            const items = variantItems
+              .filter(item => item.variant_id === variant.id)
+              .map(item => ({
+                name: item.name,
+              }));
+  
+            return {
+              title: variant.title,
+              isRequired: variant.isRequired,
+              isMultiple: variant.isMultiple,
+              variants: items,
+            } as AttributeVariantProps;
+          });
+  
+        // Construct the final product structure
+        return {
+          id: product.productId,
+          title: product.title,
+          description: product.description,
+          image: product.image,
+          price: product.price,
+          amount: product.amount,
+          category_id: product.category_id,
+          categoryTitle: product.categoryTitle,
+          categoryImage: product.categoryImage,
+          company_id: product.company_id,
+          active: product.active,
+          created_at: product.created_at,
+          updated_at: product.updated_at,
+          variants,
+        } as Product;
+      });
+  
+      return structuredProducts;
+    } catch (error) {
+      console.error("Error fetching products with variants and options:", error);
+      throw error;
+    }
   }
 
   async selectProductsWithCategoryByCompanyId(companyId: number) {
@@ -76,36 +158,76 @@ export class ProductModel extends BaseModel<Product> {
   }
   
 
-  async updateProductAndDeletePrevImage(id: number, data: Partial<Product>) {
+  async updateProductWithVariantsAndDeletePrevImage(id: number, data: Partial<Product>) {
     const transaction = await connection.transaction();
-  
+
     try {
-      // Fetch the current product to get the existing image URL
-      const [existingProduct] = await transaction('products')
+      // Step 1: Fetch the current product to get the existing image URL
+      const [existingProduct] = await transaction("products")
         .where({ id })
-        .select('image');
+        .select("image");
   
-      // Update the product with the new data
-      const [updatedProduct] = await transaction('products')
+      // Step 2: Update the product with the new data (excluding variants)
+      const { variants, ...productData } = data; // separate variants from product data
+
+      const [updatedProduct] = await transaction("products")
         .where({ id })
-        .update(data)
-        .returning('*');
+        .update(productData)
+        .returning("*");
   
-      // Commit the transaction before performing the image deletion
+      // Step 3: Delete existing variants and options for this product
+      const variantIds = await transaction("product_variants")
+        .where({ product_id: id })
+        .select("id");
+  
+      // Extract just the ids of the variants
+      const variantIdArray = variantIds.map(v => v.id);
+  
+      if (variantIdArray.length) {
+        await transaction("variant_options").whereIn("variant_id", variantIdArray).del();
+        await transaction("product_variants").where({ product_id: id }).del();
+      }
+  
+      // Step 4: Insert new variants and options if provided
+      if (variants && variants.length > 0) {
+        for (const variant of variants) {
+          const [insertedVariant] = await transaction("product_variants").insert(
+            {
+              title: variant.title,
+              isRequired: variant.isRequired || false,
+              isMultiple: variant.isMultiple || false,
+              product_id: id,
+            },
+            ["id"]
+          );
+  
+          const variantId = insertedVariant.id; // Extract the id property from the inserted variant
+  
+          if (variant.variants && variant.variants.length > 0) {
+            for (const option of variant.variants) {
+              await transaction("variant_options").insert({
+                name: option.name,
+                variant_id: variantId,
+              });
+            }
+          }
+        }
+      }
+  
+      // Commit the transaction after all updates are successful
       await transaction.commit();
   
-      // If the product had an old image and a new image is being uploaded, delete the old image
+      // Step 5: If the product had an old image and a new image is being uploaded, delete the old image
       if (existingProduct.image && data.image && existingProduct.image !== data.image) {
-        const path = process.cwd() + '/public/' + existingProduct.image;
+        const path = process.cwd() + "/public/" + existingProduct.image;
         await deleteFile(path);
       }
   
       return updatedProduct || undefined;
-  
     } catch (error) {
       // Rollback the transaction if something goes wrong
       await transaction.rollback();
-      console.error('Error updating product and deleting previous image:', error);
+      console.error("Error updating product, variants, and deleting previous image:", error);
       throw error;
     }
   }

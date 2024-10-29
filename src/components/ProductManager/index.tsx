@@ -24,6 +24,7 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
 
   const handleSubmitForm = (updatedProduct?: Product) => {
     if (updatedProduct) {
+      console.log("test5", updatedProduct);
       setProductState(updatedProduct);
       setOpen(false);
     }

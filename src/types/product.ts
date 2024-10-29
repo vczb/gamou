@@ -1,3 +1,5 @@
+import { AttributeVariantProps } from "@/components/AttributeVariant";
+
 export interface Product {
   id: number;
   title: string;
@@ -12,4 +14,5 @@ export interface Product {
   active: boolean;
   created_at: Date;
   updated_at: Date;
+  variants?: AttributeVariantProps[]
 }
