@@ -222,6 +222,8 @@ export class ProductModel extends BaseModel<Product> {
         const path = process.cwd() + "/public/" + existingProduct.image;
         await deleteFile(path);
       }
+
+      updatedProduct.variants = variants
   
       return updatedProduct || undefined;
     } catch (error) {
