@@ -17,7 +17,7 @@ const FlashMessage = ({ variant, message }: FlashMessageProps) => {
     <div>
       <input type="checkbox" className="flash-banner hidden peer" id={id} />
       <label
-        className={`flash-banner w-full fixed top-0 z-50 cursor-pointer flex items-center justify-between p-2 ${bgColor} shadow text-white peer-checked:hidden`}
+        className={`flash-banner w-full fixed top-0 z-[100] cursor-pointer flex items-center justify-between p-2 ${bgColor} shadow text-white peer-checked:hidden`}
         title="Close"
         htmlFor={id}
       >
