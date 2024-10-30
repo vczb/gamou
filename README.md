@@ -54,6 +54,12 @@ open psql on localhost
 $ docker exec -it gamou_db psql -U gamou_user -d gamou_db
 ```
 
+docker migrations
+
+```bash
+$ docker exec -it gamou_app npx knex migrate:latest
+```
+
 stop docker container
 
 ```bash
@@ -63,7 +69,7 @@ $ docker stop gamou_app
 docker cleanup
 
 ```bash
-$ docker container prune
+$ docker system prune
 ```
 
 ## License
