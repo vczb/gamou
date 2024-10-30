@@ -96,7 +96,7 @@ const Order = ({ slug, whatsapp }: OrderProps) => {
           <Heading text="Forma de pagamento" tag="h3" />
         </div>
         <div className="flex flex-col gap-2 mb-2">
-          <Radio name="payment_method" value="Cartão" label="Cartão" checked />
+          <Radio name="payment_method" value="Cartão" label="Cartão" />
           <Radio name="payment_method" value="Dinheiro" label="Dinheiro" />
           <Radio name="payment_method" value="Pix" label="Pix" />
           <Radio name="payment_method" value="Outro" label="Outro" />
