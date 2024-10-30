@@ -60,6 +60,12 @@ stop docker container
 $ docker stop gamou_app
 ```
 
+docker cleanup
+
+```bash
+$ docker container prune
+```
+
 ## License
 
 This project is licensed under the [Creative Commons Attribution-NonCommercial (CC BY-NC) license](./LICENSE).
