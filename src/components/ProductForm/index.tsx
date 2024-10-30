@@ -6,6 +6,7 @@ import DynamicForm, { FieldFormSchema } from "../DynamicForm";
 import { DECIMAL_PATTERN } from "@/utils/regex";
 import { AttributeVariantProps } from "../AttributeVariant";
 import { AttributeItemProps } from "../AttributeItem";
+import { checkFileSize } from "@/utils/file/browser";
 
 export type ProductFormProps = {
   action: "create" | "edit";
@@ -141,7 +142,11 @@ const ProductForm = ({
       const imageFile = formData.get("image");
       const imageSrc = formData.get("image-src");
       // @ts-ignore
-      const image = imageFile?.size > 0 ? imageFile : imageSrc;
+      const image: File = imageFile?.size > 0 ? imageFile : imageSrc;
+
+      if (!checkFileSize(image)) {
+        return;
+      }
 
       const title = (formData.get("title") || "") as string;
       const description = (formData.get("description") || "") as string;
