@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+// TODO: remove double slash gamou-v2/public//uploads/
 export const deleteFile = (filePath: string) => {
   try {
     if (fs.existsSync(filePath)) {
