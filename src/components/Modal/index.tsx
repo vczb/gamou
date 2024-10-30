@@ -31,25 +31,21 @@ const Modal = ({ isOpen, onClose, showCloseButton, children }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      className="fixed inset-0 min-h-screen h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 z-50"
       onClick={handleOutsideClick}
     >
-      <dialog
-        ref={modalRef}
-        className="max-h-screen overflow-y-auto bg-transparent  py-6 px-2"
-        open
-      >
+      <dialog ref={modalRef} className="relative h-full bg-transparent" open>
         {showCloseButton && (
           <Button
             onClick={handleClose}
             variant="secondary"
             title="Fechar"
-            className="absolute top-9 right-5 text-gray-500 hover:text-black flex items-center justify-center"
+            className="absolute top-9 right-5 flex items-center justify-center"
           >
             X
           </Button>
         )}
-        {children}
+        <div className="py-6 px-2 pb-24">{children}</div>
       </dialog>
     </div>
   );
