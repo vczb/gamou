@@ -1,4 +1,5 @@
-import { MouseEventHandler, ReactNode, useRef } from "react";
+import { ReactNode, useRef } from "react";
+import Button from "../Button";
 
 export type ModalProps = {
   isOpen?: boolean;
@@ -39,12 +40,14 @@ const Modal = ({ isOpen, onClose, showCloseButton, children }: ModalProps) => {
         open
       >
         {showCloseButton && (
-          <button
+          <Button
             onClick={handleClose}
-            className="absolute top-9 right-5 text-gray-500 hover:text-black"
+            variant="secondary"
+            title="Fechar"
+            className="absolute top-9 right-5 text-gray-500 hover:text-black flex items-center justify-center"
           >
-            &times;
-          </button>
+            X
+          </Button>
         )}
         {children}
       </dialog>
