@@ -1,5 +1,6 @@
-import React, { useRef, InputHTMLAttributes } from "react";
+import React, { useRef, InputHTMLAttributes, useCallback } from "react";
 import Image from "../Image";
+import Button from "../Button";
 
 export type UploadImageProps = {
   name: string;
@@ -21,22 +22,36 @@ const UploadImage: React.FC<UploadImageProps> = ({
       reader.onload = () => {
         if (imgRef.current) {
           imgRef.current.src = reader.result as string;
+          console.log(file.size);
         }
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleClick = useCallback(() => {
+    inputRef?.current?.click();
+  }, []);
+
   return (
     <div>
       <input
+        {...rest}
         type="file"
         name={name}
         accept="image/*"
+        className="hidden"
         ref={inputRef}
         onChange={handleChange}
-        {...rest}
       />
+      <Button
+        size="small"
+        variant="secondary"
+        onClick={handleClick}
+        type="button"
+      >
+        {defaultValue ? "Atualizar arquivo" : "Carregar arquivo"}
+      </Button>
       <div className="mt-4">
         <input type="hidden" name={`${name}-src`} value={defaultValue} />
         <Image
@@ -46,6 +61,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
           className={rest.className}
         />
       </div>
+      {imgRef.current?.sizes}
     </div>
   );
 };

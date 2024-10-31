@@ -33,8 +33,7 @@ const CategoryForm = ({
       {
         name: "image",
         label: "Imagem:",
-        sublabel:
-          "Escolha uma imagem na horientação horizontal de até 1MB (1000KB)",
+        sublabel: "Escolha uma imagem de até 1MB",
         placeholder: "Digite a URL da imagem",
         type: "upload-image",
         defaultValue: category?.image,
