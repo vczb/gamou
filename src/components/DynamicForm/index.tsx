@@ -57,6 +57,7 @@ export type FieldFormSchema = {
   checkboxLabel?: string;
   sublabel?: string;
   variants?: AttributeVariantProps[];
+  maxLength?: number;
 };
 
 export type DynamicFormProps = {
@@ -117,6 +118,7 @@ const DynamicForm = ({
       sublabel,
       helperText,
       variants,
+      maxLength,
     } = field;
 
     if (hidden) {
@@ -140,6 +142,7 @@ const DynamicForm = ({
             required={required}
             pattern={pattern}
             helperText={helperText}
+            maxLength={maxLength}
             {...(editable
               ? { defaultValue: defaultValue as string }
               : { value: defaultValue as string, disabled: true })}
@@ -181,6 +184,7 @@ const DynamicForm = ({
             name={name}
             required={required}
             placeholder={placeholder}
+            maxLength={maxLength}
             {...(editable
               ? { defaultValue: defaultValue as string }
               : { value: defaultValue as string, disabled: true })}
