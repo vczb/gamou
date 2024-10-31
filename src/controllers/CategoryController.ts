@@ -96,8 +96,11 @@ export class CategoryController extends BaseController {
 
       return this.ok("Categoria criada com sucesso!", data);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating category:", error);
+      if (error.code === "22001") {
+        return this.serverError("Erro por motivo de texto muito longo.");
+      }
       return this.unprocessableEntity("Ocorreu um erro ao criar a categoria.");
     }
     
@@ -149,8 +152,11 @@ export class CategoryController extends BaseController {
 
       return this.ok("Categoria atualizada com sucesso!", data);
       
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error updating category:", error);
+      if (error.code === "22001") {
+        return this.serverError("Erro por motivo de texto muito longo.");
+      }
       return this.unprocessableEntity("Ocorreu um erro ao atualizar a categoria.");
     }
     

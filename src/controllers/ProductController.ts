@@ -98,8 +98,11 @@ export class ProductController extends BaseController {
 
       return this.ok("Produto criado com sucesso!", data);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating product:", error);
+      if (error.code === "22001") {
+        return this.serverError("Erro por motivo de texto muito longo.");
+      }
       return this.unprocessableEntity("Ocorreu um erro ao criar a produto.");
     }
     
@@ -153,8 +156,11 @@ export class ProductController extends BaseController {
 
       return this.ok("Produto atualizada com sucesso!", data);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating product:", error);
+      if (error.code === "22001") {
+        return this.serverError("Erro por motivo de texto muito longo.");
+      }
       return this.unprocessableEntity("Ocorreu um erro ao atualizar a produto.");
     }
     
