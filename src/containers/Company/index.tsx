@@ -7,7 +7,6 @@ import { Company as CompanyType } from "@/types/company";
 import { editCompanyProps, useCompany } from "@/hooks/use-company";
 import { BASE_URL } from "@/utils/constants";
 import { WHATSAPP_PATTERN } from "@/utils/regex";
-import { checkFileMaxSize } from "@/utils/file/browser";
 
 const BREADCRUMB = [
   { link: "/painel", label: "Painel" },
@@ -103,10 +102,6 @@ const Company = ({ company }: CompanyProps) => {
       const imageSrc = formData.get("image-src");
       // @ts-ignore
       const image: File = imageFile?.size > 0 ? imageFile : imageSrc;
-
-      if (!checkFileMaxSize(image)) {
-        return;
-      }
 
       const data = {
         ...company,

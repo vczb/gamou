@@ -2,7 +2,6 @@ import { editCategoryProps, useCategory } from "@/hooks/use-category";
 import { Category as CategoryTypes } from "@/types/category";
 import { useCallback, useMemo } from "react";
 import DynamicForm, { FieldFormSchema } from "../DynamicForm";
-import { checkFileMaxSize } from "@/utils/file/browser";
 
 export type CategoryFormProps = {
   action: "create" | "edit";
@@ -77,10 +76,6 @@ const CategoryForm = ({
       const imageSrc = formData.get("image-src");
       // @ts-ignore
       const image: File = imageFile?.size > 0 ? imageFile : imageSrc;
-
-      if (!checkFileMaxSize(image)) {
-        return;
-      }
 
       const title = (formData.get("title") || "") as string;
       const description = (formData.get("description") || "") as string;

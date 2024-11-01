@@ -1,6 +1,13 @@
-import React, { useRef, InputHTMLAttributes, useCallback } from "react";
+import React, {
+  useRef,
+  InputHTMLAttributes,
+  useCallback,
+  useState,
+  ChangeEvent,
+} from "react";
 import Image from "../Image";
 import Button from "../Button";
+import { MEGABITE } from "@/utils/constants";
 
 export type UploadImageProps = {
   name: string;
@@ -14,9 +21,20 @@ const UploadImage: React.FC<UploadImageProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const [isOverSize, setIsOverSize] = useState(false);
 
-  const handleChange = () => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = inputRef.current?.files?.[0];
+
+    const maxSize = MEGABITE;
+
+    if ((file?.size || 0) > maxSize) {
+      setIsOverSize(true);
+      e.target.value = "";
+      return;
+    }
+    setIsOverSize(false);
+
     if (file && imgRef.current) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -57,11 +75,17 @@ const UploadImage: React.FC<UploadImageProps> = ({
         <Image
           ref={imgRef}
           src={defaultValue}
-          alt="Preview"
+          alt=""
           className={rest.className}
         />
       </div>
-      {imgRef.current?.sizes}
+      {isOverSize && (
+        <span className="text-sm text-red-500">
+          O arquivo de imagem excede o limite máximo de tamanho permitido para
+          upload (1MB). Por favor, comprima a imagem ou escolha outra com
+          tamanho menor.
+        </span>
+      )}
     </div>
   );
 };
