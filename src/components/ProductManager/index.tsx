@@ -74,7 +74,7 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
         <Image
           src={productState.image}
           alt={productState.title}
-          className="w-full h-full min-h-[8rem] object-cover"
+          className="w-20 h-20 md:w-32 md:h-32 lg:w-48 lg:h-48"
         />
         <div className="flex flex-col col-span-2 justify-between">
           <div className="flex justify-between">

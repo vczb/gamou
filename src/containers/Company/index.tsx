@@ -56,6 +56,7 @@ const Company = ({ company }: CompanyProps) => {
         label: "Imagem",
         sublabel: "Escolha uma imagem de até 1MB",
         type: "upload-image",
+        className: "w-44 h-40 m-auto",
         defaultValue: company?.image || "",
       },
       {

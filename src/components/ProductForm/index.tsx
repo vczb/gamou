@@ -53,7 +53,7 @@ const ProductForm = ({
         editable: true,
         required: action === "create" ? true : false,
         disabled: loading,
-        className: "w-full max-h-52",
+        className: "w-48 h-48 m-auto",
       },
       {
         name: "description",

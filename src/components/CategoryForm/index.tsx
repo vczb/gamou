@@ -39,7 +39,7 @@ const CategoryForm = ({
         editable: true,
         required: action === "create" ? true : false,
         disabled: loading,
-        className: "w-full max-h-52",
+        className: "m-auto w-32 h-32 lg:w-48 lg:h-48 rounded-full",
       },
       {
         name: "description",
