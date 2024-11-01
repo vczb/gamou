@@ -61,10 +61,10 @@ const Company = ({ company }: CompanyProps) => {
       {
         name: "description",
         label: "Descrição",
-        sublabel: "Máximo 255 caracteres",
+        // sublabel: "Máximo 255 caracteres",
         placeholder: "Adicione uma breve descrição",
         type: "description",
-        maxLength: 255,
+        // maxLength: 255,
         defaultValue: company?.description || "",
       },
       {
