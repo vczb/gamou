@@ -69,7 +69,7 @@ const AttributeVariant = ({
           {...option}
         />
       ))}
-      <div className="flex justify-between mt-2 py-2 border-dashed border-blueGray-200 border-t-2">
+      <div className="flex justify-between mt-4 py-2 border-dashed border-blueGray-200 border-t-2">
         <Button
           size="small"
           className="flex w-fit "
@@ -80,13 +80,13 @@ const AttributeVariant = ({
           <Plus className="h-4 w-4 mr-1" /> Novo item
         </Button>
         <Button
-          className=""
+          className="w-fit h-fit px-1 py-1"
           size="small"
           variant="secondary"
           onClick={() => setIsActive(false)}
           type="button"
         >
-          <Trash className="h-4 w-4 mr-1" />
+          <Trash className="h-3 w-3" />
         </Button>
       </div>
     </div>

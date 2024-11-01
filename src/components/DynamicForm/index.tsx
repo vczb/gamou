@@ -87,12 +87,12 @@ const DynamicForm = ({
   ) => (
     <div className="flex flex-col" key={key}>
       {label && (
-        <label htmlFor={fieldId} className="text-black">
+        <label htmlFor={fieldId} className="text-black w-fit">
           <b>{label}</b>
         </label>
       )}
       {sublabel && (
-        <span className="text-xs text-blueGray-800">{sublabel}</span>
+        <span className="text-xs text-blueGray-800 w-fit">{sublabel}</span>
       )}
       {fieldComponent}
     </div>

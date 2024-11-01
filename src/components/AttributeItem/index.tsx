@@ -31,13 +31,13 @@ const AttributeItem = ({ name, fieldName }: AttributeItemProps) => {
           />
         </LabelField>
         <Button
-          className="relative top-2 flex items-center justify-center ml-auto lg:ml-0"
+          className="relative top-2 flex items-center justify-center ml-auto lg:ml-0 w-fit h-fit px-1 py-1"
           size="small"
           variant="light"
           onClick={() => setIsActive(false)}
           type="button"
         >
-          <Trash className="h-4 w-4 mr-1" />
+          <Trash className="h-3 w-3" />
         </Button>
       </div>
       {/* <LabelField label="Preço: (opcional)" className="text-xs">

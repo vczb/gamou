@@ -24,7 +24,6 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
 
   const handleSubmitForm = (updatedProduct?: Product) => {
     if (updatedProduct) {
-      console.log("test5", updatedProduct);
       setProductState(updatedProduct);
       setOpen(false);
     }
@@ -67,16 +66,16 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
       </Modal>
       <div
         id={String(productState.id)}
-        className={`grid gap-2 grid-cols-3 p-2 ${
+        className={`grid md:gap-2 grid-cols-3 p-2 ${
           !productState.active && "bg-blueGray-200"
         }`}
       >
         <Image
           src={productState.image}
           alt={productState.title}
-          className="w-20 h-20 md:w-32 md:h-32 lg:w-48 lg:h-48"
+          className="w-20 h-20 md:w-32 md:h-32"
         />
-        <div className="flex flex-col col-span-2 justify-between">
+        <div className="flex flex-col col-span-2 text-start justify-between md:ml-2">
           <div className="flex justify-between">
             <h3 className="text-sm font-bold line-clamp-1">
               {!productState.active && (
@@ -88,15 +87,15 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
               size="small"
               variant="secondary"
               onClick={() => setOpen(true)}
-              className="w-fit ml-auto"
+              className="ml-auto w-fit h-fit px-1 py-1"
             >
-              <PenSquare className="h-4 w-4" />
+              <PenSquare className="h-3 w-3 md:h-4 md:w-4" />
             </Button>
           </div>
           <p className="text-gray-500 line-clamp-3 md:line-clamp-4 lg:line-clamp-none">
             {productState.description}
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-1">
             {/* <p className="text-sm">
               Qtd: <b>{productState.amount}</b>
             </p> */}

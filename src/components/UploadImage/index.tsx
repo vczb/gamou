@@ -39,8 +39,8 @@ const UploadImage: React.FC<UploadImageProps> = ({
       const reader = new FileReader();
       reader.onload = () => {
         if (imgRef.current) {
+          imgRef.current.classList.remove("hidden");
           imgRef.current.src = reader.result as string;
-          console.log(file.size);
         }
       };
       reader.readAsDataURL(file);
@@ -76,7 +76,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
           ref={imgRef}
           src={defaultValue}
           alt=""
-          className={rest.className}
+          className={`${rest.className} ${defaultValue ? "" : "hidden"}`}
         />
       </div>
       {isOverSize && (
