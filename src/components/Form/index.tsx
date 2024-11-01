@@ -8,6 +8,7 @@ type FormProps = {
 
 const Form = ({ children, className = "", ...props }: FormProps) => {
   const handleInvalid = (e: React.InvalidEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const target = e.target as unknown as HTMLInputElement;
     const { validity, id } = target;
 
