@@ -27,3 +27,7 @@ function ga4Track(eventName: string, params?: any){
 export function trackSignUp() {
   ga4Track('sign_up')
 }
+
+export function trackSignIn() {
+  ga4Track('sign_in')
+}
