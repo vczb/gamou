@@ -12,6 +12,7 @@ import { BASE_URL } from "@/utils/constants";
 import renderFlashMessage from "@/utils/renderFlashMessage";
 import { getStorageItem, setStorageItem } from "@/utils/storage/browser";
 import { useRouter } from "next/navigation";
+import { trackDeleteUser } from "@/utils/analytics";
 
 export type UserProviderProps = {
   children: React.ReactNode;
@@ -76,6 +77,8 @@ const UserProvider = ({ children }: UserProviderProps) => {
       if (response.status !== 200) {
         throw new Error(dataJson?.message);
       }
+
+      trackDeleteUser();
 
       router.push("/");
     } catch (error: any) {

@@ -31,3 +31,7 @@ export function trackSignUp() {
 export function trackSignIn() {
   ga4Track('sign_in')
 }
+
+export function trackDeleteUser(){
+  ga4Track('delete_user')
+}
