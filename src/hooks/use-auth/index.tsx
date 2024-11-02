@@ -3,6 +3,7 @@ import { useUser } from "../use-user";
 import renderFlashMessage from "@/utils/renderFlashMessage";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/utils/constants";
+import { trackSignUp } from "@/utils/analytics";
 
 type useAuthProps = {
   loading: boolean;
@@ -60,6 +61,8 @@ const useAuth = (): useAuthProps => {
         }
 
         setUser(user);
+
+        trackSignUp();
 
         router.push("/painel");
       } catch (error: any) {
