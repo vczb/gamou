@@ -35,3 +35,9 @@ export function trackSignIn() {
 export function trackDeleteUser(){
   ga4Track('delete_user')
 }
+
+export function trackUploadImageFailBySizeExceeded(){
+  ga4Track('upload_image_fail', {
+    reason: 'file_size_exceeded'
+  })
+}

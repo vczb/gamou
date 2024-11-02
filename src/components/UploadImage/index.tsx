@@ -8,6 +8,7 @@ import React, {
 import Image from "../Image";
 import Button from "../Button";
 import { MEGABITE } from "@/utils/constants";
+import { trackUploadImageFailBySizeExceeded } from "@/utils/analytics";
 
 export type UploadImageProps = {
   name: string;
@@ -31,6 +32,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
     if ((file?.size || 0) > maxSize) {
       setIsOverSize(true);
       e.target.value = "";
+      trackUploadImageFailBySizeExceeded();
       return;
     }
     setIsOverSize(false);
