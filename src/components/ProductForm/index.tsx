@@ -178,7 +178,7 @@ const ProductForm = ({
           title,
           isMultiple,
           isRequired,
-          variants: variantItems,
+          options: variantItems,
         });
       }
 

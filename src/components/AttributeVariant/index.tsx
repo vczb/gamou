@@ -14,10 +14,10 @@ export type AttributeVariantProps = {
   fieldName?: string;
   isRequired?: boolean;
   isMultiple?: boolean;
-  variants?: AttributeItemProps[];
+  options?: AttributeItemProps[];
 };
 
-const EMPTY_VARIANT = {
+const EMPTY_OPTION = {
   name: "",
 };
 
@@ -26,16 +26,17 @@ const AttributeVariant = ({
   fieldName,
   isRequired,
   isMultiple,
-  variants = [],
+  options = [],
 }: AttributeVariantProps) => {
-  const [options, setOptions] = useState<AttributeItemProps[]>(variants);
+  const [optionsState, setOptionsState] =
+    useState<AttributeItemProps[]>(options);
   const [isActive, setIsActive] = useState(true);
   const [titleState, setTitleState] = useState(title);
 
   if (!isActive) return;
 
   const handleAddOption = () => {
-    setOptions((prev) => [...prev, EMPTY_VARIANT]);
+    setOptionsState((prev) => [...prev, EMPTY_OPTION]);
   };
 
   return (
@@ -62,7 +63,7 @@ const AttributeVariant = ({
           defaultChecked={isMultiple}
         />
       </div>
-      {options.map((option, idx) => (
+      {optionsState.map((option, idx) => (
         <AttributeItem
           key={idx}
           fieldName={`${fieldName}-item-${idx}`}

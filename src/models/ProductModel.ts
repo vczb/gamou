@@ -60,7 +60,7 @@ export class ProductModel extends BaseModel<Product> {
               title: variant.title,
               isRequired: variant.isRequired,
               isMultiple: variant.isMultiple,
-              variants: items,
+              options: items,
             } as AttributeVariantProps;
           });
   
@@ -182,8 +182,8 @@ export class ProductModel extends BaseModel<Product> {
   
           const variantId = insertedVariant.id;
   
-          if (variant.variants && variant.variants.length > 0) {
-            for (const option of variant.variants) {
+          if (variant.options && variant.options.length > 0) {
+            for (const option of variant.options) {
               await transaction("variant_options").insert({
                 name: option.name,
                 variant_id: variantId,
@@ -253,8 +253,8 @@ export class ProductModel extends BaseModel<Product> {
   
           const variantId = insertedVariant.id; // Extract the id property from the inserted variant
   
-          if (variant.variants && variant.variants.length > 0) {
-            for (const option of variant.variants) {
+          if (variant.options && variant.options.length > 0) {
+            for (const option of variant.options) {
               await transaction("variant_options").insert({
                 name: option.name,
                 variant_id: variantId,
