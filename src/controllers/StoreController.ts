@@ -19,7 +19,7 @@ export class StoreController extends BaseController {
 
       const productModel = new ProductModel();
 
-      const products = await productModel.selectProductsByCompanySlug(slug);
+      const products = await productModel.selectProductsWithVariantsByCompanySlug(slug);
 
       const categoryModel = new CategoryModel()
 

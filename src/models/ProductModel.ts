@@ -9,6 +9,87 @@ export class ProductModel extends BaseModel<Product> {
     super("products");
   }
 
+  async selectProductsWithVariantsByCompanySlug(slug: string) {
+    try {
+      // Step 1: Fetch all active products for the given company slug along with category info
+      const products = await connection("products")
+        .join("categories", "products.category_id", "=", "categories.id")
+        .join("companies", "products.company_id", "=", "companies.id")
+        .select(
+          "products.id as productId",
+          "products.title",
+          "products.description",
+          "products.image",
+          "products.price",
+          "products.amount",
+          "products.category_id",
+          "categories.title as categoryTitle",
+          "categories.image as categoryImage",
+          "products.company_id",
+          "products.active",
+          "products.created_at",
+          "products.updated_at"
+        )
+        .where("products.active", true)
+        .where("companies.slug", slug);
+  
+      // Step 2: Fetch all product variants related to these products
+      const productIds = products.map(product => product.productId);
+      const productVariants = await connection("product_variants")
+        .whereIn("product_id", productIds)
+        .select("id", "title", "isRequired", "isMultiple", "product_id");
+  
+      // Step 3: Fetch all variant options associated with these variants
+      const variantIds = productVariants.map(variant => variant.id);
+      const variantOptions = await connection("variant_options")
+        .whereIn("variant_id", variantIds)
+        .select("id", "name", "variant_id");
+  
+      // Step 4: Group the data by product, variants, and items
+      const structuredProducts = products.map(product => {
+        const variants = productVariants
+          .filter(variant => variant.product_id === product.productId)
+          .map(variant => {
+            const items = variantOptions
+              .filter(item => item.variant_id === variant.id)
+              .map(item => ({
+                name: item.name,
+              }));
+  
+            return {
+              title: variant.title,
+              isRequired: variant.isRequired,
+              isMultiple: variant.isMultiple,
+              options: items,
+            } as AttributeVariantProps;
+          });
+  
+        return {
+          id: product.productId,
+          title: product.title,
+          description: product.description,
+          image: product.image,
+          price: product.price,
+          amount: product.amount,
+          category_id: product.category_id,
+          categoryTitle: product.categoryTitle,
+          categoryImage: product.categoryImage,
+          company_id: product.company_id,
+          active: product.active,
+          created_at: product.created_at,
+          updated_at: product.updated_at,
+          variants,
+        } as Product;
+      });
+  
+      return structuredProducts;
+    } catch (error) {
+      console.error("Error fetching products with variants and options by slug:", error);
+      throw error;
+    }
+  }
+  
+
   async selectAllProductVariantsByCompanyId(companyId: number){  
     try {
       // Step 1: Fetch all products for the given company ID along with basic category info if needed
@@ -39,7 +120,7 @@ export class ProductModel extends BaseModel<Product> {
   
       // Step 3: Fetch all variant options associated with these variants
       const variantIds = productVariants.map(variant => variant.id);
-      const variantItems = await connection("variant_options")
+      const variantOptions = await connection("variant_options")
         .whereIn("variant_id", variantIds)
         .select("id", "name", "variant_id");
   
@@ -50,7 +131,7 @@ export class ProductModel extends BaseModel<Product> {
           .filter(variant => variant.product_id === product.productId)
           .map(variant => {
             // Get items associated with this variant
-            const items = variantItems
+            const items = variantOptions
               .filter(item => item.variant_id === variant.id)
               .map(item => ({
                 name: item.name,

@@ -2,11 +2,10 @@ import Plus from "@/icons/Plus";
 import Button from "../Button";
 import Checkbox from "../Checkbox";
 import TextField from "../TextField";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import AttributeItem, { AttributeItemProps } from "../AttributeItem";
 import LabelField from "../LabelField";
 import Trash from "@/icons/Trash";
-import { slugify } from "@/utils/formatters";
 
 export type AttributeVariantProps = {
   title: string;
