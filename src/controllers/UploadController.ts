@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 import { BaseController } from './BaseController';
-import { generateHashId } from '@/utils/criptography';
+import { generateSHA256Hash } from '@/utils/criptography';
 
 export class UploaderController extends BaseController {
 
@@ -21,7 +21,7 @@ export class UploaderController extends BaseController {
         return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
-      const dirName = await generateHashId(userId)
+      const dirName = await generateSHA256Hash(userId)
       
       // TODO: Move this to utils/file
       const userDir = path.join(process.cwd(), 'public/uploads', dirName);

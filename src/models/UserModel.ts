@@ -5,7 +5,7 @@ import connection from "@/database/connection";
 import { BaseModel } from "./BaseModel";
 import { User } from "@/types/user";
 import { deleteDirectory } from "@/utils/file";
-import { generateHashId } from "@/utils/criptography";
+import { generateSHA256Hash } from "@/utils/criptography";
 
 export class UserModel extends BaseModel<User> {
   constructor() {
@@ -54,7 +54,7 @@ export class UserModel extends BaseModel<User> {
 
       await transaction.commit();
 
-      const dirName = await generateHashId(id)
+      const dirName = await generateSHA256Hash(id)
       const userDir = path.join(process.cwd(), 'public/uploads', dirName);
       
       await deleteDirectory(userDir);
