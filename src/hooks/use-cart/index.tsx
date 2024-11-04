@@ -8,11 +8,15 @@ export type CartProviderProps = {
   children: React.ReactNode;
 };
 
+type CartProductProps = {
+  selectedVariants?: CartItemProps["selectedVariants"];
+} & ProductProps;
+
 export type CartContextData = {
   items: CartItemProps[];
   quantity: number;
   total: string | number;
-  addToCart: (product: ProductProps) => void;
+  addToCart: (product: CartProductProps) => void;
   remFromCart: (product: ProductProps) => void;
   removeAllFromCart: (product: ProductProps) => void;
   loading: boolean;
@@ -35,7 +39,7 @@ export const CartContext = createContext<CartContextData>(
 const CartProvider = ({ children }: CartProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItemProps[]>([]);
 
-  const addToCart = (product: ProductProps) => {
+  const addToCart = (product: CartProductProps) => {
     setCartItems((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {

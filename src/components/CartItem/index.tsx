@@ -8,8 +8,12 @@ import Trash from "../../icons/Trash";
 import { ProductProps } from "../Product";
 import { CURRENCY } from "@/utils/constants";
 import { useCart } from "@/hooks/use-cart";
+import { FormDataObject } from "@/types/browser";
 
-export type CartItemProps = { amount: number } & ProductProps;
+export type CartItemProps = {
+  selectedVariants?: FormDataObject;
+  amount: number;
+} & ProductProps;
 
 const CartItem = ({
   image,

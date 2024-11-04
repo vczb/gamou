@@ -1,4 +1,3 @@
-import FlashNotification from "@/components/FlashNotification";
 import NavBar from "@/components/NavBar";
 import { UserProvider } from "@/hooks/use-user";
 
@@ -10,7 +9,6 @@ export default function AuthLayout({
   return (
     <UserProvider>
       <NavBar />
-      <FlashNotification />
       {children}
     </UserProvider>
   );

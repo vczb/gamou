@@ -1,8 +1,8 @@
-import { useId, useMemo } from "react";
+import { ReactNode, useId, useMemo } from "react";
 
 export type FlashMessageProps = {
   variant: "alert" | "success";
-  message: string;
+  message: string | ReactNode;
 };
 
 const FlashMessage = ({ variant, message }: FlashMessageProps) => {

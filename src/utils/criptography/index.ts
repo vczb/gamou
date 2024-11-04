@@ -1,3 +1,4 @@
+// TODO: rename this file to server.ts
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { TOKEN_EXPIRATION_TIME, TOKEN_SECRET } from "../constants";
@@ -32,6 +33,7 @@ export const verifySessionToken = (token: string) => {
   return session;
 };
 
+// TODO: move to common.ts
 export async function generateSHA256Hash(value: string | number) {
   const encoder = new TextEncoder();
   const data = encoder.encode(value.toString());

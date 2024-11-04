@@ -2,6 +2,7 @@ import GoogleTagManager from "@/components/GoogleTagManager";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import FlashNotification from "@/components/FlashNotification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,6 +53,7 @@ export default function RootLayout({
       <head>
         <GoogleTagManager />
       </head>
+      <FlashNotification />
       <body className={`${inter.className}`}>{children}</body>
     </html>
   );
