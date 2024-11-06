@@ -8,10 +8,10 @@ import Trash from "../../icons/Trash";
 import { ProductProps } from "../Product";
 import { CURRENCY } from "@/utils/constants";
 import { useCart } from "@/hooks/use-cart";
-import { FormDataObject } from "@/types/browser";
+import { Product } from "@/types/product";
 
 export type CartItemProps = {
-  selectedVariants?: FormDataObject;
+  selectedVariants?: Product["variants"];
   amount: number;
 } & ProductProps;
 
@@ -21,6 +21,7 @@ const CartItem = ({
   title,
   amount,
   description,
+  selectedVariants,
   ...props
 }: CartItemProps) => {
   const { addToCart, remFromCart, removeAllFromCart } = useCart();
@@ -71,8 +72,25 @@ const CartItem = ({
   }, [amount, price]);
 
   const hiddenValue = useMemo(() => {
-    return `${title} - ${amount}x ${CURRENCY} ${price} - ${CURRENCY} ${totalPrice}`;
-  }, [amount, price, title, totalPrice]);
+    const variantsText = selectedVariants
+      ?.map(
+        (variant) =>
+          `${variant.title}: ${(variant.options || [])
+            .map((option) => option.name)
+            .join(", ")}`
+      )
+      .join(" \n   ∘ ");
+
+    let text = `*${title}*`;
+
+    if (variantsText) {
+      text += `\n   ∘ ${variantsText}`;
+    }
+
+    text += `\nQuantidade: ${amount} \nPreço unitário: ${CURRENCY} ${price} \nPreço total: ${CURRENCY} ${totalPrice}.`;
+
+    return text;
+  }, [amount, price, title, totalPrice, selectedVariants]);
 
   return (
     <div className="grid grid-cols-[1fr_auto] gap-2 md:grid-cols-[1fr_1fr_1fr_3fr] md:gap-4 max-w-sm md:max-w-none">
@@ -81,10 +99,28 @@ const CartItem = ({
         alt={title}
         className="hidden md:block md:row-start-1 md:row-end-3"
       />
-      <p className="font-bold text-medium md:text-large text-black">{title}</p>
+      <div>
+        <p className="font-bold text-medium md:text-large text-black">
+          {title}
+        </p>
+        <div className="flex flex-col">
+          {selectedVariants?.map((variant) => (
+            <ol key={variant.title} className="text-xs">
+              <span> {`${variant.title}:`} </span>
+
+              {variant.options?.map((option) => (
+                <li key={option.name} className="ml-2">
+                  ∘ {option.name}
+                </li>
+              ))}
+            </ol>
+          ))}
+        </div>
+      </div>
       <p className="font-bold text-medium md:text-large text-primary-500 justify-self-end">
         {`${CURRENCY} ${totalPrice}`}
       </p>
+
       <div className="flex items-center">
         <NumberField
           defaultValue={amount}

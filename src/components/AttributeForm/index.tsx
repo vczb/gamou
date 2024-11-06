@@ -5,13 +5,12 @@ import Heading from "../Heading";
 import Radio from "../Radio";
 import Checkbox from "../Checkbox";
 import Button from "../Button";
-import { useCallback, useRef, useState } from "react";
-import { FormDataObject } from "@/types/browser";
+import { useCallback, useState } from "react";
 
 export type AttributeFormProps = {
   formId: string;
   variants?: Product["variants"];
-  onSubmit?: (data: FormDataObject) => void;
+  onSubmit?: (data: Product["variants"]) => void;
 };
 
 const AttributeForm = ({ formId, onSubmit, variants }: AttributeFormProps) => {
@@ -24,21 +23,28 @@ const AttributeForm = ({ formId, onSubmit, variants }: AttributeFormProps) => {
       e.preventDefault();
 
       const formData = new FormData(e.currentTarget);
-      const dataObject: FormDataObject = {};
+      const dataObject: Product["variants"] = [];
 
+      const groupedData: Record<string, string[]> = {};
+
+      // Organize form data by variant title
       formData.forEach((value, key) => {
-        if (dataObject[key]) {
-          // If the key already exists, convert it to an array or add to the array
-          dataObject[key] = Array.isArray(dataObject[key])
-            ? [...dataObject[key], value]
-            : [dataObject[key], value];
+        if (groupedData[key]) {
+          groupedData[key].push(value as string);
         } else {
-          // If it's the first entry for the key, simply assign the value
-          dataObject[key] = value;
+          groupedData[key] = [value as string];
         }
       });
 
-      onSubmit?.(dataObject);
+      // Format into desired structure
+      Object.keys(groupedData).forEach((title) => {
+        dataObject.push({
+          title,
+          options: groupedData[title].map((option) => ({ name: option })),
+        });
+      });
+
+      onSubmit?.(dataObject as unknown as Product["variants"]);
     },
     [onSubmit]
   );

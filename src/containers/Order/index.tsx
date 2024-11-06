@@ -37,13 +37,13 @@ const Order = ({ slug, whatsapp }: OrderProps) => {
       const orderNotes = data.get("order_notes") || "";
 
       let message = `*Pedido:* #${Date.now()}\n\n`;
-      message += `Olá, gostaria de realizar um pedido com os seguintes itens:\n\n`;
+      message += `Olá, gostaria de realizar um pedido com os seguintes produtos:\n\n`;
 
-      products.forEach((product) => {
-        message += `-- ${product}\n`;
+      products.forEach((product, idx) => {
+        message += `${idx + 1}) ${product}\n\n`;
       });
 
-      message += `\n*Valor dos produtos:* R$${total}\n`;
+      message += `*Valor dos produtos:* R$${total}\n`;
       message += `*Taxa de entrega:* A calcular\n\n`;
 
       message += `*Entregar para:* ${customer}\n`;
