@@ -1,3 +1,7 @@
+type Settings = {
+  products_has_variants?: boolean
+}
+
 export type Company = {
   id: number;
   description?: string;
@@ -9,4 +13,5 @@ export type Company = {
   currency: string;
   user_id: number;
   sequence: number;
+  settings: Settings
 };

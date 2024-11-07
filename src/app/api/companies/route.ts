@@ -5,7 +5,7 @@ export async function PUT(req: Request) {
   try {
     const body = await req.json();
 
-    const { name, image, description, active, currency, phone } = body;
+    const { name, image, active, currency, phone } = body;
 
     if (!name || !image || !phone || active === undefined || !currency) {
       console.error("Invalid request body.")
@@ -14,7 +14,7 @@ export async function PUT(req: Request) {
 
     const controller = new CompanyController()
 
-    const data = await controller.updateCompany({ name, image, phone, description, active, currency })
+    const data = await controller.updateCompany(body)
 
     const { status } = data;
     return NextResponse.json(data, { status });

@@ -1,6 +1,7 @@
 import { CompanyModel } from "@/models/CompanyModel";
 import { BaseController } from "./BaseController";
 import { slugify } from "@/utils/formatters";
+import { Company } from "@/types/company";
 
 export class CompanyController extends BaseController {
  
@@ -53,14 +54,8 @@ export class CompanyController extends BaseController {
     description,
     active,
     currency,
-  }: {
-    name: string;
-    image: string;
-    description: string;
-    phone: string;
-    active: boolean;
-    currency: string;
-  }){
+    settings
+  }: Company){
     try {
       
       const userId = await this.verifyToken()
@@ -80,7 +75,7 @@ export class CompanyController extends BaseController {
       }
 
 
-      const updatedCompany = await companyModel.updateCompanyAndDeletePrevImage(company.id, {
+      const updatedCompany = await companyModel.updateCompanyWithSettingsAndDeletePrevImage(company.id, {
         slug: companySlug,
         name,
         phone,
@@ -88,6 +83,7 @@ export class CompanyController extends BaseController {
         description,
         active,
         currency,
+        settings,
       })
 
       if (!updatedCompany) {

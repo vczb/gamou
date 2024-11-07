@@ -93,6 +93,23 @@ const Company = ({ company }: CompanyProps) => {
     return fields;
   }, [company]);
 
+  const formCompanySettingsData = useMemo(() => {
+    const fields: FieldFormSchema[] = [
+      {
+        name: "products_has_variants",
+        label: "Produtos tem opções",
+        sublabel: "Marque para habilitar opções em seus produtos",
+        checkboxLabel: "Sim",
+        type: "checkbox",
+        checked:
+          typeof company?.settings?.products_has_variants !== "undefined"
+            ? company.settings?.products_has_variants
+            : false,
+      },
+    ];
+    return fields;
+  }, [company]);
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -120,15 +137,46 @@ const Company = ({ company }: CompanyProps) => {
     [editCompany, company]
   );
 
+  const handleSettingsSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.currentTarget);
+
+      const data = {
+        ...company,
+        settings: {
+          products_has_variants: formData.get("products_has_variants") === "on",
+        },
+      } as editCompanyProps;
+
+      await editCompany(data);
+    },
+
+    [editCompany, company]
+  );
+
   return (
     <div className="container mx-auto px-4 pb-28 pt-8 max-w-lg">
       <Breadcrumb items={BREADCRUMB} />
       <div className="mt-4">
         <DynamicForm
           headingText="Minha loja"
-          formId="profile-form"
+          formId="company-form"
           schema={formData}
           onSubmit={handleSubmit}
+          btnProps={{
+            text: "Salvar",
+            disabled: loading,
+          }}
+        />
+      </div>
+      <div className="mt-4">
+        <DynamicForm
+          headingText="Configurações Avançadas"
+          formId="company-settings-form"
+          schema={formCompanySettingsData}
+          onSubmit={handleSettingsSubmit}
           btnProps={{
             text: "Salvar",
             disabled: loading,

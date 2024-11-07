@@ -8,10 +8,13 @@ export class CompanyModel extends BaseModel<Company> {
     super("companies");
   }
 
-  async updateCompanyAndDeletePrevImage(id: number, data: Partial<Company>) {
+  async updateCompanyWithSettingsAndDeletePrevImage(id: number, data: Partial<Company>) {
     const transaction = await connection.transaction();
   
     try {
+
+      const {settings, ...companyData} = data
+
       // Fetch the current company to get the existing image URL
       const [existingCompany] = await transaction('companies')
         .where({ id })
@@ -20,14 +23,22 @@ export class CompanyModel extends BaseModel<Company> {
       // Update the company with the new data
       const [updatedCompany] = await transaction('companies')
         .where({ id })
-        .update(data)
+        .update(companyData)
         .returning('*');
   
+
+      if(settings){
+        await transaction("company_settings").insert({
+          company_id: id,
+          products_has_variants: settings?.products_has_variants || false
+        }).where({company_id: id})
+      }
+
       // Commit the transaction before performing the image deletion
       await transaction.commit();
   
       // If the company had an old image and a new image is being uploaded, delete the old image
-      if (existingCompany.image && data.image && existingCompany.image !== data.image) {
+      if (existingCompany.image && companyData.image && existingCompany.image !== companyData.image) {
         const path = process.cwd() + '/public/' + existingCompany.image;
         await deleteFile(path);
       }
@@ -37,7 +48,7 @@ export class CompanyModel extends BaseModel<Company> {
     } catch (error) {
       // Rollback the transaction if something goes wrong
       await transaction.rollback();
-      console.error('Error updating company and deleting previous image:', error);
+      console.error('Error updating company with settings and deleting previous image:', error);
       throw error;
     }
   }
