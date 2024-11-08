@@ -101,10 +101,7 @@ const Company = ({ company }: CompanyProps) => {
         sublabel: "Marque para habilitar opções em seus produtos",
         checkboxLabel: "Sim",
         type: "checkbox",
-        checked:
-          typeof company?.settings?.products_has_variants !== "undefined"
-            ? company.settings?.products_has_variants
-            : false,
+        checked: !!company?.products_has_variants,
       },
     ];
     return fields;
@@ -145,9 +142,7 @@ const Company = ({ company }: CompanyProps) => {
 
       const data = {
         ...company,
-        settings: {
-          products_has_variants: formData.get("products_has_variants") === "on",
-        },
+        products_has_variants: formData.get("products_has_variants") === "on",
       } as editCompanyProps;
 
       await editCompany(data);

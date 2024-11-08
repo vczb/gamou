@@ -13,5 +13,4 @@ export type Company = {
   currency: string;
   user_id: number;
   sequence: number;
-  settings: Settings
-};
+} & Settings
