@@ -6,6 +6,7 @@ import CategoryForm from "@/components/CategoryForm";
 import CategoryProductManager from "@/components/CategoryProductManager";
 import Modal from "@/components/Modal";
 import { CategoryProvider } from "@/hooks/use-category";
+import { CompanySettingsProvider } from "@/hooks/use-company";
 
 import { Category } from "@/types/category";
 import { Product } from "@/types/product";
@@ -19,9 +20,14 @@ const BREADCUMB = [
 type InventoryProps = {
   categories: Category[];
   products: Product[];
+  products_has_variants?: boolean;
 };
 
-const Inventory = ({ categories, products }: InventoryProps) => {
+const Inventory = ({
+  categories,
+  products,
+  products_has_variants,
+}: InventoryProps) => {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [categoriesState, setCategoriesState] = useState(categories);
 
@@ -48,17 +54,21 @@ const Inventory = ({ categories, products }: InventoryProps) => {
           </Button>
         </div>
         <div className="mt-4 grid gap-4">
-          <CategoryProvider categories={categoriesState}>
-            {categoriesState.map((category) => (
-              <CategoryProductManager
-                key={category.id}
-                category={category}
-                products={products.filter(
-                  (product) => product.category_id === category.id
-                )}
-              />
-            ))}
-          </CategoryProvider>
+          <CompanySettingsProvider
+            products_has_variants={products_has_variants}
+          >
+            <CategoryProvider categories={categoriesState}>
+              {categoriesState?.map((category) => (
+                <CategoryProductManager
+                  key={category.id}
+                  category={category}
+                  products={products.filter(
+                    (product) => product.category_id === category.id
+                  )}
+                />
+              ))}
+            </CategoryProvider>
+          </CompanySettingsProvider>
         </div>
       </div>
     </>

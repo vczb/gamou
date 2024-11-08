@@ -2,12 +2,13 @@ import { CURRENCY } from "@/utils/constants";
 import Image from "../Image";
 import { Product } from "@/types/product";
 import Button from "../Button";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Modal from "../Modal";
 import ProductForm from "../ProductForm";
 import { Category } from "@/types/category";
 import PenSquare from "@/icons/PenSquare";
 import { useProduct } from "@/hooks/use-product";
+import { CompanySettingsContext } from "@/hooks/use-company";
 
 export type ProductManagerProps = {
   product: Product;
@@ -21,6 +22,7 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
   const [open, setOpen] = useState(false);
 
   const { deleteProduct, loading: productLoading } = useProduct();
+  const { products_has_variants } = useContext(CompanySettingsContext);
 
   const handleSubmitForm = (updatedProduct?: Product) => {
     if (updatedProduct) {
@@ -52,6 +54,7 @@ const ProductManager = ({ product, categories }: ProductManagerProps) => {
           action="edit"
           categories={categories}
           handleSubmit={handleSubmitForm}
+          products_has_variants={products_has_variants}
         />
         <Button
           variant="light"

@@ -1,7 +1,6 @@
-import Accordion from "@/components/Accordion";
 import CartButton from "@/components/CartButton";
+import CategoryProductList from "@/components/CategoryProductList";
 import GoBackLink from "@/components/GoBackLink";
-import Product from "@/components/Product";
 import SearchField from "@/components/SearchField";
 import { Category } from "@/types/category";
 import { Company } from "@/types/company";
@@ -31,46 +30,11 @@ const Search = ({ company, categories, products, query }: SearchProps) => {
         <b className="ml-2">{query}</b>
       </section>
       <section className="mb-6 text-center">
-        <ul className="w-full max-w-4xl mx-auto">
-          {categories.length ? (
-            categories.map(
-              (category) =>
-                products.find(
-                  (product) => product.category_id === category.id
-                ) && (
-                  <li className="mb-6" key={category.id}>
-                    <div id={String(category.id)}>
-                      <Accordion
-                        title={category.title}
-                        detailsClassName="w-full w-full max-w-4xl"
-                      >
-                        <div className="grid gap-4">
-                          {products
-                            .filter(
-                              (product) => product.category_id === category.id
-                            )
-                            .map((product) => (
-                              <div
-                                className="mb-4 pb-4 border-b-2 border-dashed border-blueGray-200 last:border-none last:mb-0 last:pb-0"
-                                key={product.id}
-                              >
-                                <Product {...product} />
-                              </div>
-                            ))}
-                        </div>
-                      </Accordion>
-                    </div>
-                  </li>
-                )
-            )
-          ) : (
-            <div className="flex justify-center items-center m-auto w-full text-center">
-              <p className="text-blueGray-600">
-                Não há resultados para esta busca
-              </p>
-            </div>
-          )}
-        </ul>
+        <CategoryProductList
+          categories={categories}
+          products_has_variants={company?.products_has_variants}
+          products={products}
+        />
       </section>
       <CartButton />
     </main>

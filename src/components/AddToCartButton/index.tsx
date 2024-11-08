@@ -3,10 +3,11 @@
 import { useCart } from "@/hooks/use-cart";
 import Button from "@/components/Button";
 import { ProductProps } from "@/components/Product";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Modal from "../Modal";
 import AttributeForm from "../AttributeForm";
 import { generateFNV1aHash } from "@/utils/criptography/common";
+import { CompanySettingsContext } from "@/hooks/use-company";
 
 type AddToCartButton = {
   product: ProductProps;
@@ -15,6 +16,7 @@ type AddToCartButton = {
 const AddToCartButton = ({ product }: AddToCartButton) => {
   const [openModal, setOpenModal] = useState(false);
   const { addToCart } = useCart();
+  const { products_has_variants } = useContext(CompanySettingsContext);
 
   return (
     <>
@@ -22,7 +24,7 @@ const AddToCartButton = ({ product }: AddToCartButton) => {
         className="w-full self-end md:h-7"
         variant="secondary"
         onClick={
-          product.variants?.length
+          products_has_variants && product.variants?.length
             ? () => setOpenModal(true)
             : () => addToCart(product)
         }

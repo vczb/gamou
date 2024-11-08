@@ -18,10 +18,16 @@ const Index = async () => {
     categoryController.selectAllCategoriesByToken(),
   ]);
 
-  const { products } = productResponse?.data || [];
+  const { products, products_has_variants } = productResponse?.data || [];
   const { categories } = categoryResponse?.data || [];
 
-  return <Inventory categories={categories} products={products} />;
+  return (
+    <Inventory
+      categories={categories}
+      products={products}
+      products_has_variants={products_has_variants}
+    />
+  );
 };
 
 export default Index;

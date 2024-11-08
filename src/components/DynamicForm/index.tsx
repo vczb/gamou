@@ -58,6 +58,7 @@ export type FieldFormSchema = {
   sublabel?: string;
   variants?: AttributeVariantProps[];
   maxLength?: number;
+  active?: boolean;
 };
 
 export type DynamicFormProps = {
@@ -83,9 +84,13 @@ const DynamicForm = ({
     label: string | undefined,
     fieldComponent: React.ReactNode,
     fieldId: string,
-    sublabel?: string
+    sublabel?: string,
+    hidden?: boolean
   ) => (
-    <div className="flex flex-col" key={key}>
+    <div
+      className={`flex flex-col ${hidden && "hidden pointer-events-none"}`}
+      key={key}
+    >
       {label && (
         <label htmlFor={fieldId} className="text-black w-fit">
           <b>{label}</b>
@@ -119,9 +124,10 @@ const DynamicForm = ({
       helperText,
       variants,
       maxLength,
+      active = true,
     } = field;
 
-    if (hidden) {
+    if (!active) {
       return null;
     }
 
@@ -148,7 +154,8 @@ const DynamicForm = ({
               : { value: defaultValue as string, disabled: true })}
           />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "link":
         const value = (defaultValue as string) || "";
@@ -163,7 +170,8 @@ const DynamicForm = ({
             {value}
           </Link>,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "paragraph":
         return renderLabeledField(
@@ -173,7 +181,8 @@ const DynamicForm = ({
             {(defaultValue as string) || ""}
           </p>,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "description":
         return renderLabeledField(
@@ -190,7 +199,8 @@ const DynamicForm = ({
               : { value: defaultValue as string, disabled: true })}
           />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "checkbox":
         return renderLabeledField(
@@ -204,7 +214,8 @@ const DynamicForm = ({
             label={checkboxLabel || "Sim"}
           />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "text-number":
         return renderLabeledField(
@@ -224,7 +235,8 @@ const DynamicForm = ({
               : { value: defaultValue as string, disabled: true })}
           />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "number":
         return renderLabeledField(
@@ -238,7 +250,8 @@ const DynamicForm = ({
             defaultValue={defaultValue as number | undefined}
           />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "select":
         return renderLabeledField(
@@ -252,7 +265,8 @@ const DynamicForm = ({
             options={selectOptions || []}
           />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "upload-image":
         return renderLabeledField(
@@ -266,15 +280,21 @@ const DynamicForm = ({
             className={className}
           />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       case "variants":
         return renderLabeledField(
           name,
           label,
-          <AttributeButton attributeVariants={variants} />,
+          <AttributeButton
+            attributeVariants={variants}
+            editable={editable}
+            className={className}
+          />,
           fieldId,
-          sublabel
+          sublabel,
+          hidden
         );
       default:
         throw new Error(

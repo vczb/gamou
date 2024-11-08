@@ -5,6 +5,8 @@ import Plus from "@/icons/Plus";
 
 export type AttributeButtonProps = {
   attributeVariants?: AttributeVariantProps[];
+  editable?: boolean;
+  className?: string;
 };
 
 const EMPTY_ATTRIBUTE = {
@@ -12,7 +14,10 @@ const EMPTY_ATTRIBUTE = {
   fieldName: "",
 };
 
-const AttributeButton = ({ attributeVariants = [] }: AttributeButtonProps) => {
+const AttributeButton = ({
+  attributeVariants = [],
+  editable,
+}: AttributeButtonProps) => {
   const [attributesState, setAttributesState] =
     useState<AttributeVariantProps[]>(attributeVariants);
 
@@ -21,24 +26,23 @@ const AttributeButton = ({ attributeVariants = [] }: AttributeButtonProps) => {
   };
 
   return (
-    <>
-      <div className="flex flex-col gap-2">
-        {attributesState.map((attribute, idx) => (
-          <AttributeVariant
-            key={idx}
-            {...attribute}
-            fieldName={`attribute-${idx}`}
-          />
-        ))}
-        <Button
-          onClick={() => handleAddAttribute()}
-          className="flex items-center w-fit"
-          type="button"
-        >
-          <Plus className="h-4 w-4 mr-1" /> Adicionar opção
-        </Button>
-      </div>
-    </>
+    <div className={`flex flex-col gap-2`}>
+      {attributesState.map((attribute, idx) => (
+        <AttributeVariant
+          key={idx}
+          {...attribute}
+          fieldName={`attribute-${idx}`}
+        />
+      ))}
+      <Button
+        onClick={() => handleAddAttribute()}
+        className="flex items-center w-fit"
+        type="button"
+        disabled={!editable}
+      >
+        <Plus className="h-4 w-4 mr-1" /> Adicionar opção
+      </Button>
+    </div>
   );
 };
 export default AttributeButton;

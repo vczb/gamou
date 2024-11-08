@@ -1,35 +1,40 @@
 import { Product } from "@/types/product";
 import { BaseController } from "./BaseController";
 import { ProductModel } from "@/models/ProductModel";
+import { CompanyModel } from "@/models/CompanyModel";
 
 export class ProductController extends BaseController {
- 
-  async selectAllProductsByToken(){
+  async selectAllProductsByToken() {
     try {
-      const userId = await this.verifyToken()
+      const userId = await this.verifyToken();
 
       if (!userId) {
         return this.unprocessableEntity("Usuário não foi encontrado");
       }
 
-      const company = await this.selectPrimaryCompanyByUserId(userId);
+      const companyModel = new CompanyModel();
+
+      const company =
+        await companyModel.selectPrimaryCompanyWithSettingsByUserId(userId);
 
       if (!company) {
-        return this.unprocessableEntity("Falha ao carregar os dados da empresa");
+        return this.unprocessableEntity(
+          "Falha ao carregar os dados da empresa"
+        );
       }
 
       const productModel = new ProductModel();
 
-      // const products = await productModel.selectProductsWithCategoryByCompanyId(company.id)
-      const products = await productModel.selectAllProductVariantsByCompanyId(company.id)
-      // await productModel.selectAllProductVariantsByCompanyId(company.id)
+      const products = await productModel.selectAllProductVariantsByCompanyId(
+        company.id
+      );
 
       const data = {
         products: products || [],
+        products_has_variants: company.products_has_variants,
       };
 
       return this.ok("Dados dos produtos carregados com sucesso!", data);
-
     } catch (error) {
       console.error("Error fetching products by token:", error);
       return this.unprocessableEntity("Ocorreu um erro ao buscar os produtos.");
@@ -45,7 +50,7 @@ export class ProductController extends BaseController {
         product,
       };
 
-      return this.ok("Produto carregado com sucesso!.",data);
+      return this.ok("Produto carregado com sucesso!.", data);
     } catch (error) {
       return this.serverError("Erro ao carregar produto");
     }
@@ -59,12 +64,10 @@ export class ProductController extends BaseController {
     amount,
     price,
     variants,
-    category_id
-  }: Product){
-
+    category_id,
+  }: Product) {
     try {
-
-      const userId = await this.verifyToken()
+      const userId = await this.verifyToken();
 
       if (!userId) {
         return this.unprocessableEntity("Usuário não foi encontrado");
@@ -73,7 +76,9 @@ export class ProductController extends BaseController {
       const company = await this.selectPrimaryCompanyByUserId(userId);
 
       if (!company) {
-        return this.unprocessableEntity("Falha ao carregar os dados da empresa");
+        return this.unprocessableEntity(
+          "Falha ao carregar os dados da empresa"
+        );
       }
 
       const productModel = new ProductModel();
@@ -88,7 +93,7 @@ export class ProductController extends BaseController {
         variants,
         category_id,
         company_id: company.id,
-      })
+      });
 
       if (!newProduct) {
         return this.unprocessableEntity("Não foi possível criar a produto.");
@@ -97,7 +102,6 @@ export class ProductController extends BaseController {
       const data = { product: newProduct };
 
       return this.ok("Produto criado com sucesso!", data);
-      
     } catch (error: any) {
       console.error("Error creating product:", error);
       if (error.code === "22001") {
@@ -105,7 +109,6 @@ export class ProductController extends BaseController {
       }
       return this.unprocessableEntity("Ocorreu um erro ao criar a produto.");
     }
-    
   }
 
   async updateProduct({
@@ -117,12 +120,10 @@ export class ProductController extends BaseController {
     amount,
     price,
     variants,
-    category_id
-  }: Product){
-
+    category_id,
+  }: Product) {
     try {
-
-      const userId = await this.verifyToken()
+      const userId = await this.verifyToken();
 
       if (!userId) {
         return this.unprocessableEntity("Usuário não foi encontrado");
@@ -131,46 +132,49 @@ export class ProductController extends BaseController {
       const company = await this.selectPrimaryCompanyByUserId(userId);
 
       if (!company) {
-        return this.unprocessableEntity("Falha ao carregar os dados da empresa");
+        return this.unprocessableEntity(
+          "Falha ao carregar os dados da empresa"
+        );
       }
 
       const productModel = new ProductModel();
 
-      const updatedProduct = await productModel.updateProductWithVariantsAndDeletePrevImage(id,{
-        title,
-        image,
-        description,
-        price,
-        amount,
-        active,
-        category_id,
-        variants,
-        company_id: company.id,
-      })
+      const updatedProduct =
+        await productModel.updateProductWithVariantsAndDeletePrevImage(id, {
+          title,
+          image,
+          description,
+          price,
+          amount,
+          active,
+          category_id,
+          variants,
+          company_id: company.id,
+        });
 
       if (!updatedProduct) {
-        return this.unprocessableEntity("Não foi possível atualizar a produto.");
+        return this.unprocessableEntity(
+          "Não foi possível atualizar a produto."
+        );
       }
 
       const data = { product: updatedProduct };
 
       return this.ok("Produto atualizada com sucesso!", data);
-      
     } catch (error: any) {
       console.error("Error updating product:", error);
       if (error.code === "22001") {
         return this.serverError("Erro por motivo de texto muito longo.");
       }
-      return this.unprocessableEntity("Ocorreu um erro ao atualizar a produto.");
+      return this.unprocessableEntity(
+        "Ocorreu um erro ao atualizar a produto."
+      );
     }
-    
   }
 
-  async deleteProduct(id: number){
-
+  async deleteProduct(id: number) {
     try {
-
-      const userId = await this.verifyToken()
+      const userId = await this.verifyToken();
 
       if (!userId) {
         return this.unprocessableEntity("Usuário não foi encontrado");
@@ -179,15 +183,22 @@ export class ProductController extends BaseController {
       const company = await this.selectPrimaryCompanyByUserId(userId);
 
       if (!company) {
-        return this.unprocessableEntity("Falha ao carregar os dados da empresa");
+        return this.unprocessableEntity(
+          "Falha ao carregar os dados da empresa"
+        );
       }
 
       const productModel = new ProductModel();
 
-      const existingProduct = await productModel.select({ id, company_id: company.id });
+      const existingProduct = await productModel.select({
+        id,
+        company_id: company.id,
+      });
 
       if (!existingProduct) {
-        return this.unprocessableEntity("Produto não encontrada para este usuário.");
+        return this.unprocessableEntity(
+          "Produto não encontrada para este usuário."
+        );
       }
 
       const deletedProduct = await productModel.deleteProductAndImage(id);
@@ -197,12 +208,9 @@ export class ProductController extends BaseController {
       }
 
       return this.ok("Produto deletado com sucesso!");
-      
     } catch (error) {
       console.error("Error updating product:", error);
       return this.unprocessableEntity("Ocorreu um erro ao deletada a produto.");
     }
-    
   }
-  
 }

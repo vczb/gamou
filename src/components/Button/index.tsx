@@ -40,13 +40,14 @@ const Button = ({
     return "py-2 px-4 text-lg";
   }, [size]);
 
+  const btnClassNames = useMemo(() => {
+    return ` font-bold uppercase rounded shadow hover:shadow-md ease-linear transition-all base duration-15 ${variantSize} ${variantStyle} ${
+      disabled ? "opacity-50 cursor-default" : "cursor-pointer"
+    } ${className}`;
+  }, [variantSize, variantStyle, disabled, className]);
+
   return (
-    <button
-      {...props}
-      className={`cursor-pointer font-bold uppercase rounded shadow hover:shadow-md ease-linear transition-all base duration-15 ${variantSize} ${variantStyle} ${
-        disabled ? "opacity-50 cursor-default" : ""
-      } ${className}`}
-    >
+    <button {...props} disabled={disabled} className={btnClassNames}>
       {children}
     </button>
   );

@@ -9,6 +9,7 @@ import CategoryForm from "../CategoryForm";
 import { CategoryContext, useCategory } from "@/hooks/use-category";
 import ProductForm from "../ProductForm";
 import PenSquare from "@/icons/PenSquare";
+import { CompanySettingsContext } from "@/hooks/use-company";
 
 export type CategoryProductManagerProps = {
   category: Category;
@@ -28,6 +29,7 @@ const CategoryProductManager = ({
   const [productsState, setProductsState] = useState<ProductType[]>(products);
 
   const { categories } = useContext(CategoryContext);
+  const { products_has_variants } = useContext(CompanySettingsContext);
 
   const { deleteCategory, loading: categoryLoading } = useCategory();
 
@@ -97,6 +99,7 @@ const CategoryProductManager = ({
           product={{ category_id: category.id }}
           action="create"
           handleSubmit={handleCreateProduct}
+          products_has_variants={products_has_variants}
         />
       </Modal>
       <Accordion

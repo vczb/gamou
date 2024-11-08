@@ -11,7 +11,7 @@ export class StoreController extends BaseController {
 
       const companyModel = new CompanyModel()
 
-      const company = await companyModel.selectFirst({slug, active: true})
+      const company = await companyModel.selectPrimaryCompanyWithSettingsBySlug(slug)
 
       if (!company) {
         return this.unprocessableEntity("Falha ao carregar os dados da empresa");

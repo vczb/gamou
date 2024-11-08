@@ -12,6 +12,7 @@ export type ProductFormProps = {
   product?: Partial<ProductTypes>;
   categories: Category[];
   handleSubmit?: (product?: ProductTypes) => void;
+  products_has_variants?: boolean;
 };
 
 const ProductForm = ({
@@ -19,6 +20,7 @@ const ProductForm = ({
   action,
   categories,
   handleSubmit,
+  products_has_variants = false,
 }: ProductFormProps) => {
   const { createOrEditProduct, loading } = useProduct();
 
@@ -114,7 +116,10 @@ const ProductForm = ({
         label: "Opções:",
         sublabel: "Adicione opções de escolha ao seu produto. (opcional)",
         type: "variants",
-        hidden: process.env.NODE_ENV === "production",
+        hidden: !products_has_variants,
+        className: `${
+          products_has_variants ? "" : "hidden pointer-events-none"
+        }`,
         variants: product?.variants || [],
       },
       {
@@ -129,7 +134,7 @@ const ProductForm = ({
         disabled: loading,
       },
     ] as unknown as FieldFormSchema[];
-  }, [product, loading, action, categories]);
+  }, [product, loading, action, categories, products_has_variants]);
 
   const handleSubmitForm = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {

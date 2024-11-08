@@ -2,7 +2,7 @@
 
 import { Company } from "@/types/company";
 import renderFlashMessage from "@/utils/renderFlashMessage";
-import { useCallback, useState } from "react";
+import { ReactNode, createContext, useCallback, useState } from "react";
 import { useUser } from "../use-user";
 import { BASE_URL } from "@/utils/constants";
 
@@ -83,4 +83,22 @@ const useCompany = () => {
   };
 };
 
-export { useCompany };
+const CompanySettingsContext = createContext<{
+  products_has_variants?: boolean;
+}>({ products_has_variants: false });
+
+const CompanySettingsProvider = ({
+  children,
+  products_has_variants,
+}: {
+  children: ReactNode;
+  products_has_variants?: boolean;
+}) => {
+  return (
+    <CompanySettingsContext.Provider value={{ products_has_variants }}>
+      {children}
+    </CompanySettingsContext.Provider>
+  );
+};
+
+export { useCompany, CompanySettingsContext, CompanySettingsProvider };

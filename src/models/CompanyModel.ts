@@ -26,21 +26,24 @@ export class CompanyModel extends BaseModel<Company> {
       .first(); // Fetch only one record since we're filtering by ID
   }
 
-  // async selectPrimaryCompanyWithSettingsByUserId(id: number) {
-  //   return await connection("companies")
-  //     .leftJoin("company_settings", "companies.id", "company_settings.company_id")
-  //     .select(
-  //       "companies.*", // Select all columns from the companies table
-  //       connection.raw(`JSON_BUILD_OBJECT(
-  //         'products_has_variants', company_settings.products_has_variants
-  //       ) AS settings`) // Build company_settings as a JSON object
-  //     )
-  //     .where({
-  //       "companies.user_id": id,
-  //       "companies.sequence": 1 // Ensures that sequence is always 1
-  //     })
-  //     .first(); // Fetch only one record since we're filtering by ID
-  // }
+  async selectPrimaryCompanyWithSettingsBySlug(slug: string) {
+    return await connection("companies")
+      .leftJoin(
+        "company_settings",
+        "companies.id",
+        "company_settings.company_id"
+      )
+      .select(
+        "companies.*", // Select all columns from the companies table
+        "company_settings.products_has_variants" // Select specific field from company_settings
+      )
+      .where({
+        "companies.slug": slug,
+        "companies.active": true,
+        "companies.sequence": 1, // Ensures that sequence is always 1
+      })
+      .first(); // Fetch only one record since we're filtering by ID
+  }
 
   async updateCompanyWithSettingsAndDeletePrevImage(
     id: number,
