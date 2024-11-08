@@ -1,9 +1,9 @@
 import { Product as ProductTypes } from "@/types/product";
 import Accordion from "../Accordion";
 import { CompanySettingsProvider } from "@/hooks/use-company";
-import { Company } from "@/types/company";
 import { Category } from "@/types/category";
 import Product from "../Product";
+import { slugify } from "@/utils/formatters";
 
 export type CategoryProductListProps = {
   products: ProductTypes[];
@@ -26,7 +26,7 @@ const CategoryProductList = ({
                 (product) => product.category_id === category.id
               ) && (
                 <li className="mb-6" key={category.id}>
-                  <div id={String(category.id)}>
+                  <div id={slugify(category.id.toString())}>
                     <Accordion
                       title={category.title}
                       detailsClassName="w-full w-full max-w-4xl"
