@@ -9,12 +9,13 @@ export interface Order {
   customer_phone?: string;
   customer_email?: string;
   address?: string;
-  items: CartItemProps[];
+  items: CartItemProps[] | string
   total: number;
   payment_method?: PaymentMethod;
   order_notes?: string;
   cart_notes?: string;
   status: OrderStatus;
+  summary?: string;
   company_id: number;
   created_at: Date;
   updated_at: Date;

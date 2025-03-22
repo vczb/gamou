@@ -1,6 +1,5 @@
 import { BaseController } from "./BaseController";
 import { OrderModel } from "@/models/OrderModel";
-import { NextResponse } from "next/server";
 import { Order } from "@/types/order";
 
 export class OrderController extends BaseController {
@@ -13,17 +12,11 @@ export class OrderController extends BaseController {
 
   async createOrder(data: Partial<Order>) {
     try {
-      const userId = await this.verifyToken();
-      
-      if (!userId) {
-        return this.unauthorized("Usuário não autorizado");
-      }
-
-      if (!data.customer_name || !data.items || !data.total || !data.company_id) {
-        return this.badRequest("Dados incompletos");
-      }
-
-      const order = await this.orderModel.create(data);
+  
+      const order = await this.orderModel.create({
+        ...data,
+        items: JSON.stringify(data.items)
+      });
 
       if (!order) {
         return this.serverError("Erro ao criar pedido");

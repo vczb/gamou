@@ -1,40 +1,42 @@
-"use client";
+'use client';
 
-import Button from "@/components/Button";
-import GoBackLink from "@/components/GoBackLink";
-import Heading from "@/components/Heading";
-import Radio from "@/components/Radio";
-import TextArea from "@/components/TextArea";
-import TextField from "@/components/TextField";
-import { useCart } from "@/hooks/use-cart";
-import { useOrder } from "@/hooks/use-order";
-import WhatsApp from "@/icons/WhatsApp";
-import sendWhatsApp from "@/utils/sendWhatsApp";
-import { useCallback } from "react";
+import Button from '@/components/Button';
+import GoBackLink from '@/components/GoBackLink';
+import Heading from '@/components/Heading';
+import Radio from '@/components/Radio';
+import TextArea from '@/components/TextArea';
+import TextField from '@/components/TextField';
+import { useCart } from '@/hooks/use-cart';
+import { useOrder } from '@/hooks/use-order';
+import WhatsApp from '@/icons/WhatsApp';
+import { Order as OrderTypes } from '@/types/order';
+import sendWhatsApp from '@/utils/sendWhatsApp';
+import { useCallback } from 'react';
 
 type OrderProps = {
   slug: string;
   whatsapp: string;
+  companyId: string | number;
 };
 
-const Order = ({ slug, whatsapp }: OrderProps) => {
-  const { products, cartNotes } = useOrder();
-  const { total } = useCart();
+const Order = ({ slug, whatsapp, companyId }: OrderProps) => {
+  const { products, cartNotes, createOrder } = useOrder();
+  const { total, items } = useCart();
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       const data = new FormData(e.currentTarget);
 
       if (!data) {
-        throw new Error("Não foi possível processar o formulário");
+        throw new Error('Não foi possível processar o formulário');
       }
 
-      const customer = data.get("name") || "";
-      const address = data.get("address") || "";
-      const paymentMethod = data.get("payment_method") || "";
-      const orderNotes = data.get("order_notes") || "";
+      const customer = data.get('name') || '';
+      const address = data.get('address') || '';
+      const paymentMethod = data.get('payment_method') || '';
+      const orderNotes = data.get('order_notes') || '';
 
       let message = `*Pedido:* #${Date.now()}\n\n`;
       message += `Olá, gostaria de realizar um pedido com os seguintes produtos:\n\n`;
@@ -60,9 +62,24 @@ const Order = ({ slug, whatsapp }: OrderProps) => {
 
       message += `\nPedido realizado em ${new Date().toLocaleString()} pelo Gamou Pedidos.\n`;
 
+      const order = {
+        customer_name: customer,
+        customer_phone: whatsapp,
+        address: address,
+        items,
+        total,
+        payment_method: paymentMethod,
+        order_notes: orderNotes,
+        cart_notes: cartNotes,
+        company_id: companyId,
+        summary: message,
+      } as OrderTypes;
+
+      await createOrder(order);
+
       sendWhatsApp(whatsapp, message);
     },
-    [cartNotes, products, total, whatsapp]
+    [cartNotes, products, total, whatsapp, createOrder, companyId, items]
   );
 
   return (
@@ -96,10 +113,19 @@ const Order = ({ slug, whatsapp }: OrderProps) => {
           <Heading text="Forma de pagamento" tag="h3" />
         </div>
         <div className="flex flex-col gap-2 mb-2">
-          <Radio name="payment_method" value="Cartão" label="Cartão" />
-          <Radio name="payment_method" value="Dinheiro" label="Dinheiro" />
-          <Radio name="payment_method" value="Pix" label="Pix" />
-          <Radio name="payment_method" value="Outro" label="Outro" />
+          <Radio
+            name="payment_method"
+            value="credit_card"
+            label="Cartão de Crédito"
+          />
+          <Radio
+            name="payment_method"
+            value="debit_card"
+            label="Cartão de Débito"
+          />
+          <Radio name="payment_method" value="cash" label="Dinheiro" />
+          <Radio name="payment_method" value="pix" label="Pix" />
+          <Radio name="payment_method" value="other" label="Outro" />
         </div>
 
         <div className="mb-2 border-sold border-b-2 border-b-blueGray-200">

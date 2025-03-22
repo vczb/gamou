@@ -1,6 +1,9 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useMemo, useState } from "react";
+import { Order } from '@/types/order';
+import { BASE_URL } from '@/utils/constants';
+import renderFlashMessage from '@/utils/renderFlashMessage';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 export type OrderProviderProps = {
   children: React.ReactNode;
@@ -17,10 +20,11 @@ export type OrderContextData = {
   saveOrderNotes: (notes: string) => void;
   savePaymentNotes: (notes: string) => void;
   saveCustomerName: (notes: string) => void;
+  createOrder: (order: Partial<Order>) => Promise<{ order: Order } | undefined>;
 };
 
 export const OrderContextDefaultValues = {
-  customer: "",
+  customer: '',
   products: [],
   saveProducts: () => {},
   cartNotes: undefined,
@@ -30,14 +34,15 @@ export const OrderContextDefaultValues = {
   saveOrderNotes: () => {},
   savePaymentNotes: () => {},
   saveCustomerName: () => {},
-};
+  createOrder: () => {},
+} as unknown as OrderContextData;
 
 export const OrderContext = createContext<OrderContextData>(
   OrderContextDefaultValues
 );
 
 const OrderProvider = ({ children }: OrderProviderProps) => {
-  const [customer, setCustomer] = useState("");
+  const [customer, setCustomer] = useState('');
   const [products, setProducts] = useState<string[]>([]);
   const [cartNotes, setCartNotes] = useState<string>();
   const [orderNotes, setOrderNotes] = useState<string>();
@@ -52,6 +57,40 @@ const OrderProvider = ({ children }: OrderProviderProps) => {
   const savePaymentNotes = (notes: string) => setPaymentNotes(notes);
   const saveCustomerName = (name: string) => setCustomer(name);
 
+  const createOrder = async (order: Partial<Order>) => {
+    try {
+      const orders_url = BASE_URL + '/api/orders';
+
+      if (!BASE_URL) {
+        throw new Error('variável BASE_URL não pode ser nula');
+      }
+
+      const response = await fetch(orders_url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(order),
+      });
+
+      const result = await response.json();
+
+      if (response.status !== 200) {
+        throw new Error(result?.message);
+      }
+
+      const newOrder = result?.data?.order;
+
+      renderFlashMessage({ message: result.message, variant: 'success' });
+      return {
+        order: newOrder as Order,
+      };
+    } catch (error: any) {
+      console.error(error);
+      renderFlashMessage({ message: error.message, variant: 'alert' });
+    }
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -65,6 +104,7 @@ const OrderProvider = ({ children }: OrderProviderProps) => {
         saveOrderNotes,
         savePaymentNotes,
         saveCustomerName,
+        createOrder,
       }}
     >
       {children}
