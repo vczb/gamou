@@ -9,7 +9,7 @@ export interface Order {
   customer_phone?: string;
   customer_email?: string;
   address?: string;
-  items: CartItemProps[] | string
+  items: CartItemProps[]
   total: number;
   payment_method?: PaymentMethod;
   order_notes?: string;

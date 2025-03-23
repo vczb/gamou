@@ -15,7 +15,7 @@ export class OrderController extends BaseController {
   
       const order = await this.orderModel.create({
         ...data,
-        items: JSON.stringify(data.items)
+        items: JSON.stringify(data.items) as unknown as Order['items']
       });
 
       if (!order) {
