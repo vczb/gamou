@@ -64,7 +64,6 @@ const Order = ({ slug, whatsapp, companyId }: OrderProps) => {
 
       const order = {
         customer_name: customer,
-        customer_phone: whatsapp,
         address: address,
         items,
         total,

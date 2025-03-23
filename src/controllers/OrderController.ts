@@ -1,3 +1,4 @@
+import { CompanyModel } from "@/models/CompanyModel";
 import { BaseController } from "./BaseController";
 import { OrderModel } from "@/models/OrderModel";
 import { Order } from "@/types/order";
@@ -28,79 +29,39 @@ export class OrderController extends BaseController {
     }
   }
 
-  async getOrdersByCompanyId(companyId: number) {
-    try {
-      const userId = await this.verifyToken();
-      
-      if (!userId) {
-        return this.unauthorized("Usuário não autorizado");
+  async selectAllOrdersByToken() {
+      try {
+        const userId = await this.verifyToken();
+  
+        if (!userId) {
+          return this.unprocessableEntity("Usuário não foi encontrado");
+        }
+  
+        const companyModel = new CompanyModel();
+  
+        const company =
+          await companyModel.selectPrimaryCompanyWithSettingsByUserId(userId);
+  
+        if (!company) {
+          return this.unprocessableEntity(
+            "Falha ao carregar os dados da empresa"
+          );
+        }
+  
+        const orderModel = new OrderModel();
+  
+        const orders = await orderModel.selectOrdersByCompanyId(
+          company.id
+        );
+  
+        const data = {
+          orders: orders || [],
+        };
+  
+        return this.ok("Dados dos pedidos carregados com sucesso!", data);
+      } catch (error) {
+        console.error("Error fetching order by token:", error);
+        return this.unprocessableEntity("Ocorreu um erro ao buscar os pedidos.");
       }
-
-      const company = await this.selectPrimaryCompanyByUserId(userId);
-      
-      if (!company || company.id !== companyId) {
-        return this.unauthorized("Empresa não pertence ao usuário");
-      }
-
-      const orders = await this.orderModel.selectOrdersByCompanyId(companyId);
-
-      return this.ok("Pedidos encontrados com sucesso", { orders });
-    } catch (error: any) {
-      return this.serverError(error.message);
     }
-  }
-
-  async getOrderById(id: number) {
-    try {
-      const userId = await this.verifyToken();
-      
-      if (!userId) {
-        return this.unauthorized("Usuário não autorizado");
-      }
-
-      const order = await this.orderModel.selectFirst({ id });
-
-      if (!order) {
-        return this.badRequest("Pedido não encontrado");
-      }
-
-      const company = await this.selectPrimaryCompanyByUserId(userId);
-      
-      if (!company || company.id !== order.company_id) {
-        return this.unauthorized("Pedido não pertence ao usuário");
-      }
-
-      return this.ok("Pedido encontrado com sucesso", { order });
-    } catch (error: any) {
-      return this.serverError(error.message);
-    }
-  }
-
-  async updateOrderStatus(id: number, status: string) {
-    try {
-      const userId = await this.verifyToken();
-      
-      if (!userId) {
-        return this.unauthorized("Usuário não autorizado");
-      }
-
-      const order = await this.orderModel.selectFirst({ id });
-
-      if (!order) {
-        return this.badRequest("Pedido não encontrado");
-      }
-
-      const company = await this.selectPrimaryCompanyByUserId(userId);
-      
-      if (!company || company.id !== order.company_id) {
-        return this.unauthorized("Pedido não pertence ao usuário");
-      }
-
-      const updatedOrder = await this.orderModel.updateOrderStatus(id, status);
-
-      return this.ok("Status do pedido atualizado com sucesso", { order: updatedOrder });
-    } catch (error: any) {
-      return this.serverError(error.message);
-    }
-  }
 }

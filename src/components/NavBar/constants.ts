@@ -23,6 +23,26 @@ export const menuHome = [
 
 export const controlMenu = [
   {
+    target: "/painel/eu",
+    text: "Eu",
+    type: "link",
+  },
+  {
+    target: "/painel/loja",
+    text: "Loja",
+    type: "link",
+  },
+  {
+    target: "/painel/estoque",
+    text: "Estoque",
+    type: "link",
+  },
+  {
+    target: "/painel/pedidos",
+    text: "Pedidos",
+    type: "link",
+  },
+  {
     target: "/sair",
     text: "Sair",
     type: "button",
