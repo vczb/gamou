@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from '../Button';
 
 const Pricing = () => {
   return (
@@ -19,8 +19,8 @@ const Pricing = () => {
                 Gratuito
               </div>
               <ul className="w-full text-center text-sm">
-                <li className="border-b py-4">Até 10 produtos</li>
-                <li className="border-b py-4">1 Categoria</li>
+                <li className="border-b py-4">Até 50 produtos</li>
+                <li className="border-b py-4">10 Categoria</li>
                 <li className="border-b py-4">Suporte via Email</li>
               </ul>
             </div>
@@ -44,8 +44,8 @@ const Pricing = () => {
               </div>
               <div className="h-1 w-full gradient my-0 py-0 rounded-t"></div>
               <ul className="w-full text-center text-base font-bold">
-                <li className="border-b py-4">Até 50 produtos</li>
-                <li className="border-b py-4">5 Categorias</li>
+                <li className="border-b py-4">Até 100 produtos</li>
+                <li className="border-b py-4">20 Categorias</li>
                 <li className="border-b py-4">Suporte via Email e WhatsApp</li>
                 <li className="border-b py-4">Relatórios Básicos</li>
               </ul>

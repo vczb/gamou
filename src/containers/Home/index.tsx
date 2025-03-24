@@ -1,16 +1,16 @@
-import Hero from "@/components/Hero";
-import NavBar from "@/components/NavBar";
-import React from "react";
+import Hero from '@/components/Hero';
+import NavBar from '@/components/NavBar';
+import React from 'react';
 
-import "./styles.css";
+import './styles.css';
 // import Wave1 from "@/icons/Wave1";
-import HowItWorks from "@/components/HowItWorks";
-import Advantages from "@/components/Advantages";
-// import Pricing from "@/components/Pricing";
+import HowItWorks from '@/components/HowItWorks';
+import Advantages from '@/components/Advantages';
+import Pricing from '@/components/Pricing';
 // import Wave2 from "@/icons/Wave2";
-import GetStarted from "@/components/GetStarted";
-import Footer from "@/components/Footer";
-import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
+import GetStarted from '@/components/GetStarted';
+import Footer from '@/components/Footer';
+import QuestionsAndAnswers from '@/components/QuestionsAndAnswers';
 
 const Home = () => {
   return (
@@ -22,7 +22,7 @@ const Home = () => {
       </div> */}
       <HowItWorks />
       <Advantages />
-      {/* <Pricing /> */}
+      <Pricing />
       {/* <Wave2 /> */}
       <GetStarted
         title="Comece já"
