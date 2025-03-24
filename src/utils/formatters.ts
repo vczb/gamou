@@ -39,3 +39,11 @@ export function slugify(str: string): string {
     .replace(/\s+/g, "-") // Replace spaces with hyphens
     .replace(/-+/g, "-"); // Remove consecutive hyphens
 }
+
+export function formatOrderSummaryToHTML(text: string) {
+  if (!text) return;
+
+  return text
+    .replace(/\n/g, '<br>') // Convert new lines to <br>
+    .replace(/\*(.*?)\*/g, '<strong>$1</strong>'); // Convert *text* to bold
+}

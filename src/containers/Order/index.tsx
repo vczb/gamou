@@ -9,7 +9,8 @@ import TextField from '@/components/TextField';
 import { useCart } from '@/hooks/use-cart';
 import { useOrder } from '@/hooks/use-order';
 import WhatsApp from '@/icons/WhatsApp';
-import { Order as OrderTypes } from '@/types/order';
+import { Order as OrderTypes, PaymentMethod } from '@/types/order';
+import { PAYMENT_METHOD } from '@/utils/constants';
 import sendWhatsApp from '@/utils/sendWhatsApp';
 import { useCallback } from 'react';
 
@@ -35,7 +36,7 @@ const Order = ({ slug, whatsapp, companyId }: OrderProps) => {
 
       const customer = data.get('name') || '';
       const address = data.get('address') || '';
-      const paymentMethod = data.get('payment_method') || '';
+      const paymentMethod = (data.get('payment_method') || '') as PaymentMethod;
       const orderNotes = data.get('order_notes') || '';
 
       let message = `*Pedido:* #${Date.now()}\n\n`;
@@ -50,7 +51,7 @@ const Order = ({ slug, whatsapp, companyId }: OrderProps) => {
 
       message += `*Entregar para:* ${customer}\n`;
       message += `*Endereço:* ${address}\n`;
-      message += `*Forma de pagamento:* ${paymentMethod}\n`;
+      message += `*Forma de pagamento:* ${PAYMENT_METHOD[paymentMethod]}\n`;
 
       if (cartNotes) {
         message += `*Observações do carrinho:* ${cartNotes}\n`;

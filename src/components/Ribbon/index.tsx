@@ -1,6 +1,6 @@
 'use client';
 
-import { classNames } from '@/utils/ui-helpers';
+import classNames from '@/utils/classNames';
 import type React from 'react';
 
 export type RibbonColors = 'primary' | 'black';
