@@ -34,12 +34,24 @@ const Order = ({ slug, whatsapp, companyId }: OrderProps) => {
         throw new Error('Não foi possível processar o formulário');
       }
 
+      const now = new Date().toLocaleString('pt-BR', {
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+
+      const id = now.replace(/\D/g, '');
+
       const customer = data.get('name') || '';
       const address = data.get('address') || '';
       const paymentMethod = (data.get('payment_method') || '') as PaymentMethod;
       const orderNotes = data.get('order_notes') || '';
 
-      let message = `*Pedido:* #${Date.now()}\n\n`;
+      let message = `*Pedido:* #${id}\n\n`;
       message += `Olá, gostaria de realizar um pedido com os seguintes produtos:\n\n`;
 
       products.forEach((product, idx) => {
@@ -61,7 +73,7 @@ const Order = ({ slug, whatsapp, companyId }: OrderProps) => {
         message += `*Observações do pedido:* ${orderNotes}\n`;
       }
 
-      message += `\nPedido realizado em ${new Date().toLocaleString()} pelo Gamou Pedidos.\n`;
+      message += `\nPedido realizado em ${now} pelo Gamou Pedidos.\n`;
 
       const order = {
         customer_name: customer,

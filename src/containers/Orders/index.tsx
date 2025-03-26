@@ -96,7 +96,7 @@ const Orders = ({ orders }: Orders) => {
       <Breadcrumb items={BREADCUMB} />
 
       <div className="mt-4 flex flex-col md:flex-row md:gap-4">
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full lg:max-w-md">
           <div className="text-medium text-blueGray-600">
             Filtrar por status:
           </div>
@@ -109,7 +109,7 @@ const Orders = ({ orders }: Orders) => {
             }
           />
         </div>
-        <div className="flex flex-col  mt-2 md:mt-0">
+        <div className="flex flex-col  mt-2 md:mt-0 w-full lg:max-w-md">
           <div className="text-medium text-blueGray-600">Filtrar por data:</div>
           <Select
             options={SORT_BY}
@@ -123,7 +123,10 @@ const Orders = ({ orders }: Orders) => {
         </div>
       </div>
       <div className="mt-4">
-        <OrderItemList orders={filteredItems} />
+        <div className="text-sm text-blueGray-600">
+          {filteredItems.length} Item(s)
+        </div>
+        <OrderItemList orders={filteredItems} variant="mansory" />
       </div>
     </div>
   );

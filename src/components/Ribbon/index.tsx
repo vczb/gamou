@@ -3,7 +3,7 @@
 import classNames from '@/utils/classNames';
 import type React from 'react';
 
-export type RibbonColors = 'primary' | 'black';
+export type RibbonColors = 'primary' | 'black' | 'transparent';
 export type RibbonSizes = 'normal' | 'small';
 
 export interface RibbonProps {
@@ -26,6 +26,7 @@ const Ribbon = ({
         // Color variants
         color === 'primary' && 'bg-primary-600 before:border-primary-600',
         color === 'black' && 'bg-black before:bg-black',
+        color === 'transparent' && 'bg-transparent before:bg-transparent',
         // Size variants
         size === 'normal' &&
           'text-sm px-4 h-9 right-[-8px] before:top-9 before:border-t-4 before:border-r-8',
