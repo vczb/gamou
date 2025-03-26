@@ -13,7 +13,7 @@ export const MEGABITE = 1000000
 //src/database/migrations/20250322000016_create_orders_table.js
 
 export const ORDER_STATUS: Record<OrderStatus, string> = {
-  pending: "Pendente",
+  pending: "Recebido",
   processing: "Em preparo",
   completed: "Completo",
   cancelled: "Cancelado",
@@ -28,3 +28,9 @@ export const PAYMENT_METHOD: Record<PaymentMethod, string> = {
   pix: 'PIX',
   other: 'Outro',
 }
+
+export const ONE_HOUR_MS = 3_600_000;
+export const THREE_HOURS_MS = 10_800_000;
+export const ONE_DAY_MS = 86_400_000;
+export const ONE_WEEK  = 604_800_000;
+export const ONE_MONTH = 2_592_000_000;

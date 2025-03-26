@@ -1,4 +1,4 @@
-import React, { SelectHTMLAttributes } from "react";
+import React, { SelectHTMLAttributes } from 'react';
 
 export type SelectProps = {
   name: string;
@@ -22,7 +22,7 @@ function Select({ name, options, ...props }: SelectProps) {
           <option
             key={option.value}
             value={option.value}
-            // selected={option.value === defaultValue}
+            selected={option.value === defaultValue}
           >
             {option.label}
           </option>
