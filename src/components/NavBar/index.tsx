@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useRef, useMemo } from "react";
-import Diamond from "@/icons/Diamond";
-import { usePathname } from "next/navigation";
-import { controlMenu, menuHome } from "./constants";
-import MenuBar, { MenuBarProps } from "../MenuBar";
+import { useEffect, useState, useRef, useMemo } from 'react';
+import Diamond from '@/icons/Diamond';
+import { usePathname } from 'next/navigation';
+import { controlMenu, menuHome } from './constants';
+import MenuBar, { MenuBarProps } from '../MenuBar';
+import { devMode } from '@/utils/ab-test';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,12 +16,21 @@ const Navbar = () => {
 
   const pathname = usePathname();
 
-  const isHome = useMemo(() => pathname === "/", [pathname]);
-  const isAuth = useMemo(() => pathname.includes("/painel"), [pathname]);
+  const isHome = useMemo(() => pathname === '/', [pathname]);
+  const isAuth = useMemo(() => pathname.includes('/painel'), [pathname]);
 
   const menuItems = useMemo(() => {
-    if (isHome) return menuHome as MenuBarProps["items"];
-    if (isAuth) return controlMenu as MenuBarProps["items"];
+    if (isHome) return menuHome as MenuBarProps['items'];
+    if (isAuth) {
+      if (devMode) {
+        return controlMenu as MenuBarProps['items'];
+      }
+
+      // NOTE: "pedidos" page is still in progress.
+      return controlMenu.filter(
+        (item) => !item.target.includes('pedido')
+      ) as MenuBarProps['items'];
+    }
 
     return [];
   }, [isHome, isAuth]);
@@ -36,31 +46,31 @@ const Navbar = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
     <nav
       ref={headerRef}
-      className={`${isHome ? "fixed" : ""} w-full z-30 top-0 transition-all ${
-        solidStyle ? "bg-white shadow" : "text-white"
+      className={`${isHome ? 'fixed' : ''} w-full z-30 top-0 transition-all ${
+        solidStyle ? 'bg-white shadow' : 'text-white'
       }`}
     >
       <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2 relative">
         <div className="pl-4">
           <a
             className={`flex items-center no-underline hover:no-underline font-bold text-2xl lg:text-4xl transition-all ${
-              solidStyle ? "text-gray-800" : "text-white"
+              solidStyle ? 'text-gray-800' : 'text-white'
             }`}
-            href={isAuth ? "/painel" : "/"}
+            href={isAuth ? '/painel' : '/'}
           >
             <Diamond
               className={`h-8 inline fill-current ${
-                solidStyle ? "text-gray-800" : "text-white"
+                solidStyle ? 'text-gray-800' : 'text-white'
               }`}
             />
             Gamou
@@ -90,8 +100,8 @@ const Navbar = () => {
             ref={navContentRef}
             className={`w-full flex-grow lg:flex lg:items-center lg:w-auto ${
               isMenuOpen
-                ? "bg-white md:bg-transparent shadow-sm absolute md:relative top-full "
-                : "hidden"
+                ? 'bg-white md:bg-transparent shadow-sm absolute md:relative top-full '
+                : 'hidden'
             } mt-2 lg:mt-0 text-black p-4 lg:p-0 z-20 rounded-md lg:rounded-none shadow-lg lg:shadow-none`}
           >
             {<MenuBar items={menuItems} />}
