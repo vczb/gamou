@@ -15,6 +15,11 @@ export const menuHome = [
     type: "link",
   },
   {
+    target: "/blog",
+    text: "Blog",
+    type: "link",
+  },
+  {
     target: "/entrar",
     text: "Entrar",
     type: "button",

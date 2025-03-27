@@ -11,6 +11,7 @@ import Pricing from '@/components/Pricing';
 import GetStarted from '@/components/GetStarted';
 import Footer from '@/components/Footer';
 import QuestionsAndAnswers from '@/components/QuestionsAndAnswers';
+import RecentBlogPosts from '@/components/RecentBlogPosts';
 
 const Home = () => {
   return (
@@ -30,6 +31,7 @@ const Home = () => {
         cta="Cadastre-se"
       />
       <QuestionsAndAnswers />
+      <RecentBlogPosts />
       <GetStarted
         title="Transforme Suas Vendas"
         subtitle="Comece a receber pedidos pelo WhatsApp agora!"
