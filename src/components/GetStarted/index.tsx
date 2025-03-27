@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from '../Button';
 
 export type GetStartedProps = {
   title: string;
@@ -9,9 +9,9 @@ export type GetStartedProps = {
 const GetStarted = ({ cta, subtitle, title }: GetStartedProps) => {
   return (
     <section className="container mx-auto text-center py-6 mb-12">
-      <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-white">
+      <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-white">
         {title}
-      </h1>
+      </h2>
       <div className="w-full mb-4">
         <div className="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
       </div>

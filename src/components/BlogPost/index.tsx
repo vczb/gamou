@@ -21,9 +21,9 @@ const BlogPost = ({ post }: BlogPostProps) => {
         )}
         <div className="p-4">
           <p className="text-sm text-gray-500 mb-1">{post.date}</p>
-          <h2 className="text-xl font-semibold mb-2 text-black group-hover:text-primary-600 transition-colors">
+          <b className="text-xl font-semibold mb-2 text-black group-hover:text-primary-600 transition-colors">
             {post.title}
-          </h2>
+          </b>
           <p className="text-gray-700 line-clamp-3">{post.description}</p>
         </div>
       </div>

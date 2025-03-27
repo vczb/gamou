@@ -1,22 +1,22 @@
 const DATA = {
-  title: "Vantagens para Seu Negócio",
+  title: 'Vantagens para Seu Negócio',
   cards: [
     {
-      title: "Comece a Vender Pelo WhatsApp Hoje Mesmo",
+      title: 'Comece a Vender Pelo WhatsApp Hoje Mesmo',
       text: `Transforme o seu cardápio em um canal de vendas eficiente. Com o
                 Gamou, você pode criar uma vitrine digital onde seus clientes
                 podem visualizar seus pratos, bebidas e promoções, fazendo
                 pedidos diretamente pelo WhatsApp. Simples e eficaz!`,
     },
     {
-      title: "Gestão Simplificada de Pedidos",
+      title: 'Gestão Simplificada de Pedidos',
       text: `Com o Gamou, você gerencia todos os pedidos em um só lugar, com
                 a comodidade e agilidade do WhatsApp. Otimize o seu tempo e
                 garanta que seus clientes sejam atendidos de forma rápida e
                 organizada.`,
     },
     {
-      title: "Aumente Suas Vendas e Fidelize Clientes",
+      title: 'Aumente Suas Vendas e Fidelize Clientes',
       text: `O Gamou não apenas facilita a comunicação com seus clientes, mas
                 também oferece ferramentas para você criar promoções e ofertas
                 especiais. Assim, você pode atrair mais clientes e aumentar a
@@ -29,9 +29,9 @@ const Advantages = () => {
   return (
     <section className="bg-[#fff] border-b py-8" id="vantagens">
       <div className="container mx-auto flex flex-wrap pt-4 pb-12">
-        <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+        <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
           {DATA.title}
-        </h1>
+        </h2>
         <div className="w-full mb-4">
           <div className="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
         </div>
