@@ -3,7 +3,7 @@ import { OrderController } from '@/controllers/OrderController';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Seus pedidos',
+  title: 'Meus pedidos',
   description: 'Acompanhe seus pedidos em tempo real',
 };
 

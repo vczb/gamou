@@ -16,7 +16,7 @@ export async function GET(
       );
     }
     
-    return await controller.getOrderById(id);
+    // return await controller.getOrderById(id);
   } catch (error) {
     return NextResponse.json(
       { error: "Erro ao buscar pedido" },
@@ -27,28 +27,20 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
 ) {
   try {
     const controller = new OrderController();
-    const id = Number(params.id);
-    const { status } = await request.json();
-    
-    if (!id) {
-      return NextResponse.json(
-        { error: "ID inválido" },
-        { status: 400 }
-      );
+    const { status, id } = await request.json();
+
+    if (!id || !status) {
+      console.error("Invalid request body.")
+      return NextResponse.json({ message: "Algo deu errado na requisição, revise os campos do formulário e tente novamente." }, { status: 400 });
     }
+
+    const data = await controller.updateOrder({status, id})
     
-    if (!status) {
-      return NextResponse.json(
-        { error: "Status é obrigatório" },
-        { status: 400 }
-      );
-    }
-    
-    return await controller.updateOrderStatus(id, status);
+    return NextResponse.json(data, { status:  data?.status});
+
   } catch (error) {
     return NextResponse.json(
       { error: "Erro ao atualizar status do pedido" },

@@ -64,4 +64,38 @@ export class OrderController extends BaseController {
         return this.unprocessableEntity("Ocorreu um erro ao buscar os pedidos.");
       }
     }
+
+  async updateOrder({status, id}: Pick<Order, 'status' | 'id'>){
+
+    if(!id || !status) {
+      return this.badRequest('Dados insuficientes para executar a operação')
+    }
+
+    const userId = await this.verifyToken();
+  
+    if (!userId) {
+      return this.unprocessableEntity("Usuário não foi encontrado");
+    }
+
+    const companyModel = new CompanyModel();
+  
+    const company =
+      await companyModel.selectPrimaryCompanyWithSettingsByUserId(userId);
+
+    if (!company) {
+      return this.unprocessableEntity(
+        "Falha ao carregar os dados da empresa"
+      );
+    }
+
+    const orderModel = new OrderModel();
+
+    const order = await orderModel.updateOrderStatus(id, status)
+
+    const data = {
+      order: order,
+    };
+
+    return this.ok("Status do pedido atualizado com sucesso", data)
+  }
 }

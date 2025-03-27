@@ -21,6 +21,9 @@ export type OrderContextData = {
   savePaymentNotes: (notes: string) => void;
   saveCustomerName: (notes: string) => void;
   createOrder: (order: Partial<Order>) => Promise<{ order: Order } | undefined>;
+  editOrder: (
+    order: Pick<Order, 'id' | 'status'>
+  ) => Promise<{ order: Order } | undefined>;
 };
 
 export const OrderContextDefaultValues = {
@@ -35,6 +38,7 @@ export const OrderContextDefaultValues = {
   savePaymentNotes: () => {},
   saveCustomerName: () => {},
   createOrder: () => {},
+  editOrder: () => {},
 } as unknown as OrderContextData;
 
 export const OrderContext = createContext<OrderContextData>(
@@ -91,6 +95,42 @@ const OrderProvider = ({ children }: OrderProviderProps) => {
     }
   };
 
+  const editOrder = async ({ id, status }: Pick<Order, 'id' | 'status'>) => {
+    try {
+      const orders_url = BASE_URL + '/api/orders/' + id;
+
+      if (!BASE_URL) {
+        throw new Error('variável BASE_URL não pode ser nula');
+      }
+
+      const response = await fetch(orders_url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, status }),
+      });
+
+      const result = await response.json();
+
+      console.log(result);
+
+      if (response.status !== 200) {
+        throw new Error(result?.message);
+      }
+
+      const newOrder = result?.data?.order;
+
+      renderFlashMessage({ message: result.message, variant: 'success' });
+      return {
+        order: newOrder as Order,
+      };
+    } catch (error: any) {
+      console.error(error);
+      renderFlashMessage({ message: error.message, variant: 'alert' });
+    }
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -105,6 +145,7 @@ const OrderProvider = ({ children }: OrderProviderProps) => {
         savePaymentNotes,
         saveCustomerName,
         createOrder,
+        editOrder,
       }}
     >
       {children}
