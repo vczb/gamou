@@ -15,7 +15,7 @@ export default async function RecentBlogPosts() {
     <section className="py-12 bg-gray-50 pb-48">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          <div className="container mx-auto text-center py-6 mb-12 ">
+          <div className="container mx-auto text-center mb-12 ">
             <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
               Artigos recentes
             </h2>

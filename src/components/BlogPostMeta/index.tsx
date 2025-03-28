@@ -23,7 +23,7 @@ export default function BlogPostMeta({
           </>
         )}
       </div>
-      {backToList && <GoBackLink path="/blog" text="Voltar para o blog" />}
+      {backToList && <GoBackLink path="/blog" text="Blog" />}
     </div>
   );
 }
