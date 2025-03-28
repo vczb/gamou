@@ -16,3 +16,4 @@ next-env.d.ts
 .env
 #.tool-versions
 /public/uploads/
+/public/sitemap.xml
