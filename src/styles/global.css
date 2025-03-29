@@ -29,3 +29,7 @@ html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
+
+.gradient {
+  background: linear-gradient(90deg, #d53369 0%, #daae51 100%);
+}

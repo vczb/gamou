@@ -2,7 +2,6 @@ import Hero from '@/components/Hero';
 import NavBar from '@/components/NavBar';
 import React from 'react';
 
-import './styles.css';
 // import Wave1 from "@/icons/Wave1";
 import HowItWorks from '@/components/HowItWorks';
 import Advantages from '@/components/Advantages';
