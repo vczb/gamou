@@ -10,6 +10,11 @@ export const menuHome = [
     type: "link",
   },
   {
+    target: "#precos-e-planos",
+    text: "Preços",
+    type: "link",
+  },
+  {
     target: "#perguntas-respostas",
     text: "Perguntas e respostas",
     type: "link",
