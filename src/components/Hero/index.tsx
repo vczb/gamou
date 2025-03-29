@@ -1,5 +1,8 @@
-import Button from "../Button";
-import Image from "../Image";
+import Image from '../Image';
+import { GAMOU_PHONE_NUMBER } from '@/utils/constants';
+import WhatsButton from '../WhatsButton';
+
+const MESSAGE = 'Oi, quero saber mais sobre o Gamou';
 
 const Hero = () => {
   return (
@@ -18,9 +21,15 @@ const Hero = () => {
             forma simples e eficaz.
           </p>
 
-          <Button variant="emerald" size="large" className="z-10 m-auto md:m-0">
+          <WhatsButton
+            variant="emerald"
+            size="large"
+            className="z-10 m-auto md:m-0"
+            whatsapp={GAMOU_PHONE_NUMBER}
+            message={MESSAGE}
+          >
             Conversar no WhatsApp
-          </Button>
+          </WhatsButton>
         </div>
 
         <div className="w-full md:w-3/5 py-6 text-center">
