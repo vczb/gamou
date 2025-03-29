@@ -8,7 +8,7 @@ export type GetStartedProps = {
 
 const GetStarted = ({ cta, subtitle, title }: GetStartedProps) => {
   return (
-    <section className="container mx-auto text-center py-6 mb-12">
+    <section className="container mx-auto text-center py-6">
       <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-white">
         {title}
       </h2>
