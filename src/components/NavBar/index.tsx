@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import Diamond from '@/icons/Diamond';
 import { usePathname } from 'next/navigation';
-import { controlMenu, menuHome } from './constants';
+import { controlMenu, menuHome, menuBlog } from './constants';
 import MenuBar, { MenuBarProps } from '../MenuBar';
 import { devMode } from '@/utils/ab-test';
 
@@ -17,10 +17,13 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const isHome = useMemo(() => pathname === '/', [pathname]);
+  const isBlog = useMemo(() => pathname.includes('/blog'), [pathname]);
   const isAuth = useMemo(() => pathname.includes('/painel'), [pathname]);
 
   const menuItems = useMemo(() => {
     if (isHome) return menuHome as MenuBarProps['items'];
+    if (isBlog) return menuBlog as MenuBarProps['items'];
+
     if (isAuth) {
       if (devMode) {
         return controlMenu as MenuBarProps['items'];
@@ -33,7 +36,7 @@ const Navbar = () => {
     }
 
     return [];
-  }, [isHome, isAuth]);
+  }, [isHome, isBlog, isAuth]);
 
   const solidStyle = useMemo(() => !isHome || isScrolled, [isHome, isScrolled]);
 
@@ -56,7 +59,7 @@ const Navbar = () => {
   return (
     <nav
       ref={headerRef}
-      className={`${isHome ? 'fixed' : ''} w-full z-30 top-0 transition-all ${
+      className={`${isAuth ? '' : 'fixed'} w-full z-30 top-0 transition-all ${
         solidStyle ? 'bg-white shadow' : 'text-white'
       }`}
     >

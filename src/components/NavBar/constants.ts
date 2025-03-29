@@ -53,3 +53,11 @@ export const controlMenu = [
     type: "button",
   },
 ];
+
+export const menuBlog = [
+  {
+    target: "/cadastro",
+    text: "Comece já",
+    type: "button",
+  },
+];

@@ -15,7 +15,7 @@ export default function BlogLayout({
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
-      <main className="flex-grow pt-16 md:pt-20 bg-gray-50">{children}</main>
+      <main className="flex-grow pt-24 md:pt-28 bg-gray-50">{children}</main>
       <Footer />
     </div>
   );
