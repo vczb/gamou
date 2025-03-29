@@ -5,10 +5,6 @@ export const metadata: Metadata = {
   title: "Criar Novo Usuário - Gamou",
   description:
     "Crie sua conta no Gamou Pedidos e comece a vender pelo WhatsApp agora mesmo!",
-  robots: {
-    index: false,
-    follow: false,
-  },
 };
 
 const Index = () => {
