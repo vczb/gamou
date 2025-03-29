@@ -22,6 +22,8 @@ export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(fileContent);
     const slug = file.replace(/\.mdx$/, '');
+
+    const sort = data.date ? new Date(data.date) : null;
     
     return {
       slug,
@@ -34,12 +36,13 @@ export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
       description: data.description || '',
       image: data.image || undefined,
       content,
+      sort: sort?.toISOString() || ''
     };
   });
   
   // Sort posts by date (most recent first)
   return posts.sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
+    return new Date(b.sort).getTime() - new Date(a.sort).getTime();
   });
 });
 
