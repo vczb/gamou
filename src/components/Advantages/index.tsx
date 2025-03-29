@@ -42,10 +42,7 @@ const Advantages = () => {
             key={item.title}
           >
             <div className="flex-1 bg-[#fff] rounded-t rounded-b-none overflow-hidden shadow">
-              <a
-                href="#"
-                className="flex flex-wrap no-underline hover:no-underline"
-              >
+              <div className="flex flex-wrap">
                 {/* <p className="w-full text-gray-600 text-xs md:text-sm px-6">
                 Comece Já!
               </p> */}
@@ -53,7 +50,7 @@ const Advantages = () => {
                   {item.title}
                 </div>
                 <p className="text-gray-800 text-base px-6 mb-5">{item.text}</p>
-              </a>
+              </div>
             </div>
             {/* <div className="flex-none mt-auto bg-[#fff] rounded-b rounded-t-none overflow-hidden shadow p-6">
             <div className="flex items-center justify-start">

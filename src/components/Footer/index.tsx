@@ -1,4 +1,4 @@
-import Diamond from "@/icons/Diamond";
+import Diamond from '@/icons/Diamond';
 
 const Footer = () => {
   return (
@@ -8,7 +8,7 @@ const Footer = () => {
           <div className="flex-1 text-center md:text-left mb-6 md:mb-0">
             <a
               className="text-orange-600 no-underline hover:no-underline font-bold text-2xl lg:text-4xl flex items-center justify-center md:justify-start"
-              href="#"
+              href="/"
             >
               <Diamond className="h-8 fill-current inline" />
               <span className="ml-2">Gamou</span>
