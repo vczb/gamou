@@ -136,7 +136,7 @@ const Order = ({ slug, whatsapp, companyId }: OrderProps) => {
             label="Cartão de Débito"
           />
           <Radio name="payment_method" value="cash" label="Dinheiro" />
-          <Radio name="payment_method" value="pix" label="Pix" />
+          <Radio name="payment_method" value="pix" label="Pix" defaultChecked />
           <Radio name="payment_method" value="other" label="Outro" />
         </div>
 
