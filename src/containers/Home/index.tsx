@@ -11,6 +11,7 @@ import GetStarted from '@/components/GetStarted';
 import Footer from '@/components/Footer';
 import QuestionsAndAnswers from '@/components/QuestionsAndAnswers';
 import RecentBlogPosts from '@/components/RecentBlogPosts';
+import Examples from '@/components/Examples';
 
 const Home = () => {
   return (
@@ -23,6 +24,7 @@ const Home = () => {
       <HowItWorks />
       <Advantages />
       <Pricing />
+      <Examples />
       {/* <Wave2 /> */}
       <GetStarted
         title="Comece já"
