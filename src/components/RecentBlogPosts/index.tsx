@@ -2,6 +2,7 @@ import { getBlogPosts } from '@/utils/blog';
 import BlogPost from '../BlogPost';
 import Link from '../Link';
 import Heading from '../Heading';
+import Button from '../Button';
 
 export default async function RecentBlogPosts() {
   const posts = await getBlogPosts();
@@ -29,6 +30,11 @@ export default async function RecentBlogPosts() {
           {recentPosts.map((post) => (
             <BlogPost post={post} key={post.slug} />
           ))}
+        </div>
+        <div className="mt-8 text-end">
+          <Link href="/blog">
+            <Button variant="secondary">Visitar Blog</Button>
+          </Link>
         </div>
       </div>
     </section>
