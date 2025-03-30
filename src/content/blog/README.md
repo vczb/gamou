@@ -5,6 +5,7 @@ This directory contains all blog posts for the Gamou website. Each post is writt
 ## Creating a new blog post
 
 1. Create a new `.mdx` file in this directory. Use kebab-case for the filename, which will become the URL slug.
+
    - Example: `como-aumentar-vendas-online.mdx` will be accessible at `/blog/como-aumentar-vendas-online`
 
 2. Add frontmatter at the beginning of the file:
@@ -14,7 +15,7 @@ This directory contains all blog posts for the Gamou website. Each post is writt
 title: 'Título do seu post aqui'
 date: '2025-03-27'
 description: 'Uma breve descrição do seu post'
-image: '/images/blog/nome-da-imagem.jpg'
+image: '/img/blog/nome-da-imagem.jpg'
 author: 'Nome do Autor' # opcional
 tags: ['tag1', 'tag2'] # opcional
 featured: true # opcional, para destacar o post
@@ -27,8 +28,8 @@ Conteúdo do post aqui...
 
 ## Images
 
-- Place blog post images in `/public/images/blog/`
-- Reference them in frontmatter and content using `/images/blog/nome-da-imagem.jpg`
+- Place blog post images in `/public/img/blog/`
+- Reference them in frontmatter and content using `/img/blog/nome-da-imagem.jpg`
 - Use optimal image sizes:
   - Featured/header images: 1200×630px (aspect ratio 1.91:1)
   - In-content images: Recommended width 800px
@@ -38,9 +39,7 @@ Conteúdo do post aqui...
 You can use React components within your MDX content:
 
 ```mdx
-<Callout type="info">
-  Informação importante que você deseja destacar.
-</Callout>
+<Callout type="info">Informação importante que você deseja destacar.</Callout>
 ```
 
 ## Custom Components Available

@@ -45,11 +45,13 @@ This document outlines the blog implementation for the Gamou project, based on N
 ## How It Works
 
 1. **Content Management**:
+
    - Blog posts are written in MDX format and stored in `/src/content/blog/`
    - Each post includes frontmatter with metadata (title, date, description, etc.)
    - Posts are automatically displayed on the blog listing page
 
 2. **Routing**:
+
    - `/blog` - Main blog listing page
    - `/blog/[slug]` - Individual blog post pages
 
@@ -83,7 +85,7 @@ This document outlines the blog implementation for the Gamou project, based on N
    title: 'Your Post Title'
    date: 'YYYY-MM-DD'
    description: 'A brief description of your post'
-   image: '/images/blog/your-image.jpg' (optional)
+   image: '/img/blog/your-image.jpg' (optional)
    ---
    ```
 3. Write your content using Markdown syntax

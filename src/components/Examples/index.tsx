@@ -4,13 +4,13 @@ import Link from '../Link';
 
 const DATA = [
   {
-    image: '/images/examples/restaurant.webp',
+    image: '/img/examples/restaurant.webp',
     title: 'Exemplo Restaurante',
     path: '/exemplo-restaurante',
   },
 
   {
-    image: '/images/examples/beach-shop.webp',
+    image: '/img/examples/beach-shop.webp',
     title: 'Exemplo Quiosque',
     path: '/exemplo-quiosque',
   },
