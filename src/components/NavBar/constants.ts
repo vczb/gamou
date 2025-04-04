@@ -20,6 +20,11 @@ export const menuHome = [
     type: "link",
   },
   {
+    target: "/pedidos-qr-code",
+    text: "Pedidos QR Code",
+    type: "link",
+  },
+  {
     target: "/blog",
     text: "Blog",
     type: "link",
@@ -27,6 +32,24 @@ export const menuHome = [
   {
     target: "/entrar",
     text: "Entrar",
+    type: "button",
+  },
+];
+
+export const menuQRCode = [
+  {
+    target: "/",
+    text: "Início",
+    type: "link",
+  },
+  {
+    target: "/blog",
+    text: "Blog",
+    type: "link",
+  },
+  {
+    target: "/entrar",
+    text: "Comece já",
     type: "button",
   },
 ];

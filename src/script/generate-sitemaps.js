@@ -6,6 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://gamou.app';
 const PAGE_EXTENSIONS = ['.js', '.jsx', '.ts', '.tsx'];
 
 const EXCLUDED_SEGMENTS = [
+  '(pages)',
   '(auth)',
   '(private)',
   'layout',
@@ -18,7 +19,16 @@ const EXCLUDED_SEGMENTS = [
   '[', // dynamic routes
 ];
 
+// Directories to explicitly include
+const INCLUDE_DIRECTORIES = ['(web)', '(site)'];
+
 function shouldExclude(entryPath) {
+  // Check if it's in the include list
+  if (INCLUDE_DIRECTORIES.some(segment => entryPath.includes(segment))) {
+    return false;
+  }
+  
+  // Check if it's in the exclude list
   return EXCLUDED_SEGMENTS.some((segment) => entryPath.includes(segment));
 }
 
@@ -32,15 +42,26 @@ function isPageFile(entryName) {
   );
 }
 
-function getAllPages(dirPath, baseUrl = '') {
+function getAllPages(dirPath, baseUrl = '', isInSpecialDir = false) {
   const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-
+  const dirName = path.basename(dirPath);
+  
+  // Check if we've just entered a special directory
+  const isSpecialDirectory = INCLUDE_DIRECTORIES.includes(dirName);
+  
+  // If this is a special directory, we should clear the baseUrl to prevent it from being included in the URL
+  if (isSpecialDirectory) {
+    baseUrl = '';
+  }
+  
   return entries.flatMap((entry) => {
     const fullPath = path.join(dirPath, entry.name);
 
     if (entry.isDirectory()) {
       if (shouldExclude(entry.name)) return [];
-      return getAllPages(fullPath, path.posix.join(baseUrl, entry.name));
+      
+      // If we're in a special directory, continue tracking that
+      return getAllPages(fullPath, path.posix.join(baseUrl, entry.name), isSpecialDirectory || isInSpecialDir);
     }
 
     if (!isPageFile(entry.name)) return [];
