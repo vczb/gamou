@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run generate-sitemap",
+    "build": "next build",
+    "postbuild": "npm run generate-sitemap",
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006 --no-open",
